@@ -1,0 +1,62 @@
+﻿<Window x:Class="Zlatmet2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        Title="Учёт лома" Height="600" Width="800" ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu Background="Transparent">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход" Click="MenuItemExit_Click" />
+            </MenuItem>
+            <MenuItem Header="Справочники">
+                <MenuItem Header="Номенклатура" Command="{Binding ShowReferenceNomenclatureCommand}" />
+                <Separator />
+                <MenuItem Header="Базы" Command="{Binding ShowReferenceBasesCommand}" />
+                <MenuItem Header="Поставщики" Command="{Binding ShowReferenceSuppliersCommand}" />
+                <MenuItem Header="Заказчики" Command="{Binding ShowReferenceCustomersCommand}" />
+                <Separator />
+                <MenuItem Header="Ответственные лица" Command="{Binding ShowReferenceResponsiblePersonsCommand}" />
+                <MenuItem Header="Водители" Command="{Binding ShowReferenceDriversCommand}" />
+                <MenuItem Header="Автотранспорт" Command="{Binding ShowReferenceTransportsCommand}" />
+            </MenuItem>
+            <MenuItem Header="Документы">
+                <MenuItem Header="Журнал документов" Command="{Binding ShowJournalCommand}" />
+                <Separator />
+                <MenuItem Header="Перевозка" Command="{Binding ShowDocumentTransportationCommand}" />
+                <MenuItem Header="Переработка" Command="{Binding ShowDocumentProcessingCommand}" />
+                <MenuItem Header="Корректировка остатков" Command="{Binding ShowDocumentRestsCommand}" />
+            </MenuItem>
+            <MenuItem Header="Отчеты">
+                <MenuItem Header="Остатки на базе" Command="{Binding ShowReportWarehouseCommand}" />
+                <MenuItem Header="Обороты за период" Command="{Binding ShowReportNomenclatureCommand}" />
+                <MenuItem Header="Отчет по поставщику" Command="{Binding ShowReportSupplierCommand}" />
+                <MenuItem Header="Отчет по заказчику" Command="{Binding ShowReportCustomerCommand}" />
+                <MenuItem Header="Перевозки" />
+            </MenuItem>
+            <MenuItem Header="Сервис">
+                <MenuItem Header="Параметры..." Command="{Binding ShowParametersCommand}" />
+                <MenuItem Header="Пользователи" />
+            </MenuItem>
+        </Menu>
+
+        <xcad:DockingManager Grid.Row="1" Margin="3,0">
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel>
+                    <xcad:LayoutDocumentPaneGroup>
+                        <xcad:LayoutDocumentPane x:Name="MainDocumentPane">
+                        </xcad:LayoutDocumentPane>
+                    </xcad:LayoutDocumentPaneGroup>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+
+        <StatusBar Grid.Row="2">
+        </StatusBar>
+    </Grid>
+</Window>

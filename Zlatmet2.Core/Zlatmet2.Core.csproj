@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3366C19F-7F60-47C6-A9DA-8F4EA205FB85}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Zlatmet2.Core</RootNamespace>
+    <AssemblyName>Zlatmet2.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseObject.cs" />
+    <Compile Include="Classes\DocReprocessTableItem.cs" />
+    <Compile Include="Classes\DocRestsTableItem.cs" />
+    <Compile Include="Classes\Documents\BaseDocument.cs" />
+    <Compile Include="Classes\Documents\BaseDocumentItem.cs" />
+    <Compile Include="Classes\Documents\Document.cs" />
+    <Compile Include="Classes\Documents\Processing.cs" />
+    <Compile Include="Classes\Documents\ProcessingItem.cs" />
+    <Compile Include="Classes\Documents\Remains.cs" />
+    <Compile Include="Classes\Documents\RemainsItem.cs" />
+    <Compile Include="Classes\Documents\Transportation.cs" />
+    <Compile Include="Classes\Documents\TransportationItem.cs" />
+    <Compile Include="Classes\References\Division.cs" />
+    <Compile Include="Classes\References\Employee.cs" />
+    <Compile Include="Classes\References\Nomenclature.cs" />
+    <Compile Include="Classes\References\Organization.cs" />
+    <Compile Include="Classes\References\Transport.cs" />
+    <Compile Include="Classes\ReportPsa.cs" />
+    <Compile Include="Classes\ReportSklad.cs" />
+    <Compile Include="Classes\TableItem.cs" />
+    <Compile Include="Classes\User.cs" />
+    <Compile Include="Definitions.cs" />
+    <Compile Include="Enums\DocumentType.cs" />
+    <Compile Include="Enums\EmployeeType.cs" />
+    <Compile Include="Enums\JournalPeriodType.cs" />
+    <Compile Include="Enums\OrganizationType.cs" />
+    <Compile Include="IConnectionFactory.cs" />
+    <Compile Include="IModelContext.cs" />
+    <Compile Include="PersistentObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Helpers.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

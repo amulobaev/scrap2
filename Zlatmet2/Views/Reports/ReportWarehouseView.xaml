@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Zlatmet2.Views.Reports.ReportWarehouseView" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <UserControl.Resources>
+        <DataTemplate x:Key="CheckedListBoxTemplate">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" Margin="3,0" />
+                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <ToolBar>
+            <Button Content="Сформировать" />
+        </ToolBar>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="На дату:" HorizontalAlignment="Left" Margin="3" />
+            <DatePicker Grid.Row="1" Width="110" Margin="3" SelectedDate="{Binding Date}" />
+
+            <TextBlock Grid.Column="1" Text="Базы:" Margin="3" HorizontalAlignment="Left" />
+            <ListBox Grid.Column="2" Width="150" Grid.RowSpan="3" Margin="3" ItemsSource="{Binding Bases}"
+                     ItemTemplate="{StaticResource CheckedListBoxTemplate}" Height="120" />
+
+            <TextBlock Grid.Column="3" Text="Номенклатура:" Margin="3" HorizontalAlignment="Left" />
+            <ListBox Grid.Column="4" Width="150" Grid.RowSpan="3" Margin="3" ItemsSource="{Binding Nomenclatures}"
+                     ItemTemplate="{StaticResource CheckedListBoxTemplate}" VerticalAlignment="Top" Height="120" />
+
+        </Grid>
+
+        <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" />
+
+    </Grid>
+</UserControl>

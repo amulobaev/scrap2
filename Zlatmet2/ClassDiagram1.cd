@@ -1,0 +1,708 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Zlatmet2.App" Collapsed="true">
+    <Position X="43" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.MainStorage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCEEgIAAgCAAAaAgAEIAAKEAAgJAKMgYQEAIAIDAAAQ=</HashCode>
+      <FileName>MainStorage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Zlatmet2.MainWindow" Collapsed="true">
+    <Position X="48.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Classes.CustomDockingPanesFactory" Collapsed="true">
+    <Position X="51.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\CustomDockingPanesFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Classes.ScrollIntoViewBehavior" Collapsed="true">
+    <Position X="53.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Classes\ScrollIntoViewBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Converters.EnumDescriptionConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="44.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\EnumDescriptionConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Zlatmet2.Converters.RadioButtonCheckedConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="46.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\RadioButtonCheckedConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Zlatmet2.Models.BaseWrapper" Collapsed="true">
+    <Position X="10" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAQCAAAAAAAAAEAAAAAAgAAEAAAAAAAAAABAAAQ=</HashCode>
+      <FileName>Models\BaseWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Zlatmet2.Models.BaseWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="10" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseWrapperT.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.Documents.ProcessingItemWrapper" Collapsed="true">
+    <Position X="16.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKCAAAAAAEAAAAgAAAAABAAAAEAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\Documents\ProcessingItemWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.Documents.RemainsItemWrapper" Collapsed="true">
+    <Position X="3.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\Documents\RemainsItemWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.Documents.TransportationItemWrapper" Collapsed="true">
+    <Position X="5.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgABAEAIQQAAQAAAACAAAAQAAAAAAEBAAAIAAQAAAAA=</HashCode>
+      <FileName>Models\Documents\TransportationItemWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.References.BaseReferenceWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="11.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\References\BaseReferenceWrapperT.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.References.EmployeeWrapper" Collapsed="true">
+    <Position X="7.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAIAAAAAAAAYAAAAAAAAAAAAAIAAAABQ=</HashCode>
+      <FileName>Models\References\EmployeeWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.References.NomenclatureWrapper" Collapsed="true">
+    <Position X="10" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\References\NomenclatureWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.References.OrganizationWrapper" Collapsed="true">
+    <Position X="12.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAIAAAAwAAAIAACAAAAAYAAAAABAACAAAZIEAAADQ=</HashCode>
+      <FileName>Models\References\OrganizationWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.References.TransportWrapper" Collapsed="true">
+    <Position X="14.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAgAAAABAAAAAAAAQAAAAAgAAAEAAAAAAABAQ=</HashCode>
+      <FileName>Models\References\TransportWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Models.Reports.CheckedWrapper" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="48.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACACAAAAAAAAAAAAAAgAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Reports\CheckedWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Zlatmet2.Annotations.CanBeNullAttribute" Collapsed="true">
+    <Position X="44.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.NotNullAttribute" Collapsed="true">
+    <Position X="53.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.StringFormatMethodAttribute" Collapsed="true">
+    <Position X="43" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.InvokerParameterNameAttribute" Collapsed="true">
+    <Position X="53.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.NotifyPropertyChangedInvocatorAttribute" Collapsed="true">
+    <Position X="51.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.ContractAnnotationAttribute" Collapsed="true">
+    <Position X="50" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAIAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.LocalizationRequiredAttribute" Collapsed="true">
+    <Position X="43" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.CannotApplyEqualityOperatorAttribute" Collapsed="true">
+    <Position X="46.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.BaseTypeRequiredAttribute" Collapsed="true">
+    <Position X="43" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.UsedImplicitlyAttribute" Collapsed="true">
+    <Position X="44.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.MeansImplicitUseAttribute" Collapsed="true">
+    <Position X="50" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.PublicAPIAttribute" Collapsed="true">
+    <Position X="43" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.InstantHandleAttribute" Collapsed="true">
+    <Position X="51.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.PureAttribute" Collapsed="true">
+    <Position X="44.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.PathReferenceAttribute" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcAreaMasterLocationFormatAttribute" Collapsed="true">
+    <Position X="48.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcAreaPartialViewLocationFormatAttribute" Collapsed="true">
+    <Position X="50" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcAreaViewLocationFormatAttribute" Collapsed="true">
+    <Position X="51.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcMasterLocationFormatAttribute" Collapsed="true">
+    <Position X="46.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcPartialViewLocationFormatAttribute" Collapsed="true">
+    <Position X="50" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcViewLocationFormatAttribute" Collapsed="true">
+    <Position X="55.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcActionAttribute" Collapsed="true">
+    <Position X="44.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcAreaAttribute" Collapsed="true">
+    <Position X="5.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcControllerAttribute" Collapsed="true">
+    <Position X="53.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcMasterAttribute" Collapsed="true">
+    <Position X="44.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcModelTypeAttribute" Collapsed="true">
+    <Position X="48.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcPartialViewAttribute" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcSupressViewErrorAttribute" Collapsed="true">
+    <Position X="51.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcDisplayTemplateAttribute" Collapsed="true">
+    <Position X="55.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcEditorTemplateAttribute" Collapsed="true">
+    <Position X="43" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcTemplateAttribute" Collapsed="true">
+    <Position X="53.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcViewAttribute" Collapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.AspMvcActionSelectorAttribute" Collapsed="true">
+    <Position X="46.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.HtmlElementAttributesAttribute" Collapsed="true">
+    <Position X="50" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.HtmlAttributeValueAttribute" Collapsed="true">
+    <Position X="48.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Annotations.RazorSectionAttribute" Collapsed="true">
+    <Position X="48.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Properties.Resources" Collapsed="true">
+    <Position X="51.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Properties.Settings" Collapsed="true">
+    <Position X="55.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAIAAAGAABAAAAAEQAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Tools.Extensions" Collapsed="true">
+    <Position X="46.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Tools\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Base.DocumentPaneViewModel" Collapsed="true">
+    <Position X="20.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\DocumentPaneViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Base.PaneViewModel" Collapsed="true">
+    <Position X="20.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAQAEAAAAAAAAAAAAAAAgAAAAAACAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\PaneViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Base.SingletonDocumentPaneViewModel" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\SingletonDocumentPaneViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Base.UniqueDocumentPaneViewModel" Collapsed="true">
+    <Position X="29.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\UniqueDocumentPaneViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Base.ViewModelBase" Collapsed="true">
+    <Position X="22.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\ViewModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Documents.BaseDocumentViewModel" Collapsed="true">
+    <Position X="33.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQAAIAAgAAQEAAAFEAAAQQAgAAAQAAFAAAAEABAEgA=</HashCode>
+      <FileName>ViewModels\Documents\BaseDocumentViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Documents.DocumentProcessingViewModel" Collapsed="true">
+    <Position X="31.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAAAQCAAAEAAAAAQAgAAAIAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Documents\DocumentProcessingViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Documents.DocumentRemainsViewModel" Collapsed="true">
+    <Position X="33.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAQCAAAEAAAAAQAgAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Documents\DocumentRemainsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Documents.DocumentTransportationViewModel" Collapsed="true">
+    <Position X="36" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BwEQgQBQgAAQDJAAEEAAAAQCgiQAoEAEAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Documents\DocumentTransportationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.JournalViewModel" Collapsed="true">
+    <Position X="18" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgEAAAAAAAAQIEAAgAAAAAAAAAFgCAIAAAAgEAAA=</HashCode>
+      <FileName>ViewModels\JournalViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.MainViewModel" Collapsed="true">
+    <Position X="46.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAECAAVoBQCyECrAAIAABUAIAgIIAIAQMABEwogAEQ=</HashCode>
+      <FileName>ViewModels\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.BaseReferenceViewModel" Collapsed="true">
+    <Position X="5.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAAAAIAAAAAAEAAAAAAAAAAAgAAAAAAEAEAAEAAEAAA=</HashCode>
+      <FileName>ViewModels\References\BaseReferenceViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceBasesViewModel" Collapsed="true">
+    <Position X="4.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAQAAAAAACAABAAAAAAAAgAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceBasesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceCustomersViewModel" Collapsed="true">
+    <Position X="13.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceCustomersViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceDriversViewModel" Collapsed="true">
+    <Position X="9" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceDriversViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceEmployeesViewModel" Collapsed="true">
+    <Position X="10" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceEmployeesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceNomenclaturesViewModel" Collapsed="true">
+    <Position X="6.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAACAAAAAAAAAAAgQAAAAAEABAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceNomenclaturesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceOrganizationsViewModel" Collapsed="true">
+    <Position X="14.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABgAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceOrganizationsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceResponsiblePersonsViewModel" Collapsed="true">
+    <Position X="11.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceResponsiblePersonsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceSuppliersViewModel" Collapsed="true">
+    <Position X="15.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceSuppliersViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.References.ReferenceTransportsViewModel" Collapsed="true">
+    <Position X="20.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\References\ReferenceTransportsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Reports.ReportCustomerViewModel" Collapsed="true">
+    <Position X="22.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Reports\ReportCustomerViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Reports.ReportNomenclatureViewModel" Collapsed="true">
+    <Position X="24.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAABgAAAAAAAAEAAA=</HashCode>
+      <FileName>ViewModels\Reports\ReportNomenclatureViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Reports.ReportSupplierViewModel" Collapsed="true">
+    <Position X="27" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Reports\ReportSupplierViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Reports.ReportWarehouseViewModel" Collapsed="true">
+    <Position X="29.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAABAAAAAAAAAAACAABAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Reports\ReportWarehouseViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Service.ParametersViewModel" Collapsed="true">
+    <Position X="38.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAQAAAAAAAAAAAIAAAAAAAAAAIAEABAAAAAAA=</HashCode>
+      <FileName>ViewModels\Service\ParametersViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.ViewModels.Service.UsersViewModel" Collapsed="true">
+    <Position X="40.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Service\UsersViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Documents.DocumentProcessingView" Collapsed="true">
+    <Position X="53.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Documents\DocumentProcessingView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Documents.DocumentRemainsView" Collapsed="true">
+    <Position X="55.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Documents\DocumentRemainsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Documents.DocumentTransportationView" Collapsed="true">
+    <Position X="43" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Documents\DocumentTransportationView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.JournalView" Collapsed="true">
+    <Position X="55.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\JournalView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.References.ReferenceBasesView" Collapsed="true">
+    <Position X="50" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\References\ReferenceBasesView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.References.ReferenceEmployeesView" Collapsed="true">
+    <Position X="51.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\References\ReferenceEmployeesView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.References.ReferenceNomenclaturesView" Collapsed="true">
+    <Position X="53.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\References\ReferenceNomenclaturesView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.References.ReferenceOrganizationsView" Collapsed="true">
+    <Position X="55.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\References\ReferenceOrganizationsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.References.ReferenceTransportsView" Collapsed="true">
+    <Position X="43" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\References\ReferenceTransportsView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Reports.ReportCustomerView" Collapsed="true">
+    <Position X="44.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Reports\ReportCustomerView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Reports.ReportNomenclatureView" Collapsed="true">
+    <Position X="46.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Reports\ReportNomenclatureView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Reports.ReportSupplierView" Collapsed="true">
+    <Position X="48.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Reports\ReportSupplierView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Reports.ReportWarehouseView" Collapsed="true">
+    <Position X="50" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Reports\ReportWarehouseView.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zlatmet2.Views.Service.ParametersWindow" Collapsed="true">
+    <Position X="55.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\Service\ParametersWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Zlatmet2.Annotations.ImplicitUseKindFlags" Collapsed="true">
+    <Position X="43" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAABAEAAAAAAIAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Zlatmet2.Annotations.ImplicitUseTargetFlags" Collapsed="true">
+    <Position X="44.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAIAAAAAAAAAAAAAAEAAAAAAQ=</HashCode>
+      <FileName>Properties\Annotations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

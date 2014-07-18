@@ -1,0 +1,43 @@
+﻿using System.Windows;
+using Zlatmet2.ViewModels;
+
+namespace Zlatmet2
+{
+    /// <summary>
+    /// Логика взаимодействия для MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            Instance = this;
+
+            // Загрузка размеров окна из настроек
+            this.Width = MainStorage.Instance.MainWindowWidth;
+            this.Height = MainStorage.Instance.MainWindowHeight;
+            this.WindowState = (WindowState)MainStorage.Instance.MainWindowState;
+
+            //
+            this.DataContext = new MainViewModel();
+        }
+
+        public static MainWindow Instance { get; private set; }
+
+        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            // Сохранение настроек окна
+            MainStorage.Instance.MainWindowWidth = this.Width;
+            MainStorage.Instance.MainWindowHeight = this.Height;
+            MainStorage.Instance.MainWindowState = (int)this.WindowState;
+
+            MainStorage.Instance.Dispose();
+        }
+    }
+}
