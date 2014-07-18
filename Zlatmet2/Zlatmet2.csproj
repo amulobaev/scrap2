@@ -62,15 +62,19 @@
     <Reference Include="Stimulsoft.Report, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Stimulsoft.Report.Check, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Report.Helper, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
     <Reference Include="Stimulsoft.Report.Wpf, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Stimulsoft.Report.WpfDesign, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -141,6 +145,7 @@
     <Compile Include="Models\References\OrganizationWrapper.cs" />
     <Compile Include="Models\References\TransportWrapper.cs" />
     <Compile Include="Models\Reports\CheckedWrapper.cs" />
+    <Compile Include="Models\Service\TemplateWrapper.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\Helpers.cs" />
@@ -164,6 +169,7 @@
     <Compile Include="ViewModels\Reports\ReportSupplierViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportWarehouseViewModel.cs" />
     <Compile Include="ViewModels\Service\ParametersViewModel.cs" />
+    <Compile Include="ViewModels\Service\TemplatesViewModel.cs" />
     <Compile Include="ViewModels\Service\UsersViewModel.cs" />
     <Compile Include="Views\Documents\DocumentProcessingView.xaml.cs">
       <DependentUpon>DocumentProcessingView.xaml</DependentUpon>
@@ -212,6 +218,12 @@
     </Compile>
     <Compile Include="Views\Service\ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\TemplateEditorWindow.xaml.cs">
+      <DependentUpon>TemplateEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\TemplatesView.xaml.cs">
+      <DependentUpon>TemplatesView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -278,6 +290,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Service\ParametersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\TemplateEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\TemplatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

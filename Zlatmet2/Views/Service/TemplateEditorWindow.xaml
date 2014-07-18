@@ -1,0 +1,11 @@
+﻿<Window x:Class="Zlatmet2.Views.Service.TemplateEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.WpfDesign;assembly=Stimulsoft.Report.WpfDesign" 
+        Title="TemplateEditorWindow" Height="400" Width="800">
+    <Grid>
+
+        <stimulsoft:StiWpfDesignerControl />
+
+    </Grid>
+</Window>

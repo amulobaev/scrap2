@@ -9,6 +9,7 @@ using Zlatmet2.ViewModels.Base;
 using Zlatmet2.ViewModels.Documents;
 using Zlatmet2.ViewModels.References;
 using Zlatmet2.ViewModels.Reports;
+using Zlatmet2.ViewModels.Service;
 using Zlatmet2.Views.Service;
 
 namespace Zlatmet2.ViewModels
@@ -23,6 +24,7 @@ namespace Zlatmet2.ViewModels
         private ICommand _showReportNomenclatureCommand;
         private ICommand _showReportSupplierCommand;
         private ICommand _showReportCustomerCommand;
+        private ICommand _showTemplatesCommand;
 
         #endregion
 
@@ -123,6 +125,11 @@ namespace Zlatmet2.ViewModels
                 return _showReportCustomerCommand ??
                        (_showReportCustomerCommand = new RelayCommand(ShowReportCustomer));
             }
+        }
+
+        public ICommand ShowTemplatesCommand
+        {
+            get { return _showTemplatesCommand ?? (_showTemplatesCommand = new RelayCommand(ShowTemplates)); }
         }
 
         #endregion
@@ -276,6 +283,11 @@ namespace Zlatmet2.ViewModels
         {
             var parametersWindow = new ParametersWindow { Owner = MainWindow.Instance };
             parametersWindow.ShowDialog();
+        }
+
+        private void ShowTemplates()
+        {
+            ShowLayoutDocument(typeof(TemplatesViewModel));
         }
 
         #endregion

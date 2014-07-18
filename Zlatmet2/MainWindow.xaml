@@ -42,6 +42,7 @@
             <MenuItem Header="Сервис">
                 <MenuItem Header="Параметры..." Command="{Binding ShowParametersCommand}" />
                 <MenuItem Header="Пользователи" />
+                <MenuItem Header="Шаблоны" Command="{Binding ShowTemplatesCommand}" />
             </MenuItem>
         </Menu>
 

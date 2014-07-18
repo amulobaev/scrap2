@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace Zlatmet2.Models.References
 {
@@ -16,13 +15,8 @@ namespace Zlatmet2.Models.References
         {
             if (!IsChanged)
                 return;
-
             UpdateContainer();
-
-            var ticks = Environment.TickCount;
             MainStorage.Instance.CreateOrUpdateObject(Container);
-            Debug.WriteLine("CreateOrUpdateObject {0} мс", Environment.TickCount - ticks);
-
             IsChanged = false;
         }
     }

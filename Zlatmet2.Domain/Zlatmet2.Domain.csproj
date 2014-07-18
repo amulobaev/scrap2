@@ -66,6 +66,7 @@
     <Compile Include="Dto\References\NomenclatureDto.cs" />
     <Compile Include="Dto\References\OrganizationDto.cs" />
     <Compile Include="Dto\References\TransportDto.cs" />
+    <Compile Include="Dto\Service\TemplateDto.cs" />
     <Compile Include="Dto\TableAttribute.cs" />
     <Compile Include="MsSqlConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Repositories\References\ResponsiblePersonsRepository.cs" />
     <Compile Include="Repositories\References\SuppliersRepository.cs" />
     <Compile Include="Repositories\References\TransportsRepository.cs" />
+    <Compile Include="Repositories\Service\TemplatesRepository.cs" />
     <Compile Include="Tools\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>

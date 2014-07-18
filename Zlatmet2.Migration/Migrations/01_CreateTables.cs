@@ -131,7 +131,7 @@ namespace Zlatmet2.Migration.Migrations
             Create.Table("Templates")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
                 .WithColumn("Name").AsString(Int32.MaxValue).NotNullable()
-                .WithColumn("Template").AsBinary(Int32.MaxValue).Nullable();
+                .WithColumn("Data").AsBinary(Int32.MaxValue).Nullable();
 
             // Создание представлений
             Execute.EmbeddedScript("Create_Documents_View.sql");

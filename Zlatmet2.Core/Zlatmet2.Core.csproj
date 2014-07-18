@@ -40,8 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseObject.cs" />
-    <Compile Include="Classes\DocReprocessTableItem.cs" />
-    <Compile Include="Classes\DocRestsTableItem.cs" />
     <Compile Include="Classes\Documents\BaseDocument.cs" />
     <Compile Include="Classes\Documents\BaseDocumentItem.cs" />
     <Compile Include="Classes\Documents\Document.cs" />
@@ -56,9 +54,7 @@
     <Compile Include="Classes\References\Nomenclature.cs" />
     <Compile Include="Classes\References\Organization.cs" />
     <Compile Include="Classes\References\Transport.cs" />
-    <Compile Include="Classes\ReportPsa.cs" />
-    <Compile Include="Classes\ReportSklad.cs" />
-    <Compile Include="Classes\TableItem.cs" />
+    <Compile Include="Classes\Service\Template.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Enums\DocumentType.cs" />

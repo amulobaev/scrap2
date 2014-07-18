@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Zlatmet2.Views.Service.TemplatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:stiViewer="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <ToolBar Background="Transparent">
+                <ToolBar.Resources>
+                    <Style x:Key="SelectedItemStyle" TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToolBar.Resources>
+                <Button Content="Добавить" Command="{Binding AddCommand}" />
+                <Button Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource SelectedItemStyle}" />
+                <Separator />
+                <Button Content="Редактор" Command="{Binding DesignerCommand}" Style="{StaticResource SelectedItemStyle}" />
+                <Separator />
+                <Button Content="Импорт" Command="{Binding ImportCommand}"/>
+                <Button Content="Экспорт" Command="{Binding ExportCommand}" Style="{StaticResource SelectedItemStyle}" />
+            </ToolBar>
+
+            <telerik:RadGridView x:Name="GridViewTemplates" Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"
+                                 RowIndicatorVisibility="Collapsed" CanUserFreezeColumns="False" IsFilteringAllowed="False"
+                                 ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
+                                 SelectionChanged="GridViewTemplates_SelectionChanged">
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn Header="Наименование" Width="*"
+                                                DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                </telerik:RadGridView.Columns>
+                <telerik:RadGridView.SortDescriptors>
+                    <telerik:SortDescriptor Member="Name"/>
+                </telerik:RadGridView.SortDescriptors>
+            </telerik:RadGridView>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" Width="3" HorizontalAlignment="Center" />
+
+        <stiViewer:StiWpfViewerControl x:Name="ReportViewer" Grid.Column="2" Margin="1" />
+
+    </Grid>
+</UserControl>
