@@ -69,9 +69,25 @@ namespace Zlatmet2.Domain.Repositories.Service
                     return template;
                 }
                 else
-                {
                     return null;
+            }
+        }
+
+        public Template GetByName(string name)
+        {
+            using (var connection = ConnectionFactory.Create())
+            {
+                string query = string.Format("SELECT * FROM {0} WHERE Name = @Name",
+                    QueryObject.GetTable(typeof(TemplateDto)));
+                TemplateDto dto = connection.Query<TemplateDto>(query, new { Name = name }).FirstOrDefault();
+                if (dto != null)
+                {
+                    Template template = new Template(dto.Id);
+                    Mapper.Map(dto, template);
+                    return template;
                 }
+                else
+                    return null;
             }
         }
 

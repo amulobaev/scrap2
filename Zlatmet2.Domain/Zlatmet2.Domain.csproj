@@ -67,7 +67,9 @@
     <Compile Include="Dto\References\OrganizationDto.cs" />
     <Compile Include="Dto\References\TransportDto.cs" />
     <Compile Include="Dto\Service\TemplateDto.cs" />
+    <Compile Include="Repositories\Service\UsersRepository.cs" />
     <Compile Include="Dto\TableAttribute.cs" />
+    <Compile Include="Dto\Service\UserDto.cs" />
     <Compile Include="MsSqlConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObject.cs" />

@@ -140,6 +140,10 @@ namespace Zlatmet2
             get { return _connectionFactory; }
         }
 
+        public Guid UserId { get; set; }
+
+        public string UserName { get; set; }
+
         #endregion
 
         #region Методы

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using Zlatmet2.Core.Tools;
 
 namespace Zlatmet2.Migration.Migrations
 {
@@ -11,8 +12,16 @@ namespace Zlatmet2.Migration.Migrations
             // Пользователи
             Create.Table("Users")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("User").AsString(Int32.MaxValue).NotNullable()
+                .WithColumn("Login").AsString(Int32.MaxValue).NotNullable()
                 .WithColumn("Password").AsString(Int32.MaxValue).Nullable();
+            Insert.IntoTable("Users")
+                .Row(
+                    new
+                    {
+                        Id = Guid.Parse("{C0B709EA-1DC2-41F8-83AF-380D3AA32019}"),
+                        Login = "Администратор",
+                        Password = Helpers.Sha1Pass("123")
+                    });
 
             #region Справочники
 

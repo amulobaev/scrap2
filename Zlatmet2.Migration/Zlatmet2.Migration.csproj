@@ -64,6 +64,12 @@
   <ItemGroup>
     <EmbeddedResource Include="MigrationScripts\Create_DocumentNumbersAndDates_View.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zlatmet2.Core\Zlatmet2.Core.csproj">
+      <Project>{3366c19f-7f60-47c6-a9da-8f4ea205fb85}</Project>
+      <Name>Zlatmet2.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

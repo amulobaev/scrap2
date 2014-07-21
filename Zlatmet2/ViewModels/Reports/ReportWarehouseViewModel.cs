@@ -4,6 +4,7 @@ using System.Linq;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
+using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Models.Reports;
 using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.Reports;
@@ -13,10 +14,10 @@ namespace Zlatmet2.ViewModels.Reports
     /// <summary>
     /// Модель представления "Остатки на базе"
     /// </summary>
-    public class ReportWarehouseViewModel : UniqueLayoutDocumentViewModel
+    public class ReportWarehouseViewModel : BaseReportViewModel
     {
         private DateTime _date;
-        private StiReport _report;
+        private readonly Template _template;
 
         /// <summary>
         /// Конструктор
@@ -39,6 +40,10 @@ namespace Zlatmet2.ViewModels.Reports
             Nomenclatures = new ObservableCollection<CheckedWrapper>();
             foreach (Nomenclature nomenclature in MainStorage.Instance.Nomenclatures.OrderBy(x => x.Name))
                 Nomenclatures.Add(new CheckedWrapper(nomenclature.Id, true, nomenclature.Name));
+
+            _template = MainStorage.Instance.TemplatesRepository.GetByName(ReportName);
+            
+            Report = new StiReport();
         }
 
         public DateTime Date
@@ -57,16 +62,17 @@ namespace Zlatmet2.ViewModels.Reports
 
         public ObservableCollection<CheckedWrapper> Nomenclatures { get; private set; }
 
-        public StiReport Report
+        public override string ReportName
         {
-            get { return _report; }
-            set
-            {
-                if (Equals(value, _report))
-                    return;
-                _report = value;
-                RaisePropertyChanged("Report");
-            }
+            get { return "Остатки на базе"; }
+        }
+
+        protected override void PrepareReport()
+        {
+            Report = new StiReport();
+            Report.Load(_template.Data);
+            Report.Compile();
+            Report.Render();
         }
 
     }

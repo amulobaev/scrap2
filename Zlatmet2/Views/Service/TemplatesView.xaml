@@ -32,7 +32,7 @@
                 <Button Content="Добавить" Command="{Binding AddCommand}" />
                 <Button Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource SelectedItemStyle}" />
                 <Separator />
-                <Button Content="Редактор" Command="{Binding DesignerCommand}" Style="{StaticResource SelectedItemStyle}" />
+                <Button Content="Редактор" Command="{Binding ShowDesignerCommand}" Style="{StaticResource SelectedItemStyle}" />
                 <Separator />
                 <Button Content="Импорт" Command="{Binding ImportCommand}"/>
                 <Button Content="Экспорт" Command="{Binding ExportCommand}" Style="{StaticResource SelectedItemStyle}" />
@@ -54,7 +54,9 @@
 
         <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" Width="3" HorizontalAlignment="Center" />
 
-        <stiViewer:StiWpfViewerControl x:Name="ReportViewer" Grid.Column="2" Margin="1" />
+        <stiViewer:StiWpfViewerControl x:Name="ReportViewer" Grid.Column="2" Margin="1"
+                                       ShowClose="False" ShowReportOpen="False"
+                                       Report="{Binding Report}" />
 
     </Grid>
 </UserControl>

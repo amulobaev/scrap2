@@ -17,5 +17,6 @@ namespace Zlatmet2.Tools
             int currQuarter = (date.Month - 1) / 3 + 1;
             return new DateTime(date.Year, 3 * currQuarter - 2, 1);
         }
+
     }
 }

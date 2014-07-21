@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Zlatmet2.ViewModels;
 
 namespace Zlatmet2
@@ -13,6 +14,8 @@ namespace Zlatmet2
             InitializeComponent();
 
             Instance = this;
+
+            this.Title = string.Format("{0} - {1}", MainStorage.AppName, MainStorage.Instance.UserName);
 
             // Загрузка размеров окна из настроек
             this.Width = MainStorage.Instance.MainWindowWidth;
@@ -30,7 +33,7 @@ namespace Zlatmet2
             this.Close();
         }
 
-        private void Window_Closed(object sender, System.EventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
             // Сохранение настроек окна
             MainStorage.Instance.MainWindowWidth = this.Width;

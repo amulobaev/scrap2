@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Zlatmet2.Core.Tools
 {
@@ -37,6 +39,16 @@ namespace Zlatmet2.Core.Tools
                 var descriptionAttribute = attribArray[0] as DescriptionAttribute;
                 return descriptionAttribute.Description;
             }
+        }
+
+        public static string Sha1Pass(string pass)
+        {
+            var sha1Managed = new SHA1Managed();
+            Byte[] result = sha1Managed.ComputeHash(new UTF8Encoding().GetBytes(pass));
+            var hashedString = new StringBuilder();
+            foreach (Byte outputByte in result)
+                hashedString.Append(outputByte.ToString("x2").ToUpper());
+            return hashedString.ToString();
         }
 
     }

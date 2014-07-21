@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <ToolBar>
-            <Button Content="Сформировать" />
+            <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
         </ToolBar>
 
         <Expander Grid.Row="1" Header="Параметры" IsExpanded="True">

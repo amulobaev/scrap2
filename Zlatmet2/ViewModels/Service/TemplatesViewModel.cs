@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
+using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Models.Service;
-using Zlatmet2.Tools;
 using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.Service;
 
@@ -31,6 +28,8 @@ namespace Zlatmet2.ViewModels.Service
         private ICommand _addCommand;
         private ICommand _deleteCommand;
         private ICommand _importCommand;
+        private ICommand _showDesignerCommand;
+        private StiReport _report;
 
         #endregion
 
@@ -44,9 +43,13 @@ namespace Zlatmet2.ViewModels.Service
             Title = "Шаблоны";
 
             Items.CollectionChanged += Items_CollectionChanged;
+            this.PropertyChanged += OnPropertyChanged;
 
             foreach (var template in MainStorage.Instance.TemplatesRepository.GetAll())
                 Items.Add(new TemplateWrapper(template));
+
+            if (Items.Any())
+                SelectedItem = Items.First();
         }
 
         #region Свойства
@@ -65,6 +68,18 @@ namespace Zlatmet2.ViewModels.Service
                     return;
                 _selectedItem = value;
                 RaisePropertyChanged("SelectedItem");
+            }
+        }
+
+        public StiReport Report
+        {
+            get { return _report; }
+            set
+            {
+                if (Equals(value, _report))
+                    return;
+                _report = value;
+                RaisePropertyChanged("Report");
             }
         }
 
@@ -87,16 +102,51 @@ namespace Zlatmet2.ViewModels.Service
             get { return _importCommand ?? (_importCommand = new RelayCommand(ImportTemplate)); }
         }
 
+        public ICommand ShowDesignerCommand
+        {
+            get { return _showDesignerCommand ?? (_showDesignerCommand = new RelayCommand(ShowDesigner)); }
+        }
+
         #endregion
 
         #region Методы
 
         public override void Dispose()
         {
+            Items.CollectionChanged -= Items_CollectionChanged;
+            this.PropertyChanged -= OnPropertyChanged;
+
             foreach (var item in Items)
                 item.PropertyChanged -= Template_PropertyChanged;
+        }
 
-            Items.CollectionChanged -= Items_CollectionChanged;
+        /// <summary>
+        /// Обработка события изменения свойства модели представления
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedItem":
+                    if (SelectedItem != null && SelectedItem.Data != null)
+                    {
+                        if (Report == null)
+                            Report = new StiReport();
+                        Report.Load(SelectedItem.Data);
+                        Report.Render(false);
+                    }
+                    else
+                    {
+                        if (Report != null)
+                        {
+                            Report.Dispose();
+                            Report = null;
+                        }
+                    }
+                    break;
+            }
         }
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -129,13 +179,29 @@ namespace Zlatmet2.ViewModels.Service
             if (templateWrapper == null)
                 return;
 
+            // Если у обёртки шаблона изменилось какое-либо свойство, то изменения нужно сохранить в базу
             templateWrapper.Save();
+
+            switch (e.PropertyName)
+            {
+                case "Data":
+                    // Если изменились данные выбранного шаблона то его нужно перерисовать
+                    //if (templateWrapper == SelectedItem)
+                    //{
+                    //    if (Report == null)
+                    //        Report = new StiReport();
+                    //    Report.Load(templateWrapper.Data);
+                    //    Report.Render(false);
+                    //}
+                    break;
+            }
         }
 
         private void AddTemplate()
         {
-            TemplateWrapper template = new TemplateWrapper();
-            Items.Add(template);
+            TemplateWrapper templateWrapper = new TemplateWrapper { Data = new StiReport().SaveToByteArray() };
+            Items.Add(templateWrapper);
+            SelectedItem = templateWrapper;
         }
 
         private void DeleteTemplate()
@@ -143,7 +209,23 @@ namespace Zlatmet2.ViewModels.Service
             if (SelectedItem == null)
                 return;
 
-            Items.Remove(SelectedItem);
+            if (MessageBox.Show("Действительно удалить?", MainStorage.AppName, MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                Items.Remove(SelectedItem);
+        }
+
+        private void ShowDesigner()
+        {
+            if (SelectedItem == null)
+                return;
+
+            TemplateEditorWindow window = new TemplateEditorWindow(SelectedItem) { Owner = MainWindow.Instance };
+            window.ShowDialog();
+
+            if (Report == null)
+                Report = new StiReport();
+            Report.Load(SelectedItem.Data);
+            Report.Render(false);
         }
 
         private void ImportTemplate()

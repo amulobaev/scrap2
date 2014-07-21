@@ -17,18 +17,18 @@ namespace Zlatmet2.Views.Service
 
         private void GridViewTemplates_SelectionChanged(object sender, SelectionChangeEventArgs e)
         {
-            TemplateWrapper selectedTemplate = GridViewTemplates.SelectedItem as TemplateWrapper;
-            if (selectedTemplate != null && selectedTemplate.Data != null)
-            {
-                StiReport report = new StiReport();
-                report.Load(selectedTemplate.Data);
-                report.Render();
-                ReportViewer.Report = report;
-            }
-            else
-            {
-                ReportViewer.Report = null;
-            }
+            //TemplateWrapper selectedTemplate = GridViewTemplates.SelectedItem as TemplateWrapper;
+            //if (selectedTemplate != null && selectedTemplate.Data != null)
+            //{
+            //    StiReport report = new StiReport();
+            //    report.Load(selectedTemplate.Data);
+            //    report.Render();
+            //    ReportViewer.Report = report;
+            //}
+            //else
+            //{
+            //    ReportViewer.Report = null;
+            //}
         }
     }
 }

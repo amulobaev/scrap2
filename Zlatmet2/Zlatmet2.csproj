@@ -74,7 +74,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -155,6 +154,7 @@
     <Compile Include="ViewModels\Documents\DocumentRemainsViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentTransportationViewModel.cs" />
     <Compile Include="ViewModels\JournalViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\References\BaseReferenceViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceBasesViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceDriversViewModel.cs" />
@@ -164,6 +164,7 @@
     <Compile Include="ViewModels\References\ReferenceResponsiblePersonsViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceSuppliersViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceTransportsViewModel.cs" />
+    <Compile Include="ViewModels\Reports\BaseReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportCustomerViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportSupplierViewModel.cs" />
@@ -189,6 +190,9 @@
     <Compile Include="ViewModels\Base\UniqueLayoutDocumentViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\References\ReferenceBasesView.xaml.cs">
       <DependentUpon>ReferenceBasesView.xaml</DependentUpon>
     </Compile>
@@ -252,6 +256,10 @@
     <Page Include="Views\JournalView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\References\ReferenceBasesView.xaml">
       <SubType>Designer</SubType>

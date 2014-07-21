@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
 using Zlatmet2.Core.Classes.Service;
 
 namespace Zlatmet2.Models.Service
@@ -9,7 +7,7 @@ namespace Zlatmet2.Models.Service
     /// <summary>
     /// Обёртка для шаблона
     /// </summary>
-    public class TemplateWrapper : BaseValidationWrapper<Template>
+    public sealed class TemplateWrapper : BaseValidationWrapper<Template>
     {
         private string _name;
         private byte[] _data;
@@ -21,16 +19,20 @@ namespace Zlatmet2.Models.Service
         public TemplateWrapper(Template dataForContainer = null)
             : base(dataForContainer)
         {
-            if (dataForContainer != null)
+            this.PropertyChanged += OnPropertyChanged;
+
+            if (dataForContainer == null)
+            {
+                // Новый шаблон
+                Id = Guid.NewGuid();
+                Name = "Новый шаблон";
+            }
+            else
             {
                 Id = Container.Id;
                 _name = Container.Name;
                 _data = Container.Data;
-            }
-            else
-            {
-                Id = Guid.NewGuid();
-                Name = "Новый шаблон";
+                RaisePropertyChanged("Data");
             }
         }
 
@@ -60,6 +62,11 @@ namespace Zlatmet2.Models.Service
             }
         }
 
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //
+        }
+
         public override void UpdateContainer()
         {
             if (Container == null)
@@ -79,7 +86,7 @@ namespace Zlatmet2.Models.Service
                 MainStorage.Instance.TemplatesRepository.Create(Container);
             else
                 MainStorage.Instance.TemplatesRepository.Update(Container);
-            
+
             IsChanged = false;
         }
     }

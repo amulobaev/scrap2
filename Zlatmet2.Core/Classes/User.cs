@@ -2,21 +2,15 @@
 
 namespace Zlatmet2.Core.Classes
 {
-    public class User
+    public class User : PersistentObject
     {
-        public Guid UserId { get; set; }
-        public int Number { get; set; } // Номер по порядку в списке
-        public string Login { get; set; } // ФИО пользователя
-        public string Password  { get; set; } //пароль
-
-        public User()
+        public User(Guid id)
+            : base(id)
         {
-            UserId = Guid.NewGuid();
         }
 
-        public override string ToString()
-        {
-            return Login;
-        }
+        public string Login { get; set; }
+
+        public string Password { get; set; }
     }
 }

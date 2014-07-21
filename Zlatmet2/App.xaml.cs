@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using Telerik.Windows.Controls;
+using Zlatmet2.Views;
 
 namespace Zlatmet2
 {
@@ -15,7 +18,19 @@ namespace Zlatmet2
             // Инициализация хранилища
             MainStorage.Instance.Initialize();
 
+            // Логин и пароль
+            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.ShowDialog();
+
+            if (MainStorage.Instance.UserId == Guid.Empty)
+            {
+                this.Shutdown();
+                return;
+            }
+
             // Создание главного окна
+            this.ShutdownMode = ShutdownMode.OnLastWindowClose;
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
