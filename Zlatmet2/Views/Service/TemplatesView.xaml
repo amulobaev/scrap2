@@ -34,7 +34,7 @@
                 <Separator />
                 <Button Content="Редактор" Command="{Binding ShowDesignerCommand}" Style="{StaticResource SelectedItemStyle}" />
                 <Separator />
-                <Button Content="Импорт" Command="{Binding ImportCommand}"/>
+                <Button Content="Импорт" Command="{Binding ImportCommand}" Style="{StaticResource SelectedItemStyle}" />
                 <Button Content="Экспорт" Command="{Binding ExportCommand}" Style="{StaticResource SelectedItemStyle}" />
             </ToolBar>
 

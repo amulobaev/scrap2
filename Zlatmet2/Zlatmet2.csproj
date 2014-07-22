@@ -42,6 +42,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=1.27.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dapper.1.27\lib\net40\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\net40\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -169,6 +173,12 @@
     <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportSupplierViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportWarehouseViewModel.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldEmployeeDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldNomenclatureDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldOrganizationDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldTransportDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldUserDto.cs" />
+    <Compile Include="ViewModels\Service\ImportDataViewModel.cs" />
     <Compile Include="ViewModels\Service\ParametersViewModel.cs" />
     <Compile Include="ViewModels\Service\TemplatesViewModel.cs" />
     <Compile Include="ViewModels\Service\UsersViewModel.cs" />
@@ -219,6 +229,9 @@
     </Compile>
     <Compile Include="Views\Reports\ReportWarehouseView.xaml.cs">
       <DependentUpon>ReportWarehouseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\ImportDataWindow.xaml.cs">
+      <DependentUpon>ImportDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Service\ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
@@ -294,6 +307,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Reports\ReportWarehouseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\ImportDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

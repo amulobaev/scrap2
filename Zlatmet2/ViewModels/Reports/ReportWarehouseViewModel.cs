@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Documents;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
@@ -42,7 +45,7 @@ namespace Zlatmet2.ViewModels.Reports
                 Nomenclatures.Add(new CheckedWrapper(nomenclature.Id, true, nomenclature.Name));
 
             _template = MainStorage.Instance.TemplatesRepository.GetByName(ReportName);
-            
+
             Report = new StiReport();
         }
 
@@ -69,11 +72,57 @@ namespace Zlatmet2.ViewModels.Reports
 
         protected override void PrepareReport()
         {
+            if (_template == null)
+            {
+                MessageBox.Show(string.Format("Отсутствует шаблон \"{0}\"", ReportName), MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var selectedBases = Bases.Where(x => x.IsChecked).ToList();
+            if (!selectedBases.Any())
+            {
+                MessageBox.Show("Не выбрано ни одной базы", MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var selectedNomenclatures = Nomenclatures.Where(x => x.IsChecked).ToList();
+            if (!selectedNomenclatures.Any())
+            {
+                MessageBox.Show("Не выбрана номенклатура", MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string bases = string.Join(", ", selectedBases.Select(x => x.Text));
+
+            List<ReportData> reportData = PrepareData();
+
             Report = new StiReport();
             Report.Load(_template.Data);
+
+            Report.Dictionary.Variables["ReportDate"].Value = Date.ToShortDateString();
+            Report.Dictionary.Variables["Bases"].Value = bases;
+
+            Report.RegBusinessObject("Data", reportData);
+
             Report.Compile();
             Report.Render();
         }
 
+        private List<ReportData> PrepareData()
+        {
+            List<ReportData> reportData = new List<ReportData>();
+
+            return reportData;
+        }
+
+        class ReportData
+        {
+            public int Number { get; set; }
+            public string Name { get; set; }
+            public double Weight { get; set; }
+        }
     }
 }

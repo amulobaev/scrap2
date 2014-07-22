@@ -5,7 +5,7 @@ using Zlatmet2.Domain.Dto;
 
 namespace Zlatmet2.Domain
 {
-    static class QueryObject
+    public static class QueryObject
     {
         #region Поля
 
@@ -82,12 +82,12 @@ namespace Zlatmet2.Domain
 
         #region Методы
 
-        internal static string CreateQuery(BaseDto dto)
+        public static string CreateQuery(BaseDto dto)
         {
             return CreateQuery(dto.GetType());
         }
 
-        internal static string CreateQuery(Type dtoType)
+        public static string CreateQuery(Type dtoType)
         {
             if (CreateQueries.ContainsKey(dtoType))
                 return CreateQueries[dtoType];
@@ -103,12 +103,12 @@ namespace Zlatmet2.Domain
             }
         }
 
-        internal static string GetAllQuery(BaseDto dto)
+        public static string GetAllQuery(BaseDto dto)
         {
             return GetAllQuery(dto.GetType());
         }
 
-        internal static string GetAllQuery(Type dtoType)
+        public static string GetAllQuery(Type dtoType)
         {
             if (GetAllQueries.ContainsKey(dtoType))
                 return GetAllQueries[dtoType];
@@ -119,12 +119,12 @@ namespace Zlatmet2.Domain
             }
         }
 
-        internal static string GetByIdQuery(BaseDto dto)
+        public static string GetByIdQuery(BaseDto dto)
         {
             return GetByIdQuery(dto.GetType());
         }
 
-        internal static string GetByIdQuery(Type dtoType)
+        public static string GetByIdQuery(Type dtoType)
         {
             if (GetByIdQueries.ContainsKey(dtoType))
                 return GetByIdQueries[dtoType];
@@ -135,12 +135,12 @@ namespace Zlatmet2.Domain
             }
         }
 
-        internal static string UpdateQuery(BaseDto dto)
+        public static string UpdateQuery(BaseDto dto)
         {
             return UpdateQuery(dto.GetType());
         }
 
-        internal static string UpdateQuery(Type dtoType)
+        public static string UpdateQuery(Type dtoType)
         {
             if (UpdateQueries.ContainsKey(dtoType))
                 return UpdateQueries[dtoType];
@@ -155,12 +155,12 @@ namespace Zlatmet2.Domain
             }
         }
 
-        internal static string DeleteQuery(BaseDto dto)
+        public static string DeleteQuery(BaseDto dto)
         {
             return DeleteQuery(dto.GetType());
         }
 
-        internal static string DeleteQuery(Type dtoType)
+        public static string DeleteQuery(Type dtoType)
         {
             if (DeleteQueries.ContainsKey(dtoType))
                 return DeleteQueries[dtoType];

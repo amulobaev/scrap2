@@ -27,18 +27,8 @@ namespace Zlatmet2.Core.Tools
                 throw new ArgumentNullException("enumObj");
 
             FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
-
             object[] attribArray = fieldInfo.GetCustomAttributes(false);
-
-            if (attribArray.Length == 0)
-            {
-                return enumObj.ToString();
-            }
-            else
-            {
-                var descriptionAttribute = attribArray[0] as DescriptionAttribute;
-                return descriptionAttribute.Description;
-            }
+            return attribArray.Length == 0 ? enumObj.ToString() : ((DescriptionAttribute)attribArray[0]).Description;
         }
 
         public static string Sha1Pass(string pass)

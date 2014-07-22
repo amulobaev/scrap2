@@ -57,6 +57,7 @@
     <Compile Include="Classes\Service\Template.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Definitions.cs" />
+    <Compile Include="Enums\AuthenticationType.cs" />
     <Compile Include="Enums\DocumentType.cs" />
     <Compile Include="Enums\EmployeeType.cs" />
     <Compile Include="Enums\JournalPeriodType.cs" />

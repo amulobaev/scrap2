@@ -43,6 +43,7 @@
                 <MenuItem Header="Параметры..." Command="{Binding ShowParametersCommand}" />
                 <MenuItem Header="Пользователи" />
                 <MenuItem Header="Шаблоны" Command="{Binding ShowTemplatesCommand}" />
+                <MenuItem Header="Импорт данных..." Command="{Binding ImportDataCommand}" />
             </MenuItem>
         </Menu>
 

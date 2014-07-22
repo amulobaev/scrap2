@@ -25,6 +25,7 @@ namespace Zlatmet2.ViewModels
         private ICommand _showReportSupplierCommand;
         private ICommand _showReportCustomerCommand;
         private ICommand _showTemplatesCommand;
+        private ICommand _importDataCommand;
 
         #endregion
 
@@ -130,6 +131,11 @@ namespace Zlatmet2.ViewModels
         public ICommand ShowTemplatesCommand
         {
             get { return _showTemplatesCommand ?? (_showTemplatesCommand = new RelayCommand(ShowTemplates)); }
+        }
+
+        public ICommand ImportDataCommand
+        {
+            get { return _importDataCommand ?? (_importDataCommand = new RelayCommand(ImportData)); }
         }
 
         #endregion
@@ -281,13 +287,19 @@ namespace Zlatmet2.ViewModels
 
         private void ShowParameters()
         {
-            var parametersWindow = new ParametersWindow { Owner = MainWindow.Instance };
+            ParametersWindow parametersWindow = new ParametersWindow { Owner = MainWindow.Instance };
             parametersWindow.ShowDialog();
         }
 
         private void ShowTemplates()
         {
             ShowLayoutDocument(typeof(TemplatesViewModel));
+        }
+
+        private void ImportData()
+        {
+            ImportDataWindow importDataWindow = new ImportDataWindow { Owner = MainWindow.Instance };
+            importDataWindow.ShowDialog();
         }
 
         #endregion

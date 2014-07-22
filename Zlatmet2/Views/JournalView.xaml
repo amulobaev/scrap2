@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:coreEnums="clr-namespace:Zlatmet2.Core.Enums;assembly=Zlatmet2.Core"
              xmlns:converters="clr-namespace:Zlatmet2.Converters"
              mc:Ignorable="d" 
@@ -72,7 +73,7 @@
                       ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Номер" Binding="{Binding Number}" />
-                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=d}" Width="70" />
+                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="70" />
                     <DataGridTextColumn Header="Тип документа" Binding="{Binding Type, Converter={StaticResource EnumDescriptionConverter}}" />
                     <DataGridTextColumn Header="Поставщик" Binding="{Binding Supplier}" />
                     <DataGridTextColumn Header="Заказчик" Binding="{Binding Customer}" />

@@ -25,11 +25,13 @@ namespace Zlatmet2.ViewModels.Service
         private readonly ObservableCollection<TemplateWrapper> _items = new ObservableCollection<TemplateWrapper>();
         private TemplateWrapper _selectedItem;
 
+        private StiReport _report;
+
         private ICommand _addCommand;
         private ICommand _deleteCommand;
-        private ICommand _importCommand;
         private ICommand _showDesignerCommand;
-        private StiReport _report;
+        private ICommand _importCommand;
+        private ICommand _exportCommand;
 
         #endregion
 
@@ -97,14 +99,19 @@ namespace Zlatmet2.ViewModels.Service
             get { return _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteTemplate)); }
         }
 
+        public ICommand ShowDesignerCommand
+        {
+            get { return _showDesignerCommand ?? (_showDesignerCommand = new RelayCommand(ShowDesigner)); }
+        }
+
         public ICommand ImportCommand
         {
             get { return _importCommand ?? (_importCommand = new RelayCommand(ImportTemplate)); }
         }
 
-        public ICommand ShowDesignerCommand
+        public ICommand ExportCommand
         {
-            get { return _showDesignerCommand ?? (_showDesignerCommand = new RelayCommand(ShowDesigner)); }
+            get { return _exportCommand ?? (_exportCommand = new RelayCommand(ExportTemplate)); }
         }
 
         #endregion
@@ -135,6 +142,7 @@ namespace Zlatmet2.ViewModels.Service
                         if (Report == null)
                             Report = new StiReport();
                         Report.Load(SelectedItem.Data);
+                        Report.Compile();
                         Report.Render(false);
                     }
                     else
@@ -225,6 +233,7 @@ namespace Zlatmet2.ViewModels.Service
             if (Report == null)
                 Report = new StiReport();
             Report.Load(SelectedItem.Data);
+            Report.Compile();
             Report.Render(false);
         }
 
@@ -246,7 +255,19 @@ namespace Zlatmet2.ViewModels.Service
 
                 using (var binaryReader = new BinaryReader(fileInfo.OpenRead()))
                     SelectedItem.Data = binaryReader.ReadBytes((int)fileInfo.Length);
+
+                MessageBox.Show("Импорт шаблона успешно завершён", MainStorage.AppName);
             }
+        }
+
+        private void ExportTemplate()
+        {
+            if (SelectedItem == null)
+                return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog { Filter = "Шаблоны отчётов (*.mrt)|*.mrt", FileName = SelectedItem.Name };
+            if (saveFileDialog.ShowDialog() == true)
+                File.WriteAllBytes(saveFileDialog.FileName, SelectedItem.Data);
         }
 
         #endregion

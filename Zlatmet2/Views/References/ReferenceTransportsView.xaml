@@ -51,9 +51,19 @@
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellEditTemplate>
                 </telerik:GridViewDataColumn>
-                <telerik:GridViewComboBoxColumn Header="Водитель" Width="*" DisplayMemberPath="Name"
-                                                DataMemberBinding="{Binding Driver, UpdateSourceTrigger=PropertyChanged}"
-                                                ItemsSource="{Binding Source={StaticResource DriversCvs}}" />
+                <telerik:GridViewDataColumn Header="Водитель" Width="*">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Driver.Name}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Source={StaticResource DriversCvs}}" DisplayMemberPath="Name"
+                                                SelectedItem="{Binding Driver, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
             </telerik:RadGridView.Columns>
             <telerik:RadGridView.RowStyle>
                 <Style TargetType="{x:Type telerik:GridViewRow}">
