@@ -5,7 +5,7 @@ namespace Zlatmet2.ViewModels.Base
     /// <summary>
     /// Базовая модель представления с валидацией
     /// </summary>
-    public abstract class BaseValidationViewModel : BaseValidationModel
+    public abstract class ValidationViewModelBase : BaseValidationModel
     {
     }
 }

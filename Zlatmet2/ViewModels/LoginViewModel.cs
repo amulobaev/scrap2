@@ -12,20 +12,28 @@ using Zlatmet2.ViewModels.Base;
 
 namespace Zlatmet2.ViewModels
 {
-    public class LoginViewModel : BaseValidationViewModel
+    public class LoginViewModel : ValidationViewModelBase
     {
         private readonly Action _closeAction;
+
+        private readonly PasswordBox _passwordBox;
+
         private readonly ObservableCollection<User> _users = new ObservableCollection<User>();
 
         private User _user;
+
         private ICommand _okCommand;
         private ICommand _cancelCommand;
 
-        public LoginViewModel(Action closeAction)
+        public LoginViewModel(Action closeAction, PasswordBox passwordBox)
         {
             if (closeAction == null)
                 throw new ArgumentNullException("closeAction");
             _closeAction = closeAction;
+
+            if (passwordBox == null)
+                throw new ArgumentNullException("passwordBox");
+            _passwordBox = passwordBox;
 
             UsersRepository usersRepository = new UsersRepository(MainStorage.Instance);
             Users.AddRange(usersRepository.GetAll().ToList());
@@ -45,12 +53,14 @@ namespace Zlatmet2.ViewModels
                     return;
                 _user = value;
                 RaisePropertyChanged("User");
+
+                _passwordBox.Password = string.Empty;
             }
         }
 
         public ICommand OkCommand
         {
-            get { return _okCommand ?? (_okCommand = new RelayCommand<PasswordBox>(Ok)); }
+            get { return _okCommand ?? (_okCommand = new RelayCommand(Ok)); }
         }
 
         public ICommand CancelCommand
@@ -58,14 +68,9 @@ namespace Zlatmet2.ViewModels
             get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(Cancel)); }
         }
 
-        private void Ok(PasswordBox passwordBox)
+        private void Ok()
         {
-            if (passwordBox == null)
-                return;
-
-            string password = passwordBox.Password;
-
-            string encryptedPassword = Core.Tools.Helpers.Sha1Pass(password);
+            string encryptedPassword = Core.Tools.Helpers.Sha1Pass(_passwordBox.Password);
 
             if (User == null)
                 return;

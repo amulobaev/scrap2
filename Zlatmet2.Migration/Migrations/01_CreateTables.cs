@@ -12,14 +12,14 @@ namespace Zlatmet2.Migration.Migrations
             // Пользователи
             Create.Table("Users")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Login").AsString(Int32.MaxValue).NotNullable()
+                .WithColumn("Login").AsString().Unique().NotNullable()
                 .WithColumn("Password").AsString(Int32.MaxValue).Nullable();
             Insert.IntoTable("Users")
                 .Row(
                     new
                     {
                         Id = Guid.Parse("{C0B709EA-1DC2-41F8-83AF-380D3AA32019}"),
-                        Login = "Администратор",
+                        Login = "Пользователь",
                         Password = Helpers.Sha1Pass("123")
                     });
 
@@ -28,7 +28,7 @@ namespace Zlatmet2.Migration.Migrations
             // Номенклатура
             Create.Table("ReferenceNomenclatures")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Name").AsString(Int32.MaxValue).NotNullable();
+                .WithColumn("Name").AsString().Unique().NotNullable();
 
             // Организации
             Create.Table("ReferenceOrganizations")
@@ -54,14 +54,14 @@ namespace Zlatmet2.Migration.Migrations
             Create.Table("ReferenceEmployees")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
                 .WithColumn("Type").AsInt32().NotNullable()
-                .WithColumn("Name").AsString(Int32.MaxValue).NotNullable()
+                .WithColumn("Name").AsString().Unique().NotNullable()
                 .WithColumn("FullName").AsString(Int32.MaxValue).Nullable()
                 .WithColumn("Phone").AsString(Int32.MaxValue).Nullable();
 
             // Транспорт
             Create.Table("ReferenceTransports")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Name").AsString(Int32.MaxValue).NotNullable()
+                .WithColumn("Name").AsString().Unique().NotNullable()
                 .WithColumn("Number").AsString(Int32.MaxValue).Nullable()
                 .WithColumn("Tara").AsDouble().NotNullable()
                 .WithColumn("DriverId").AsGuid().ForeignKey("ReferenceEmployees", "Id").Nullable();
@@ -139,7 +139,7 @@ namespace Zlatmet2.Migration.Migrations
             // Шаблоны
             Create.Table("Templates")
                 .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Name").AsString(Int32.MaxValue).NotNullable()
+                .WithColumn("Name").AsString().Unique().NotNullable()
                 .WithColumn("Data").AsBinary(Int32.MaxValue).Nullable();
 
             // Создание представлений

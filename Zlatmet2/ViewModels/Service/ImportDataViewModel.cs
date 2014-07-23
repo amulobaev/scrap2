@@ -14,13 +14,16 @@ using Dapper;
 using GalaSoft.MvvmLight.Command;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Domain;
+using Zlatmet2.Domain.Dto.References;
+using Zlatmet2.Domain.Dto.Service;
+using Zlatmet2.Domain.Tools;
 using Zlatmet2.Tools;
 using Zlatmet2.ViewModels.Base;
 using Zlatmet2.ViewModels.Service.Dto;
 
 namespace Zlatmet2.ViewModels.Service
 {
-    public class ImportDataViewModel : BaseValidationViewModel
+    public class ImportDataViewModel : ValidationViewModelBase
     {
         private readonly string _password;
 
@@ -35,6 +38,7 @@ namespace Zlatmet2.ViewModels.Service
         private string _userId;
         private ICommand _testCommand;
         private ICommand _importCommand;
+        private string _logText = string.Empty;
 
         /// <summary>
         /// Конструктор
@@ -125,6 +129,18 @@ namespace Zlatmet2.ViewModels.Service
         public ICommand ImportCommand
         {
             get { return _importCommand ?? (_importCommand = new RelayCommand(Import)); }
+        }
+
+        public string LogText
+        {
+            get { return _logText; }
+            set
+            {
+                if (value == _logText)
+                    return;
+                _logText = value;
+                RaisePropertyChanged("LogText");
+            }
         }
 
         private void GetDataSources()
@@ -243,44 +259,262 @@ namespace Zlatmet2.ViewModels.Service
 
         private void Import()
         {
+            // Формируем строку подключения
+            string connectionString = GetConnectionString();
+
+            List<OldUserDto> oldUsers;
+            List<OldNomenclatureDto> oldNomenclatures;
+            List<OldOrganizationDto> oldOrganizations;
+            List<OldEmployeeDto> oldEmployees;
+            List<OldTransportDto> oldTransports;
+            List<OldDocumentDto> oldDocuments;
+            List<OldTableItemDto> oldTableItems;
+
+            //
+            // Загрузка данных из старой базы
+            //
+
+            Log("Начата загрузка данных");
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                //
+                // Загрузка данных
+                //
+
+                // Пользователи
+                oldUsers =
+                    connection.Query<OldUserDto>(QueryObject.GetAllQuery(typeof(OldUserDto))).ToList();
+
+                // Номенклатура
+                oldNomenclatures =
+                    connection.Query<OldNomenclatureDto>(QueryObject.GetAllQuery(typeof(OldNomenclatureDto)))
+                        .ToList();
+
+                // Организации
+                oldOrganizations =
+                    connection.Query<OldOrganizationDto>(QueryObject.GetAllQuery(typeof(OldOrganizationDto)))
+                        .ToList();
+
+                // Сотрудники
+                oldEmployees =
+                    connection.Query<OldEmployeeDto>(QueryObject.GetAllQuery(typeof(OldEmployeeDto))).ToList();
+
+                // Транспорт
+                oldTransports =
+                    connection.Query<OldTransportDto>(QueryObject.GetAllQuery(typeof(OldTransportDto))).ToList();
+
+                // Документы 
+                oldDocuments =
+                    connection.Query<OldDocumentDto>(QueryObject.GetAllQuery(typeof(OldDocumentDto))).ToList();
+
+                // Табличная часть документов
+                oldTableItems =
+                    connection.Query<OldTableItemDto>(QueryObject.GetAllQuery(typeof(OldTableItemDto))).ToList();
+            }
+
+            Log("Закончена загрузка данных");
+
+            //
+            // Преобразование данных
+            //
+
+            Log("Начато преобразование данных");
+
+            // Пользователи
+            List<UserDto> users = new List<UserDto>();
+            foreach (var oldUser in oldUsers)
+            {
+                users.Add(new UserDto
+                {
+                    Id = oldUser.user_id,
+                    Login = oldUser.login,
+                    Password = oldUser.password
+                });
+            }
+
+            // Номенклатура
+            List<NomenclatureDto> nomenclatures = new List<NomenclatureDto>();
+            foreach (var oldNomenclature in oldNomenclatures)
+            {
+                nomenclatures.Add(new NomenclatureDto
+                {
+                    Id = oldNomenclature.nomenclature_id,
+                    Name = oldNomenclature.name
+                });
+            }
+
+            // Базы и организации
+            List<OrganizationDto> organizations = new List<OrganizationDto>();
+
+            organizations.Add(new OrganizationDto
+            {
+                Id = Guid.Parse("CA761232-ED42-11CE-BACD-00AA0057B223"),
+                Type = 2,
+                Name = "Основная база"
+            });
+
+            foreach (var oldOrganization in oldOrganizations)
+            {
+                OrganizationDto organization = new OrganizationDto
+                {
+                    Id = oldOrganization.organization_id,
+                    Type = oldOrganization.type,
+                    Name = oldOrganization.name,
+                    FullName = oldOrganization.name_full,
+                    Address = oldOrganization.address,
+                    Phone = oldOrganization.phone,
+                    Inn = oldOrganization.inn,
+                    Bik = oldOrganization.bik,
+                    Bank = oldOrganization.bank,
+                    Contract = oldOrganization.contract
+                };
+
+                organization.Divisions.Add(new DivisionDto
+                {
+                    Id = Guid.NewGuid(),
+                    OrganizationId = organization.Id,
+                    Number = 1,
+                    Name = "Основное"
+                });
+
+                organizations.Add(organization);
+            }
+
+            // Сотрудники
+            List<EmployeeDto> employees = new List<EmployeeDto>();
+            foreach (var oldEmployee in oldEmployees)
+            {
+                employees.Add(new EmployeeDto
+                {
+                    Id = oldEmployee.employee_id,
+                    Type = oldEmployee.type,
+                    Name = oldEmployee.name,
+                    FullName = oldEmployee.name_full,
+                    Phone = oldEmployee.phone
+                });
+            }
+
+            // Транспорт
+            List<TransportDto> transports = new List<TransportDto>();
+            foreach (OldTransportDto oldTransport in oldTransports)
+            {
+                transports.Add(new TransportDto
+                {
+                    Id = oldTransport.transport_id,
+                    Name = oldTransport.name,
+                    Number = oldTransport.transport_number,
+                    Tara = oldTransport.tara,
+                    DriverId = oldTransport.driver_id
+                });
+            }
+
+            Log("Закончено преобразование данных");
+
+            //
+            // Запись в новую базу
+            //
+
+            Log("Начата запись данных");
+
+            using (SqlConnection connection = new SqlConnection(MainStorage.Instance.ConnectionString))
+            {
+                // Пользователи
+                foreach (var userDto in users)
+                {
+                    try
+                    {
+                        connection.Execute(userDto.InsertQuery(), userDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Ошибка при добавлении пользователя");
+                        Log(ex.Message);
+                    }
+                }
+
+                // Номенклатура
+                foreach (NomenclatureDto nomenclatureDto in nomenclatures)
+                {
+                    try
+                    {
+                        connection.Execute(nomenclatureDto.InsertQuery(), nomenclatureDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Ошибка при добавлении номенклатуры");
+                        Log(ex.Message);
+                    }
+                }
+
+                // Базы
+
+
+                // Организации
+                foreach (OrganizationDto organizationDto in organizations)
+                {
+                    try
+                    {
+                        connection.Execute(organizationDto.InsertQuery(), organizationDto);
+
+                        if (organizationDto.Divisions.Any())
+                            foreach (DivisionDto division in organizationDto.Divisions)
+                                connection.Execute(division.InsertQuery(), division);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Ошибка при добавлении организации");
+                        Log(ex.Message);
+                    }
+                }
+
+                // Сотрудники
+                foreach (EmployeeDto employeeDto in employees)
+                {
+                    try
+                    {
+                        connection.Execute(employeeDto.InsertQuery(), employeeDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Ошибка при добавлении сотрудника");
+                        Log(ex.Message);
+                    }
+                }
+
+                // Транспорт
+                foreach (TransportDto transportDto in transports)
+                {
+                    try
+                    {
+                        connection.Execute(transportDto.InsertQuery(), transportDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Ошибка при добавлении транспорта");
+                        Log(ex.Message);
+                    }
+                }
+
+            }
+
+            Log("Закончена запись данных");
+
             try
             {
-                // Формируем строку подключения
-                string connectionString = GetConnectionString();
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    // Пользователи
-                    List<OldUserDto> oldUsers =
-                        connection.Query<OldUserDto>(QueryObject.GetAllQuery(typeof(OldUserDto))).ToList();
-
-                    // Номенклатура
-                    List<OldNomenclatureDto> oldNomenclatures =
-                        connection.Query<OldNomenclatureDto>(QueryObject.GetAllQuery(typeof(OldNomenclatureDto)))
-                            .ToList();
-
-                    // Организации
-                    List<OldOrganizationDto> oldOrganizations =
-                        connection.Query<OldOrganizationDto>(QueryObject.GetAllQuery(typeof(OldOrganizationDto)))
-                            .ToList();
-
-                    // Сотрудники
-                    List<OldEmployeeDto> oldEmployees =
-                        connection.Query<OldEmployeeDto>(QueryObject.GetAllQuery(typeof(OldEmployeeDto))).ToList();
-
-                    // Транспорт
-                    List<OldTransportDto> oldTransports =
-                        connection.Query<OldTransportDto>(QueryObject.GetAllQuery(typeof(OldTransportDto))).ToList();
-
-                }
             }
             catch (Exception ex)
             {
                 string message = string.Format("Ошибка подключения{0}{1}", Environment.NewLine, ex.Message);
                 MessageBox.Show(message, MainStorage.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Log(string text)
+        {
+            LogText += string.Format("{0} {1}{2}", DateTime.Now, text, Environment.NewLine);
         }
 
     }

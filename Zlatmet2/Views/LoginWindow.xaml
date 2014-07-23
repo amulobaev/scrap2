@@ -5,6 +5,16 @@
         ShowInTaskbar="False" SizeToContent="Height"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="5">
+        <Grid.Resources>
+            <Style TargetType="{x:Type FrameworkElement}" x:Key="SelectedUserStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding User}" Value="{x:Null}">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -20,25 +30,14 @@
 
         <TextBlock Grid.Row="2" Text="Пароль:" Margin="3" HorizontalAlignment="Left" />
 
-        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="3">
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="3" Style="{StaticResource SelectedUserStyle}">
             <PasswordBox.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding OkCommand}" CommandParameter="{Binding ElementName=PasswordBox}" />
+                <KeyBinding Key="Enter" Command="{Binding OkCommand}" />
             </PasswordBox.InputBindings>
         </PasswordBox>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="OK" Margin="3" Width="60" Command="{Binding OkCommand}"
-                    CommandParameter="{Binding ElementName=PasswordBox}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding User}" Value="{x:Null}">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+            <Button Content="OK" Margin="3" Width="60" Command="{Binding OkCommand}" Style="{StaticResource SelectedUserStyle}" />
             <Button Content="Отмена" Margin="3" Width="60" Command="{Binding CancelCommand}" />
         </StackPanel>
 

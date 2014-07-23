@@ -5,7 +5,7 @@ namespace Zlatmet2.ViewModels.Base
     /// <summary>
     /// Базовая модель представления
     /// </summary>
-    public abstract class BaseViewModel : BaseModel
+    public abstract class ViewModelBase : BaseModel
     {
     }
 }

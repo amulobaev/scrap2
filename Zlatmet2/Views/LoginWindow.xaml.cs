@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using Zlatmet2.ViewModels;
 
 namespace Zlatmet2.Views
@@ -13,7 +12,7 @@ namespace Zlatmet2.Views
         {
             InitializeComponent();
 
-            this.DataContext = new LoginViewModel(this.Close);
+            this.DataContext = new LoginViewModel(this.Close, PasswordBox);
         }
     }
 }

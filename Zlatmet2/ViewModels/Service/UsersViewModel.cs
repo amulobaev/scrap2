@@ -6,7 +6,7 @@ using Zlatmet2.ViewModels.Base;
 
 namespace Zlatmet2.ViewModels.Service
 {
-    public sealed class UsersViewModel : BaseViewModel
+    public sealed class UsersViewModel : ViewModelBase
     {
     }
 }

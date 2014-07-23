@@ -6,7 +6,7 @@
         xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:coreEnums="clr-namespace:Zlatmet2.Core.Enums;assembly=Zlatmet2.Core"
         xmlns:converters="clr-namespace:Zlatmet2.Converters"
-        Title="Импорт данных" Height="300" Width="400"
+        Title="Импорт данных" Height="500" Width="400"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize">
     <Window.Resources>
         <ObjectDataProvider x:Key="AuthenticationTypeDataProvider" MethodName="GetValues"
@@ -21,6 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <GroupBox Header="База данных:" Margin="3">
@@ -110,6 +111,8 @@
         </GroupBox>
 
         <Button Grid.Row="1" Margin="3" HorizontalAlignment="Center" Content="Импорт" Width="100" Command="{Binding ImportCommand}" />
-        
+
+        <TextBox Grid.Row="2" Margin="3" IsReadOnly="True" Text="{Binding LogText}"
+                 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" />
     </Grid>
 </Window>

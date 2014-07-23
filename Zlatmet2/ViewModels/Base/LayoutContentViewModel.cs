@@ -7,7 +7,7 @@ namespace Zlatmet2.ViewModels.Base
     /// <summary>
     /// Базовая модель представления для вкладок
     /// </summary>
-    public abstract class LayoutContentViewModel : BaseValidationViewModel, IDisposable
+    public abstract class LayoutContentViewModel : ValidationViewModelBase, IDisposable
     {
         private string _title;
 

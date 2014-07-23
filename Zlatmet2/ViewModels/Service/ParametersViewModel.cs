@@ -5,7 +5,7 @@ using Zlatmet2.ViewModels.Base;
 
 namespace Zlatmet2.ViewModels.Service
 {
-    public sealed class ParametersViewModel : BaseViewModel
+    public sealed class ParametersViewModel : ViewModelBase
     {
         private bool _showJournal;
 
