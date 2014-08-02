@@ -88,32 +88,32 @@ namespace Zlatmet2.ViewModels.Documents
             }
 
             bool isNew = false;
-            if (Document == null)
+            if (Container == null)
             {
                 isNew = true;
-                Document = new Processing(Id);
+                Container = new Processing(Id);
             }
 
-            Document.UserId = null;
-            Document.Type = DocumentType.Processing;
-            Document.Number = Number;
-            Document.Date = Date.Value;
-            Document.ResponsiblePersonId = ResponsiblePerson.Id;
-            Document.Comment = Comment;
+            Container.UserId = null;
+            Container.Type = DocumentType.Processing;
+            Container.Number = Number;
+            Container.Date = Date.Value;
+            Container.ResponsiblePersonId = ResponsiblePerson.Id;
+            Container.Comment = Comment;
 
-            if (Document.Items.Any())
-                Document.Items.Clear();
+            if (Container.Items.Any())
+                Container.Items.Clear();
 
             foreach (ProcessingItemWrapper itemWrapper in Items)
             {
                 itemWrapper.UpdateContainer();
-                Document.Items.Add(itemWrapper.Container);
+                Container.Items.Add(itemWrapper.Container);
             }
 
             if (isNew)
-                MainStorage.Instance.ProcessingRepository.Create(Document);
+                MainStorage.Instance.ProcessingRepository.Create(Container);
             else
-                MainStorage.Instance.ProcessingRepository.Update(Document);
+                MainStorage.Instance.ProcessingRepository.Update(Container);
         }
 
         protected override void AddItem()
@@ -124,13 +124,13 @@ namespace Zlatmet2.ViewModels.Documents
 
         private void LoadDocument()
         {
-            Document = MainStorage.Instance.ProcessingRepository.GetById(Id);
-            Number = Document.Number;
-            Date = Document.Date;
-            ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Document.ResponsiblePersonId);
-            Comment = Document.Comment;
+            Container = MainStorage.Instance.ProcessingRepository.GetById(Id);
+            Number = Container.Number;
+            Date = Container.Date;
+            ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Container.ResponsiblePersonId);
+            Comment = Container.Comment;
 
-            foreach (ProcessingItem item in Document.Items)
+            foreach (ProcessingItem item in Container.Items)
                 Items.Add(new ProcessingItemWrapper(item));
         }
 

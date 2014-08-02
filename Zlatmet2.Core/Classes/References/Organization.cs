@@ -6,18 +6,24 @@ namespace Zlatmet2.Core.Classes.References
 {
     public class Organization : PersistentObject
     {
+        private readonly OrganizationType _type;
         private List<Division> _divisions;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="id"></param>
-        public Organization(Guid id)
+        /// <param name="type"></param>
+        public Organization(Guid id, OrganizationType type)
             : base(id)
         {
+            _type = type;
         }
 
-        public OrganizationType Type { get; set; }
+        public OrganizationType Type
+        {
+            get { return _type; }
+        }
 
         /// <summary>
         /// Наименование

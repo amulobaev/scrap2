@@ -189,7 +189,7 @@ namespace Zlatmet2.Models.References
         public override void UpdateContainer()
         {
             if (Container == null)
-                Container = new Organization(Id) { Type = OrganizationType };
+                Container = new Organization(Id, OrganizationType);
 
             Container.Name = Name;
             Container.FullName = FullName;

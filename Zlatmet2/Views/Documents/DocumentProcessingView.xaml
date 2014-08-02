@@ -31,7 +31,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ToolBar>
+        <ToolBar Background="Transparent">
             <Button Content="Сохранить" Command="{Binding SaveDocumentCommand}" />
         </ToolBar>
 
@@ -79,7 +79,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <ToolBar>
+                <ToolBar Background="Transparent">
                     <Button Content="Добавить" Command="{Binding AddItemCommand}" />
                     <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
                     <Separator />

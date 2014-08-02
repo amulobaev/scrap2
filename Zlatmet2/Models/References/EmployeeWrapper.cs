@@ -73,7 +73,7 @@ namespace Zlatmet2.Models.References
         public override void UpdateContainer()
         {
             if (Container == null)
-                Container = new Employee(Id) { Type = EmployeeType };
+                Container = new Employee(Id, EmployeeType);
             Container.Name = Name;
             Container.FullName = FullName;
             Container.Phone = Phone;

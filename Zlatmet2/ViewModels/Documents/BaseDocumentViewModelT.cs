@@ -13,6 +13,11 @@ using Zlatmet2.ViewModels.Base;
 
 namespace Zlatmet2.ViewModels.Documents
 {
+    /// <summary>
+    /// Базовая модель представления для документов
+    /// </summary>
+    /// <typeparam name="TModel"></typeparam>
+    /// <typeparam name="TItemWrapper"></typeparam>
     public abstract class BaseDocumentViewModel<TModel, TItemWrapper> : UniqueLayoutDocumentViewModel
         where TModel : BaseDocument
         where TItemWrapper : BaseDocumentItemWrapper
@@ -100,7 +105,7 @@ namespace Zlatmet2.ViewModels.Documents
             }
         }
 
-        public TModel Document { get; protected set; }
+        public TModel Container { get; protected set; }
 
         #region Команды
 
@@ -130,7 +135,6 @@ namespace Zlatmet2.ViewModels.Documents
         }
 
         #endregion
-
 
         #region Методы
 

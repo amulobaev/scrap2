@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dapper;
+using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,13 +12,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Dapper;
-using GalaSoft.MvvmLight.Command;
+using Zlatmet2.Core.Classes;
+using Zlatmet2.Core.Classes.Documents;
+using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Domain;
-using Zlatmet2.Domain.Dto.References;
-using Zlatmet2.Domain.Dto.Service;
-using Zlatmet2.Domain.Tools;
 using Zlatmet2.Tools;
 using Zlatmet2.ViewModels.Base;
 using Zlatmet2.ViewModels.Service.Dto;
@@ -25,6 +25,8 @@ namespace Zlatmet2.ViewModels.Service
 {
     public class ImportDataViewModel : ValidationViewModelBase
     {
+        #region Поля
+
         private readonly string _password;
 
         private ObservableCollection<string> _dataSources;
@@ -39,6 +41,10 @@ namespace Zlatmet2.ViewModels.Service
         private ICommand _testCommand;
         private ICommand _importCommand;
         private string _logText = string.Empty;
+        private bool _isBusy;
+        private string _busyContent = "Импорт данных";
+
+        #endregion
 
         /// <summary>
         /// Конструктор
@@ -48,6 +54,8 @@ namespace Zlatmet2.ViewModels.Service
             _password = password;
             GetDataSources();
         }
+
+        #region Свойства
 
         public ObservableCollection<string> DataSources
         {
@@ -111,6 +119,46 @@ namespace Zlatmet2.ViewModels.Service
             }
         }
 
+        public string LogText
+        {
+            get { return _logText; }
+            set
+            {
+                if (value == _logText)
+                    return;
+                _logText = value;
+                RaisePropertyChanged("LogText");
+            }
+        }
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                if (value.Equals(_isBusy))
+                    return;
+                _isBusy = value;
+                RaisePropertyChanged("IsBusy");
+            }
+        }
+
+        public string BusyContent
+        {
+            get { return _busyContent; }
+            set
+            {
+                if (value == _busyContent)
+                    return;
+                _busyContent = value;
+                RaisePropertyChanged("BusyContent");
+            }
+        }
+
+        #endregion
+
+        #region Команды
+
         public ICommand DropDownOpenedCommand
         {
             get
@@ -131,17 +179,9 @@ namespace Zlatmet2.ViewModels.Service
             get { return _importCommand ?? (_importCommand = new RelayCommand(Import)); }
         }
 
-        public string LogText
-        {
-            get { return _logText; }
-            set
-            {
-                if (value == _logText)
-                    return;
-                _logText = value;
-                RaisePropertyChanged("LogText");
-            }
-        }
+        #endregion
+
+        #region Методы
 
         private void GetDataSources()
         {
@@ -259,6 +299,21 @@ namespace Zlatmet2.ViewModels.Service
 
         private void Import()
         {
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerCompleted += (sender, args) =>
+            {
+                IsBusy = false;
+            };
+
+            IsBusy = true;
+            worker.RunWorkerAsync();
+
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
             // Формируем строку подключения
             string connectionString = GetConnectionString();
 
@@ -324,57 +379,51 @@ namespace Zlatmet2.ViewModels.Service
             Log("Начато преобразование данных");
 
             // Пользователи
-            List<UserDto> users = new List<UserDto>();
-            foreach (var oldUser in oldUsers)
+            List<User> users = new List<User>();
+            foreach (OldUserDto oldUser in oldUsers)
             {
-                users.Add(new UserDto
+                users.Add(new User(oldUser.user_id)
                 {
-                    Id = oldUser.user_id,
                     Login = oldUser.login,
                     Password = oldUser.password
                 });
             }
 
             // Номенклатура
-            List<NomenclatureDto> nomenclatures = new List<NomenclatureDto>();
-            foreach (var oldNomenclature in oldNomenclatures)
+            List<Nomenclature> nomenclatures = new List<Nomenclature>();
+            foreach (OldNomenclatureDto oldNomenclature in oldNomenclatures)
             {
-                nomenclatures.Add(new NomenclatureDto
+                nomenclatures.Add(new Nomenclature(oldNomenclature.nomenclature_id)
                 {
-                    Id = oldNomenclature.nomenclature_id,
                     Name = oldNomenclature.name
                 });
             }
 
             // Базы и организации
-            List<OrganizationDto> organizations = new List<OrganizationDto>();
+            List<Organization> organizations = new List<Organization>();
 
-            organizations.Add(new OrganizationDto
+            organizations.Add(new Organization(Guid.Parse("CA761232-ED42-11CE-BACD-00AA0057B223"), OrganizationType.Base)
             {
-                Id = Guid.Parse("CA761232-ED42-11CE-BACD-00AA0057B223"),
-                Type = 2,
                 Name = "Основная база"
             });
 
-            foreach (var oldOrganization in oldOrganizations)
+            foreach (OldOrganizationDto oldOrganization in oldOrganizations)
             {
-                OrganizationDto organization = new OrganizationDto
-                {
-                    Id = oldOrganization.organization_id,
-                    Type = oldOrganization.type,
-                    Name = oldOrganization.name,
-                    FullName = oldOrganization.name_full,
-                    Address = oldOrganization.address,
-                    Phone = oldOrganization.phone,
-                    Inn = oldOrganization.inn,
-                    Bik = oldOrganization.bik,
-                    Bank = oldOrganization.bank,
-                    Contract = oldOrganization.contract
-                };
+                Organization organization =
+                    new Organization(oldOrganization.organization_id, (OrganizationType)oldOrganization.type)
+                    {
+                        Name = oldOrganization.name,
+                        FullName = oldOrganization.name_full,
+                        Address = oldOrganization.address,
+                        Phone = oldOrganization.phone,
+                        Inn = oldOrganization.inn,
+                        Bik = oldOrganization.bik,
+                        Bank = oldOrganization.bank,
+                        Contract = oldOrganization.contract
+                    };
 
-                organization.Divisions.Add(new DivisionDto
+                organization.Divisions.Add(new Division(Guid.NewGuid())
                 {
-                    Id = Guid.NewGuid(),
                     OrganizationId = organization.Id,
                     Number = 1,
                     Name = "Основное"
@@ -384,13 +433,11 @@ namespace Zlatmet2.ViewModels.Service
             }
 
             // Сотрудники
-            List<EmployeeDto> employees = new List<EmployeeDto>();
-            foreach (var oldEmployee in oldEmployees)
+            List<Employee> employees = new List<Employee>();
+            foreach (OldEmployeeDto oldEmployee in oldEmployees)
             {
-                employees.Add(new EmployeeDto
+                employees.Add(new Employee(oldEmployee.employee_id, (EmployeeType)oldEmployee.type)
                 {
-                    Id = oldEmployee.employee_id,
-                    Type = oldEmployee.type,
                     Name = oldEmployee.name,
                     FullName = oldEmployee.name_full,
                     Phone = oldEmployee.phone
@@ -398,12 +445,11 @@ namespace Zlatmet2.ViewModels.Service
             }
 
             // Транспорт
-            List<TransportDto> transports = new List<TransportDto>();
+            List<Transport> transports = new List<Transport>();
             foreach (OldTransportDto oldTransport in oldTransports)
             {
-                transports.Add(new TransportDto
+                transports.Add(new Transport(oldTransport.transport_id)
                 {
-                    Id = oldTransport.transport_id,
                     Name = oldTransport.name,
                     Number = oldTransport.transport_number,
                     Tara = oldTransport.tara,
@@ -412,6 +458,95 @@ namespace Zlatmet2.ViewModels.Service
             }
 
             Log("Закончено преобразование данных");
+
+            // Документы "Перевозка"
+            List<Transportation> transportationDocs = new List<Transportation>();
+            foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 0))
+            {
+                // Поставщик
+                Guid? supplierId = null;
+                Guid? supplierDivisionId = null;
+                Organization supplier = organizations.FirstOrDefault(x => x.Id == oldDocument.supplier_id);
+                if (supplier != null)
+                {
+                    supplierId = supplier.Id;
+                    if (supplier.Type == OrganizationType.Supplier)
+                        supplierDivisionId = supplier.Divisions[0].Id;
+                }
+                else
+                    continue;
+
+                // Заказчик
+                Guid? customerId = null;
+                Guid? customerDivisionId = null;
+                Organization customer = organizations.FirstOrDefault(x => x.Id == oldDocument.customer_id);
+                if (customer != null)
+                {
+                    customerId = customer.Id;
+                    if (customer.Type == OrganizationType.Customer)
+                        customerDivisionId = customer.Divisions[0].Id;
+                }
+                else
+                    continue;
+
+                Transportation transportationDoc = new Transportation(oldDocument.doc_id)
+                {
+                    UserId = oldDocument.user_id,
+                    Type = oldDocument.transport_type == 0
+                        ? DocumentType.TransportationAuto
+                        : DocumentType.TransportationTrain,
+                    Number = oldDocument.number,
+                    Date = oldDocument.doc_date,
+                    DateOfLoading = oldDocument.datapog,
+                    DateOfUnloading = oldDocument.dataraz,
+                    SupplierId = supplierId,
+                    SupplierDivisionId = supplierDivisionId,
+                    CustomerId = customerId,
+                    CustomerDivisionId = customerDivisionId,
+                    ResponsiblePersonId = oldDocument.responsible_id,
+                    TransportId = oldDocument.transport_id,
+                    DriverId = oldDocument.driver_id,
+                    Wagon = oldDocument.vagon,
+                    Psa = oldDocument.psa,
+                    Ttn = oldDocument.ttn,
+                    Comment = oldDocument.comment
+                };
+
+                //
+
+                // Табличная часть
+                var tableItems = oldTableItems.Where(x => x.doc_id == oldDocument.doc_id).OrderBy(x => x.number);
+                foreach (OldTableItemDto oldTableItemDto in tableItems)
+                {
+                    transportationDoc.Items.Add(new TransportationItem(oldTableItemDto.tableitem_id)
+                    {
+                        Number = oldTableItemDto.number,
+                        LoadingNomenclatureId = oldTableItemDto.nompog_id,
+                        LoadingWeight = oldTableItemDto.massapog,
+                        UnloadingNomenclatureId = oldTableItemDto.nomraz_id,
+                        UnloadingWeight = oldTableItemDto.massaraz,
+                        Netto = oldTableItemDto.netto,
+                        Garbage = oldTableItemDto.garbage,
+                        Price = (decimal)oldTableItemDto.cost
+                    });
+                }
+
+                transportationDocs.Add(transportationDoc);
+            }
+
+            // Документы "Переработка"
+            List<Processing> processingDocs = new List<Processing>();
+            foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 1))
+            {
+
+            }
+
+            // Документы "Корректировка остатков"
+            List<Remains> remainsDocs = new List<Remains>();
+            foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 2))
+            {
+
+            }
 
             //
             // Запись в новую базу
@@ -422,11 +557,11 @@ namespace Zlatmet2.ViewModels.Service
             using (SqlConnection connection = new SqlConnection(MainStorage.Instance.ConnectionString))
             {
                 // Пользователи
-                foreach (var userDto in users)
+                foreach (User user in users)
                 {
                     try
                     {
-                        connection.Execute(userDto.InsertQuery(), userDto);
+                        MainStorage.Instance.UsersRepository.Create(user);
                     }
                     catch (Exception ex)
                     {
@@ -436,11 +571,11 @@ namespace Zlatmet2.ViewModels.Service
                 }
 
                 // Номенклатура
-                foreach (NomenclatureDto nomenclatureDto in nomenclatures)
+                foreach (Nomenclature nomenclature in nomenclatures)
                 {
                     try
                     {
-                        connection.Execute(nomenclatureDto.InsertQuery(), nomenclatureDto);
+                        MainStorage.Instance.CreateOrUpdateObject(nomenclature);
                     }
                     catch (Exception ex)
                     {
@@ -449,19 +584,12 @@ namespace Zlatmet2.ViewModels.Service
                     }
                 }
 
-                // Базы
-
-
-                // Организации
-                foreach (OrganizationDto organizationDto in organizations)
+                // Организации (базы/поставщики/заказчики)
+                foreach (Organization organization in organizations)
                 {
                     try
                     {
-                        connection.Execute(organizationDto.InsertQuery(), organizationDto);
-
-                        if (organizationDto.Divisions.Any())
-                            foreach (DivisionDto division in organizationDto.Divisions)
-                                connection.Execute(division.InsertQuery(), division);
+                        MainStorage.Instance.CreateOrUpdateObject(organization);
                     }
                     catch (Exception ex)
                     {
@@ -471,11 +599,11 @@ namespace Zlatmet2.ViewModels.Service
                 }
 
                 // Сотрудники
-                foreach (EmployeeDto employeeDto in employees)
+                foreach (Employee employee in employees)
                 {
                     try
                     {
-                        connection.Execute(employeeDto.InsertQuery(), employeeDto);
+                        MainStorage.Instance.CreateOrUpdateObject(employee);
                     }
                     catch (Exception ex)
                     {
@@ -485,11 +613,11 @@ namespace Zlatmet2.ViewModels.Service
                 }
 
                 // Транспорт
-                foreach (TransportDto transportDto in transports)
+                foreach (Transport transport in transports)
                 {
                     try
                     {
-                        connection.Execute(transportDto.InsertQuery(), transportDto);
+                        MainStorage.Instance.CreateOrUpdateObject(transport);
                     }
                     catch (Exception ex)
                     {
@@ -497,6 +625,24 @@ namespace Zlatmet2.ViewModels.Service
                         Log(ex.Message);
                     }
                 }
+
+                // Документы "Перевозка"
+                foreach (Transportation transportation in transportationDocs)
+                {
+                    try
+                    {
+                        MainStorage.Instance.TransportationRepository.Create(transportation);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Ошибка при добавлении документы \"Перевозка\"");
+                        Log(ex.Message);
+                    }
+                }
+
+                // Документы "Переработка"
+
+                // Документы "Корректировка остатков"
 
             }
 
@@ -516,6 +662,8 @@ namespace Zlatmet2.ViewModels.Service
         {
             LogText += string.Format("{0} {1}{2}", DateTime.Now, text, Environment.NewLine);
         }
+
+        #endregion
 
     }
 }

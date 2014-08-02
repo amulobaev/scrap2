@@ -61,9 +61,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ToolBar>
+        <ToolBar Background="Transparent">
             <Button Content="Сохранить" Command="{Binding SaveDocumentCommand}" />
-            <Button Content="Печать" />
+            <Separator />
+            <Button Content="Печать" Command="{Binding PrintCommand}" />
         </ToolBar>
 
         <!--Основание-->
@@ -220,7 +221,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <ToolBar>
+                <ToolBar Background="Transparent">
                     <Button Content="Добавить" Command="{Binding AddItemCommand}" />
                     <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
                     <Separator />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Xceed.Wpf.AvalonDock.Layout;
+using Zlatmet2.Models;
 
 namespace Zlatmet2.ViewModels.Base
 {
@@ -31,6 +32,7 @@ namespace Zlatmet2.ViewModels.Base
 
         public Type ViewType { get; private set; }
 
+        [IgnoreChanges]
         public string Title
         {
             get { return _title; }

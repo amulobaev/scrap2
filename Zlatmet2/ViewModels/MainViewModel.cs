@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -147,24 +148,32 @@ namespace Zlatmet2.ViewModels
         /// </summary>
         /// <param name="viewModelType">Тип модели представления</param>
         /// <param name="id"></param>
-        public void ShowLayoutDocument(Type viewModelType, Guid? id = null)
+        /// <param name="dataForContainer"></param>
+        public void ShowLayoutDocument(Type viewModelType, Guid? id = null, object dataForContainer = null)
         {
             if (viewModelType == null)
                 throw new ArgumentNullException("viewModelType");
 
+            LayoutContent layout = null;
+            List<object> paramsList = new List<object>();
+
             if (typeof(SingletonLayoutDocumentViewModel).IsAssignableFrom(viewModelType))
             {
-                LayoutContent layout =
-                    _documents.FirstOrDefault(
-                        x =>
-                            x.Content is FrameworkElement &&
-                            (x.Content as FrameworkElement).DataContext is SingletonLayoutDocumentViewModel &&
-                            (x.Content as FrameworkElement).DataContext.GetType() == viewModelType);
+                layout = _documents.FirstOrDefault(x => x.Content is FrameworkElement &&
+                                                        (x.Content as FrameworkElement).DataContext is
+                                                            SingletonLayoutDocumentViewModel &&
+                                                        (x.Content as FrameworkElement).DataContext.GetType() ==
+                                                        viewModelType);
                 if (layout == null)
                 {
                     layout = new LayoutDocument();
+
+                    paramsList.Add(layout);
+                    if (dataForContainer != null)
+                        paramsList.Add(dataForContainer);
+
                     LayoutContentViewModel viewModel =
-                        Activator.CreateInstance(viewModelType, layout) as LayoutContentViewModel;
+                        Activator.CreateInstance(viewModelType, paramsList.ToArray()) as LayoutContentViewModel;
                     if (viewModel == null)
                         throw new InvalidOperationException("viewModel is null");
                     FrameworkElement view = Activator.CreateInstance(viewModel.ViewType) as FrameworkElement;
@@ -174,24 +183,26 @@ namespace Zlatmet2.ViewModels
                     layout.Content = view;
                     _documents.Add(layout);
                 }
-
-                layout.IsSelected = true;
             }
             else if (typeof(UniqueLayoutDocumentViewModel).IsAssignableFrom(viewModelType) && id.HasValue)
             {
-                var layout =
-                    _documents.FirstOrDefault(
-                        x =>
-                            x.Content is FrameworkElement &&
-                            (x.Content as FrameworkElement).DataContext is UniqueLayoutDocumentViewModel &&
-                            (x.Content as FrameworkElement).DataContext.GetType() == viewModelType &&
-                            ((x.Content as FrameworkElement).DataContext as UniqueLayoutDocumentViewModel).Id ==
-                            id);
+                layout = _documents.FirstOrDefault(x =>
+                    x.Content is FrameworkElement &&
+                    (x.Content as FrameworkElement).DataContext is UniqueLayoutDocumentViewModel &&
+                    (x.Content as FrameworkElement).DataContext.GetType() == viewModelType &&
+                    ((x.Content as FrameworkElement).DataContext as UniqueLayoutDocumentViewModel).Id ==
+                    id);
                 if (layout == null)
                 {
                     layout = new LayoutDocument();
+
+                    paramsList.Add(layout);
+                    paramsList.Add(id);
+                    if (dataForContainer != null)
+                        paramsList.Add(dataForContainer);
+
                     LayoutContentViewModel viewModel =
-                        Activator.CreateInstance(viewModelType, layout, id.Value) as LayoutContentViewModel;
+                        Activator.CreateInstance(viewModelType, paramsList.ToArray()) as LayoutContentViewModel;
                     if (viewModel == null)
                         throw new InvalidOperationException("viewModel is null");
                     FrameworkElement view = Activator.CreateInstance(viewModel.ViewType) as FrameworkElement;
@@ -201,13 +212,16 @@ namespace Zlatmet2.ViewModels
                     layout.Content = view;
                     _documents.Add(layout);
                 }
-
-                layout.IsSelected = true;
+                else
+                {
+                    ((layout.Content as FrameworkElement).DataContext as UniqueLayoutDocumentViewModel).SetContainer(
+                        dataForContainer);
+                }
             }
             else
-            {
                 throw new ArgumentException("Переданы некорректные аргументы");
-            }
+
+            layout.IsSelected = true;
         }
 
         private void ShowReferenceNomenclature()
@@ -298,6 +312,12 @@ namespace Zlatmet2.ViewModels
 
         private void ImportData()
         {
+            if (_documents.Any())
+            {
+                MessageBox.Show("Перез запуском импорта, пожалуйста, закройте все вкладки");
+                return;
+            }
+
             ImportDataWindow importDataWindow = new ImportDataWindow { Owner = MainWindow.Instance };
             importDataWindow.ShowDialog();
         }

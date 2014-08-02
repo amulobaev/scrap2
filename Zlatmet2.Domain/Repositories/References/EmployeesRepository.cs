@@ -17,7 +17,8 @@ namespace Zlatmet2.Domain.Repositories.References
         {
             Mapper.CreateMap<Employee, EmployeeDto>();
             Mapper.CreateMap<EmployeeDto, Employee>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.Type, opt => opt.Ignore());
         }
 
         protected EmployeesRepository(IModelContext context)
@@ -44,7 +45,7 @@ namespace Zlatmet2.Domain.Repositories.References
                 List<Employee> employees = new List<Employee>();
                 foreach (EmployeeDto dto in dtos)
                 {
-                    Employee employee = new Employee(dto.Id);
+                    Employee employee = new Employee(dto.Id, (EmployeeType)dto.Type);
                     Mapper.Map(dto, employee);
                     employees.Add(employee);
                 }

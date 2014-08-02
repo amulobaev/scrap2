@@ -37,11 +37,11 @@ namespace Zlatmet2.ViewModels.Documents
 
         private void LoadDocument()
         {
-            Document = MainStorage.Instance.RemainsRepository.GetById(Id);
-            Number = Document.Number;
-            Date = Document.Date;
+            Container = MainStorage.Instance.RemainsRepository.GetById(Id);
+            Number = Container.Number;
+            Date = Container.Date;
 
-            foreach (RemainsItem item in Document.Items)
+            foreach (RemainsItem item in Container.Items)
                 Items.Add(new RemainsItemWrapper(item));
         }
 
@@ -54,30 +54,30 @@ namespace Zlatmet2.ViewModels.Documents
             }
 
             bool isNew = false;
-            if (Document == null)
+            if (Container == null)
             {
                 isNew = true;
-                Document = new Remains(Id);
+                Container = new Remains(Id);
             }
 
-            Document.UserId = null;
-            Document.Type = DocumentType.Remains;
-            Document.Number = Number;
-            Document.Date = Date.Value;
+            Container.UserId = null;
+            Container.Type = DocumentType.Remains;
+            Container.Number = Number;
+            Container.Date = Date.Value;
 
-            if (Document.Items.Any())
-                Document.Items.Clear();
+            if (Container.Items.Any())
+                Container.Items.Clear();
 
             foreach (RemainsItemWrapper itemWrapper in Items)
             {
                 itemWrapper.UpdateContainer();
-                Document.Items.Add(itemWrapper.Container);
+                Container.Items.Add(itemWrapper.Container);
             }
 
             if (isNew)
-                MainStorage.Instance.RemainsRepository.Create(Document);
+                MainStorage.Instance.RemainsRepository.Create(Container);
             else
-                MainStorage.Instance.RemainsRepository.Update(Document);
+                MainStorage.Instance.RemainsRepository.Update(Container);
         }
 
         protected override void AddItem()

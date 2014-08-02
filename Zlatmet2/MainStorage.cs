@@ -106,6 +106,8 @@ namespace Zlatmet2
         /// </summary>
         public ReadOnlyObservableCollection<Employee> Drivers { get; private set; }
 
+        public UsersRepository UsersRepository { get; private set; }
+
         public NomenclatureRepository NomenclaturesRepository { get; private set; }
 
         public BasesRepository BasesRepository { get; private set; }
@@ -189,6 +191,8 @@ namespace Zlatmet2
             MigrationManager.Start(_connectionString);
 
             // Создание репозитариев
+            UsersRepository = new UsersRepository(this);
+
             NomenclaturesRepository = new NomenclatureRepository(this);
             BasesRepository = new BasesRepository(this);
             SuppliersRepository = new SuppliersRepository(this);
@@ -225,6 +229,8 @@ namespace Zlatmet2
         {
             if (o == null)
                 throw new ArgumentNullException("o");
+
+
 
             if (o is Nomenclature)
             {

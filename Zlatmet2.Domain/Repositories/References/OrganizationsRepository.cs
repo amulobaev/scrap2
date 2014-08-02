@@ -22,7 +22,8 @@ namespace Zlatmet2.Domain.Repositories.References
         {
             Mapper.CreateMap<Organization, OrganizationDto>();
             Mapper.CreateMap<OrganizationDto, Organization>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.Type, opt => opt.Ignore());
         }
 
         /// <summary>
@@ -73,7 +74,8 @@ namespace Zlatmet2.Domain.Repositories.References
                 List<Organization> organizations = new List<Organization>();
                 foreach (OrganizationDto organizationDto in dtos)
                 {
-                    Organization organization = new Organization(organizationDto.Id);
+                    Organization organization =
+                        new Organization(organizationDto.Id, (OrganizationType)organizationDto.Type);
                     Mapper.Map(organizationDto, organization);
                     organizations.Add(organization);
                 }

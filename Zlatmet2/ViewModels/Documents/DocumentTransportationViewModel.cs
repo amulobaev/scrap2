@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Classes.References;
@@ -37,6 +40,8 @@ namespace Zlatmet2.ViewModels.Documents
         private DateTime? _dateOfLoading;
         private DateTime? _dateOfUnloading;
         private string _comment;
+
+        private ICommand _printCommand;
 
         #endregion
 
@@ -324,6 +329,11 @@ namespace Zlatmet2.ViewModels.Documents
             }
         }
 
+        public ICommand PrintCommand
+        {
+            get { return _printCommand ?? (_printCommand = new RelayCommand(PrintDocument)); }
+        }
+
         #endregion
 
         #region Методы
@@ -337,34 +347,34 @@ namespace Zlatmet2.ViewModels.Documents
 
         private void LoadDocument(Guid id)
         {
-            Document = MainStorage.Instance.TransportationRepository.GetById(id);
-            Number = Document.Number;
-            Date = Document.Date;
-            DateOfLoading = Document.DateOfLoading;
-            DateOfUnloading = Document.DateOfUnloading;
-            Supplier = Suppliers.FirstOrDefault(x => x != null && x.Id == Document.SupplierId);
+            Container = MainStorage.Instance.TransportationRepository.GetById(id);
+            Number = Container.Number;
+            Date = Container.Date;
+            DateOfLoading = Container.DateOfLoading;
+            DateOfUnloading = Container.DateOfUnloading;
+            Supplier = Suppliers.FirstOrDefault(x => x != null && x.Id == Container.SupplierId);
             if (Supplier != null && Supplier.Type == OrganizationType.Supplier)
-                SupplierDivision = Supplier.Divisions.FirstOrDefault(x => x.Id == Document.SupplierDivisionId);
-            Customer = Customers.FirstOrDefault(x => x != null && x.Id == Document.CustomerId);
+                SupplierDivision = Supplier.Divisions.FirstOrDefault(x => x.Id == Container.SupplierDivisionId);
+            Customer = Customers.FirstOrDefault(x => x != null && x.Id == Container.CustomerId);
             if (Customer != null && Customer.Type == OrganizationType.Customer)
-                CustomerDivision = Customer.Divisions.FirstOrDefault(x => x.Id == Document.CustomerDivisionId);
-            ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Document.ResponsiblePersonId);
-            TransportType = Document.Type;
+                CustomerDivision = Customer.Divisions.FirstOrDefault(x => x.Id == Container.CustomerDivisionId);
+            ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Container.ResponsiblePersonId);
+            TransportType = Container.Type;
             switch (TransportType)
             {
                 case DocumentType.TransportationAuto:
-                    Transport = Transports.FirstOrDefault(x => x.Id == Document.TransportId);
-                    Driver = Drivers.FirstOrDefault(x => x.Id == Document.DriverId);
+                    Transport = Transports.FirstOrDefault(x => x.Id == Container.TransportId);
+                    Driver = Drivers.FirstOrDefault(x => x.Id == Container.DriverId);
                     break;
                 case DocumentType.TransportationTrain:
-                    WagonNumber = Document.Wagon;
+                    WagonNumber = Container.Wagon;
                     break;
             }
-            Psa = Document.Psa;
-            Ttn = Document.Ttn;
-            Comment = Document.Comment;
+            Psa = Container.Psa;
+            Ttn = Container.Ttn;
+            Comment = Container.Comment;
 
-            foreach (TransportationItem item in Document.Items)
+            foreach (TransportationItem item in Container.Items)
                 Items.Add(new TransportationItemWrapper(item));
         }
 
@@ -429,43 +439,43 @@ namespace Zlatmet2.ViewModels.Documents
             }
 
             bool isNew = false;
-            if (Document == null)
+            if (Container == null)
             {
                 isNew = true;
-                Document = new Transportation(Id);
+                Container = new Transportation(Id);
             }
 
-            Document.UserId = null;
-            Document.Type = TransportType;
-            Document.Number = Number;
-            Document.Date = Date.Value;
-            Document.DateOfLoading = DateOfLoading.Value;
-            Document.DateOfUnloading = DateOfUnloading.Value;
-            Document.SupplierId = Supplier.Id;
-            Document.SupplierDivisionId = SupplierDivision.GetId();
-            Document.CustomerId = Customer.Id;
-            Document.CustomerDivisionId = CustomerDivision.GetId();
-            Document.ResponsiblePersonId = ResponsiblePerson.Id;
-            Document.TransportId = TransportType == DocumentType.TransportationAuto ? Transport.Id : (Guid?)null;
-            Document.DriverId = TransportType == DocumentType.TransportationAuto ? Driver.Id : (Guid?)null;
-            Document.Wagon = WagonNumber;
-            Document.Psa = Psa;
-            Document.Ttn = Ttn;
-            Document.Comment = Comment;
+            Container.UserId = null;
+            Container.Type = TransportType;
+            Container.Number = Number;
+            Container.Date = Date.Value;
+            Container.DateOfLoading = DateOfLoading.Value;
+            Container.DateOfUnloading = DateOfUnloading.Value;
+            Container.SupplierId = Supplier.Id;
+            Container.SupplierDivisionId = SupplierDivision.GetId();
+            Container.CustomerId = Customer.Id;
+            Container.CustomerDivisionId = CustomerDivision.GetId();
+            Container.ResponsiblePersonId = ResponsiblePerson.Id;
+            Container.TransportId = TransportType == DocumentType.TransportationAuto ? Transport.Id : (Guid?)null;
+            Container.DriverId = TransportType == DocumentType.TransportationAuto ? Driver.Id : (Guid?)null;
+            Container.Wagon = WagonNumber;
+            Container.Psa = Psa;
+            Container.Ttn = Ttn;
+            Container.Comment = Comment;
 
-            if (Document.Items.Any())
-                Document.Items.Clear();
+            if (Container.Items.Any())
+                Container.Items.Clear();
 
             foreach (TransportationItemWrapper itemWrapper in Items)
             {
                 itemWrapper.UpdateContainer();
-                Document.Items.Add(itemWrapper.Container);
+                Container.Items.Add(itemWrapper.Container);
             }
 
             if (isNew)
-                MainStorage.Instance.TransportationRepository.Create(Document);
+                MainStorage.Instance.TransportationRepository.Create(Container);
             else
-                MainStorage.Instance.TransportationRepository.Update(Document);
+                MainStorage.Instance.TransportationRepository.Update(Container);
         }
 
         protected override void AddItem()
@@ -477,6 +487,22 @@ namespace Zlatmet2.ViewModels.Documents
         public override bool IsValid()
         {
             return base.IsValid();
+        }
+
+        private void PrintDocument()
+        {
+            if (!Items.Any())
+            {
+                MessageBox.Show("Не заполнена табличная часть");
+                return;
+            }
+
+            StiReport report = new StiReport();
+
+            report.Compile();
+            report.RenderWithWpf(false);
+
+            MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentReportViewModel), Id, report);
         }
 
         #endregion
