@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
@@ -45,7 +46,6 @@ namespace Zlatmet2.ViewModels.Service
             Title = "Шаблоны";
 
             Items.CollectionChanged += Items_CollectionChanged;
-            this.PropertyChanged += OnPropertyChanged;
 
             foreach (var template in MainStorage.Instance.TemplatesRepository.GetAll())
                 Items.Add(new TemplateWrapper(template));
@@ -121,39 +121,50 @@ namespace Zlatmet2.ViewModels.Service
         public override void Dispose()
         {
             Items.CollectionChanged -= Items_CollectionChanged;
-            this.PropertyChanged -= OnPropertyChanged;
 
             foreach (var item in Items)
                 item.PropertyChanged -= Template_PropertyChanged;
         }
 
-        /// <summary>
-        /// Обработка события изменения свойства модели представления
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void RaisePropertyChanged(string propertyName)
         {
-            switch (e.PropertyName)
+            base.RaisePropertyChanged(propertyName);
+
+            switch (propertyName)
             {
                 case "SelectedItem":
-                    if (SelectedItem != null && SelectedItem.Data != null)
-                    {
-                        if (Report == null)
-                            Report = new StiReport();
-                        Report.Load(SelectedItem.Data);
-                        Report.Compile();
-                        Report.Render(false);
-                    }
-                    else
-                    {
-                        if (Report != null)
-                        {
-                            Report.Dispose();
-                            Report = null;
-                        }
-                    }
+                    UpdatePreview();
                     break;
+            }
+        }
+
+        private void UpdatePreview()
+        {
+            if (SelectedItem != null && SelectedItem.Data != null)
+            {
+                if (Report == null)
+                    Report = new StiReport();
+
+                try
+                {
+                    Report.Load(SelectedItem.Data);
+                    Report.Compile();
+                    Report.Render(false);
+                }
+                catch (Exception ex)
+                {
+                    string message = string.Format("Ошибка при загрузке шаблона{0}{1}", Environment.NewLine,
+                        ex.Message);
+                    MessageBox.Show(message, MainStorage.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                if (Report != null)
+                {
+                    Report.Dispose();
+                    Report = null;
+                }
             }
         }
 
@@ -193,14 +204,7 @@ namespace Zlatmet2.ViewModels.Service
             switch (e.PropertyName)
             {
                 case "Data":
-                    // Если изменились данные выбранного шаблона то его нужно перерисовать
-                    //if (templateWrapper == SelectedItem)
-                    //{
-                    //    if (Report == null)
-                    //        Report = new StiReport();
-                    //    Report.Load(templateWrapper.Data);
-                    //    Report.Render(false);
-                    //}
+                    UpdatePreview();
                     break;
             }
         }

@@ -15,7 +15,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ToolBar>
+        <ToolBar Background="Transparent">
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
             <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
             <Separator />
@@ -113,7 +113,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <ToolBar>
+                        <ToolBar Background="Transparent">
                             <ToolBar.Resources>
                                 <Style TargetType="{x:Type Button}" x:Key="SelectedDivisionStyle">
                                     <Setter Property="IsEnabled" Value="True" />

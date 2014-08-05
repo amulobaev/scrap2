@@ -8,8 +8,6 @@ namespace Zlatmet2.ViewModels.Documents
 {
     public class DocumentReportViewModel : UniqueLayoutDocumentViewModel
     {
-        private StiReport _report;
-
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -24,15 +22,19 @@ namespace Zlatmet2.ViewModels.Documents
 
         public StiReport Report
         {
-            get { return _report; }
+            get { return (StiReport)Container; }
             set
             {
-                if (Equals(value, _report))
+                if (Equals(value, Container))
                     return;
-                _report = value;
+                Container = value;
                 RaisePropertyChanged("Report");
             }
         }
 
+        public override void SetContainer(object dataForContainer)
+        {
+            Report = dataForContainer as StiReport;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,9 +9,11 @@ using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
+using Stimulsoft.Report.Dictionary;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Classes.References;
+using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.Documents;
 using Zlatmet2.Tools;
@@ -42,6 +45,7 @@ namespace Zlatmet2.ViewModels.Documents
         private string _comment;
 
         private ICommand _printCommand;
+        private Template _template;
 
         #endregion
 
@@ -329,6 +333,11 @@ namespace Zlatmet2.ViewModels.Documents
             }
         }
 
+        public Template PsaTemplate
+        {
+            get { return _template ?? (_template = MainStorage.Instance.TemplatesRepository.GetByName("Пса")); }
+        }
+
         public ICommand PrintCommand
         {
             get { return _printCommand ?? (_printCommand = new RelayCommand(PrintDocument)); }
@@ -498,14 +507,36 @@ namespace Zlatmet2.ViewModels.Documents
             }
 
             StiReport report = new StiReport();
+            report.Load(PsaTemplate.Data);
+
+            // Переменные
+            report.Dictionary.Variables["Поставщик"].Value = Supplier.Name;
+            report.Dictionary.Variables["ИНН"].Value = Supplier.Inn;
+            report.Dictionary.Variables["БИК"].Value = Supplier.Bik;
+            report.Dictionary.Variables["Банк"].Value = Supplier.Bank;
+
+
+            List<PsaItem> reportData = new List<PsaItem>();
+
+            report.RegBusinessObject("Data", reportData);
 
             report.Compile();
-            report.RenderWithWpf(false);
+            report.Render(false);
 
             MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentReportViewModel), Id, report);
         }
 
         #endregion
 
+        class PsaItem
+        {
+            public string Nomenclature { get; set; }
+            public double Brutto { get; set; }
+            public double Tara { get; set; }
+            public double Garbage { get; set; }
+            public double Netto { get; set; }
+            public decimal Price { get; set; }
+            public decimal Sum { get; set; }
+        }
     }
 }
