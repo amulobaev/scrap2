@@ -29,6 +29,7 @@ namespace Zlatmet2.ViewModels
         private ICommand _updateCommand;
         private ICommand _openDocumentCommand;
         private ICommand _deleteCommand;
+        private ICommand _documentDoubleClickCommand;
 
         /// <summary>
         /// Конструктор
@@ -109,6 +110,15 @@ namespace Zlatmet2.ViewModels
         public ICommand DeleteCommand
         {
             get { return _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteDocument)); }
+        }
+
+        public ICommand DocumentDoubleClickCommand
+        {
+            get
+            {
+                return _documentDoubleClickCommand ??
+                       (_documentDoubleClickCommand = new RelayCommand(OpenDocument));
+            }
         }
 
         private void Update()

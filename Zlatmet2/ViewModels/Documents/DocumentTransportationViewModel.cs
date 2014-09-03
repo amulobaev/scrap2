@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
-using Stimulsoft.Report.Dictionary;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Classes.References;
@@ -57,8 +56,6 @@ namespace Zlatmet2.ViewModels.Documents
         public DocumentTransportationViewModel(LayoutDocument layout, Guid id)
             : base(layout, typeof(DocumentTransportationView), id)
         {
-            Title = "Перевозка";
-
             Suppliers = new ReadOnlyObservableCollection<Organization>(_suppliers);
             FillSuppliers();
 
@@ -90,6 +87,8 @@ namespace Zlatmet2.ViewModels.Documents
                 DateOfUnloading = DateTime.Today;
                 TransportType = DocumentType.TransportationAuto;
             }
+
+            UpdateTitle();
 
             this.PropertyChanged += OnPropertyChanged;
         }
@@ -436,6 +435,11 @@ namespace Zlatmet2.ViewModels.Documents
                 Customer = _customers.FirstOrDefault(x => x != null && x.Id == customerId);
         }
 
+        protected override string DocumentTitle
+        {
+            get { return "Перевозка"; }
+        }
+
         /// <summary>
         /// Сохранение документа
         /// </summary>
@@ -506,37 +510,73 @@ namespace Zlatmet2.ViewModels.Documents
                 return;
             }
 
+            // Подготовка отчета
             StiReport report = new StiReport();
-            report.Load(PsaTemplate.Data);
+            try
+            {
+                report.Load(PsaTemplate.Data);
 
-            // Переменные
-            report.Dictionary.Variables["Поставщик"].Value = Supplier.Name;
-            report.Dictionary.Variables["ИНН"].Value = Supplier.Inn;
-            report.Dictionary.Variables["БИК"].Value = Supplier.Bik;
-            report.Dictionary.Variables["Банк"].Value = Supplier.Bank;
+                // Тара
+                double tara = Transport != null ? Transport.Tara : 0;
 
+                // Переменные
+                report.Dictionary.Variables["Номер"].Value = Number.ToString();
+                report.Dictionary.Variables["Дата"].Value = Date.HasValue ? Date.Value.ToShortDateString() : string.Empty;
+                report.Dictionary.Variables["Поставщик"].Value = Supplier != null ? Supplier.FullName : string.Empty;
+                report.Dictionary.Variables["ИНН"].Value = Supplier != null ? Supplier.Inn : string.Empty;
+                report.Dictionary.Variables["БИК"].Value = Supplier != null ? Supplier.Bik : string.Empty;
+                report.Dictionary.Variables["Банк"].Value = Supplier != null ? Supplier.Bank : string.Empty;
+                report.Dictionary.Variables["Транспорт"].Value = Transport != null
+                    ? string.Format("{0} {1}", Transport.Name, Transport.Number)
+                    : string.Empty;
+                report.Dictionary.Variables["Договор"].Value = Supplier != null ? Supplier.Contract : string.Empty;
+                report.Dictionary.Variables["Примечание"].Value = Comment;
+                report.Dictionary.Variables["Тара"].ValueObject = tara;
+                report.Dictionary.Variables["ОтвЛицо"].Value = ResponsiblePerson != null
+                    ? ResponsiblePerson.Name
+                    : string.Empty;
 
-            List<PsaItem> reportData = new List<PsaItem>();
+                // Заполнение табличной части
+                List<PsaItem> reportData = Items.Select(item => new PsaItem
+                {
+                    Nomenclature = item.UnloadingNomenclature.Name,
+                    Brutto = tara + item.UnloadingWeight,
+                    Garbage = item.Garbage,
+                    Netto = item.Netto,
+                    Price = (double)item.Price,
+                    Sum = item.Netto * (double)item.Price
+                }).ToList();
 
-            report.RegBusinessObject("Data", reportData);
+                report.Dictionary.Variables["МассаПрописью"].Value =
+                    RusCurrency.Str2(Math.Round(reportData.Sum(x => x.Netto) * 1000), false, "кг", "кг", "кг", "", "", "");
+                report.Dictionary.Variables["СуммаПрописью"].Value = RusCurrency.Str(reportData.Sum(x => x.Sum));
 
-            report.Compile();
-            report.Render(false);
+                double sumNetto = reportData.Sum(x => x.Netto);
+
+                report.RegBusinessObject("Data", reportData);
+
+                report.Compile();
+                report.Render(false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при подготовке отчета" + Environment.NewLine + ex.Message);
+                return;
+            }
 
             MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentReportViewModel), Id, report);
         }
 
         #endregion
 
-        class PsaItem
+        private class PsaItem
         {
             public string Nomenclature { get; set; }
             public double Brutto { get; set; }
-            public double Tara { get; set; }
             public double Garbage { get; set; }
             public double Netto { get; set; }
-            public decimal Price { get; set; }
-            public decimal Sum { get; set; }
+            public double Price { get; set; }
+            public double Sum { get; set; }
         }
     }
 }

@@ -14,7 +14,7 @@ using Zlatmet2.ViewModels.Base;
 namespace Zlatmet2.ViewModels.Documents
 {
     /// <summary>
-    /// Базовая модель представления для документов
+    /// Базовая модель представления для документов (перевозка, переработка, корректировка остатков)
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TItemWrapper"></typeparam>
@@ -54,6 +54,8 @@ namespace Zlatmet2.ViewModels.Documents
             Items = new ObservableCollection<TItemWrapper>();
             Items.CollectionChanged += ItemsOnCollectionChanged;
         }
+
+        #region Свойства
 
         /// <summary>
         /// Номер документа
@@ -106,6 +108,10 @@ namespace Zlatmet2.ViewModels.Documents
         }
 
         public TModel Container { get; protected set; }
+
+        protected abstract string DocumentTitle { get; }
+
+        #endregion
 
         #region Команды
 
@@ -203,6 +209,12 @@ namespace Zlatmet2.ViewModels.Documents
         {
             for (int i = 0; i < Items.Count; i++)
                 Items[i].Number = i + 1;
+        }
+
+        protected void UpdateTitle()
+        {
+            Title = string.Format("{0} №{1} от {2}", DocumentTitle, Number,
+                Date.HasValue ? Date.Value.ToShortDateString() : string.Empty);
         }
 
         #endregion

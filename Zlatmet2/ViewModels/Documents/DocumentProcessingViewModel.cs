@@ -15,6 +15,7 @@ namespace Zlatmet2.ViewModels.Documents
     public class DocumentProcessingViewModel : BaseDocumentViewModel<Processing, ProcessingItemWrapper>
     {
         private Employee _responsiblePerson;
+
         private string _comment;
 
         /// <summary>
@@ -25,8 +26,6 @@ namespace Zlatmet2.ViewModels.Documents
         public DocumentProcessingViewModel(LayoutDocument layout, Guid id)
             : base(layout, typeof(DocumentProcessingView), id)
         {
-            Title = "Переработка";
-
             if (Id != Guid.Empty)
             {
                 // Загрузка документа
@@ -39,6 +38,8 @@ namespace Zlatmet2.ViewModels.Documents
                 Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
             }
+
+            UpdateTitle();
         }
 
         /// <summary>
@@ -75,6 +76,11 @@ namespace Zlatmet2.ViewModels.Documents
                 _comment = value;
                 RaisePropertyChanged("Comment");
             }
+        }
+
+        protected override string DocumentTitle
+        {
+            get { return "Переработка"; }
         }
 
         #region Методы

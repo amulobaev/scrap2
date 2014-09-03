@@ -14,6 +14,7 @@ namespace Zlatmet2.ViewModels.Base
         public object Container { get; protected set; }
 
         public virtual void SetContainer(object dataForContainer)
-        { }
+        {
+        }
     }
 }

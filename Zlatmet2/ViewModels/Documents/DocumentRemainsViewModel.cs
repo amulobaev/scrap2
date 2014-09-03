@@ -19,8 +19,6 @@ namespace Zlatmet2.ViewModels.Documents
         public DocumentRemainsViewModel(LayoutDocument layout, Guid id)
             : base(layout, typeof(DocumentRemainsView), id)
         {
-            Title = "Корректировка остатков";
-
             if (Id != Guid.Empty)
             {
                 // Загрузка документа
@@ -33,6 +31,13 @@ namespace Zlatmet2.ViewModels.Documents
                 Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
             }
+
+            UpdateTitle();
+        }
+
+        protected override string DocumentTitle
+        {
+            get { return "Корректировка остатков"; }
         }
 
         private void LoadDocument()
