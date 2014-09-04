@@ -31,7 +31,7 @@ namespace Zlatmet2.ViewModels.Documents
         private Organization _supplier;
         private Organization _customer;
         private Employee _responsiblePerson;
-        private DocumentType _transportType;
+        private DocumentType _transportType = DocumentType.TransportationAuto;
         private Transport _transport;
         private Employee _driver;
         private string _wagonNumber;
@@ -53,7 +53,8 @@ namespace Zlatmet2.ViewModels.Documents
         /// </summary>
         /// <param name="layout"></param>
         /// <param name="id"></param>
-        public DocumentTransportationViewModel(LayoutDocument layout, Guid id)
+        /// <param name="optional"></param>
+        public DocumentTransportationViewModel(LayoutDocument layout, Guid id, object optional = null)
             : base(layout, typeof(DocumentTransportationView), id)
         {
             Suppliers = new ReadOnlyObservableCollection<Organization>(_suppliers);
@@ -81,11 +82,19 @@ namespace Zlatmet2.ViewModels.Documents
             {
                 // Новый документ
                 Id = Guid.NewGuid();
+
+                Guid idToLoad;
+                if (optional != null && Guid.TryParse(optional.ToString(), out idToLoad))
+                {
+                    LoadDocument(idToLoad);
+                    Container = null;
+                }
+
                 Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
+
                 DateOfLoading = DateTime.Today;
                 DateOfUnloading = DateTime.Today;
-                TransportType = DocumentType.TransportationAuto;
             }
 
             UpdateTitle();

@@ -43,7 +43,8 @@
                 <Button Content="Корректировка остатков" />
                 <Separator />
                 <Button Content="Открыть" Command="{Binding OpenDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}" />
-                <Button Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource SelectedDocumentStyle}" />
+                <Button Content="Дублировать" Command="{Binding DuplicateDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}" />
+                <Button Content="Удалить" Command="{Binding DeleteDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}" />
             </ToolBar>
             <ToolBar Grid.Row="1" Background="Transparent">
                 <ToolBar.Resources>

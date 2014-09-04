@@ -16,18 +16,27 @@ namespace Zlatmet2.ViewModels.Documents
         /// </summary>
         /// <param name="layout"></param>
         /// <param name="id"></param>
-        public DocumentRemainsViewModel(LayoutDocument layout, Guid id)
+        /// <param name="optional"></param>
+        public DocumentRemainsViewModel(LayoutDocument layout, Guid id, object optional = null)
             : base(layout, typeof(DocumentRemainsView), id)
         {
             if (Id != Guid.Empty)
             {
                 // Загрузка документа
-                LoadDocument();
+                LoadDocument(id);
             }
             else
             {
                 // Новый документ
                 Id = Guid.NewGuid();
+                
+                Guid idToLoad;
+                if (optional != null && Guid.TryParse(optional.ToString(), out idToLoad))
+                {
+                    LoadDocument(idToLoad);
+                    Container = null;
+                }
+
                 Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
             }
@@ -40,9 +49,9 @@ namespace Zlatmet2.ViewModels.Documents
             get { return "Корректировка остатков"; }
         }
 
-        private void LoadDocument()
+        private void LoadDocument(Guid id)
         {
-            Container = MainStorage.Instance.RemainsRepository.GetById(Id);
+            Container = MainStorage.Instance.RemainsRepository.GetById(id);
             Number = Container.Number;
             Date = Container.Date;
 

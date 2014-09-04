@@ -8,8 +8,6 @@ using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Service;
-using Zlatmet2.Models.Reports;
-using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.Reports;
 
 namespace Zlatmet2.ViewModels.Reports
@@ -20,14 +18,20 @@ namespace Zlatmet2.ViewModels.Reports
     public class ReportWarehouseViewModel : BaseReportViewModel
     {
         private DateTime _date;
+
         private readonly Template _template;
+        private readonly ObservableCollection<Organization> _selectedBases = new ObservableCollection<Organization>();
+
+        private readonly ObservableCollection<Nomenclature> _selectedNomenclatures =
+            new ObservableCollection<Nomenclature>();
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="layout"></param>
         /// <param name="id"></param>
-        public ReportWarehouseViewModel(LayoutDocument layout, Guid id)
+        /// <param name="optional"></param>
+        public ReportWarehouseViewModel(LayoutDocument layout, Guid id, object optional = null)
             : base(layout, typeof(ReportWarehouseView), id)
         {
             Title = "Остатки на базе";
@@ -35,14 +39,6 @@ namespace Zlatmet2.ViewModels.Reports
             Id = Guid.NewGuid();
 
             Date = DateTime.Today;
-
-            Bases = new ObservableCollection<CheckedWrapper>();
-            foreach (Organization @base in MainStorage.Instance.Bases.OrderBy(x => x.Name))
-                Bases.Add(new CheckedWrapper(@base.Id, true, @base.Name));
-
-            Nomenclatures = new ObservableCollection<CheckedWrapper>();
-            foreach (Nomenclature nomenclature in MainStorage.Instance.Nomenclatures.OrderBy(x => x.Name))
-                Nomenclatures.Add(new CheckedWrapper(nomenclature.Id, true, nomenclature.Name));
 
             _template = MainStorage.Instance.TemplatesRepository.GetByName(ReportName);
 
@@ -61,9 +57,25 @@ namespace Zlatmet2.ViewModels.Reports
             }
         }
 
-        public ObservableCollection<CheckedWrapper> Bases { get; private set; }
+        public ReadOnlyObservableCollection<Organization> Bases
+        {
+            get { return MainStorage.Instance.Bases; }
+        }
 
-        public ObservableCollection<CheckedWrapper> Nomenclatures { get; private set; }
+        public ObservableCollection<Organization> SelectedBases
+        {
+            get { return _selectedBases; }
+        }
+
+        public ReadOnlyObservableCollection<Nomenclature> Nomenclatures
+        {
+            get { return MainStorage.Instance.Nomenclatures; }
+        }
+
+        public ObservableCollection<Nomenclature> SelectedNomenclatures
+        {
+            get { return _selectedNomenclatures; }
+        }
 
         public override string ReportName
         {
@@ -79,23 +91,23 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
-            var selectedBases = Bases.Where(x => x.IsChecked).ToList();
-            if (!selectedBases.Any())
-            {
-                MessageBox.Show("Не выбрано ни одной базы", MainStorage.AppName,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            //var selectedBases = Bases.Where(x => x.IsChecked).ToList();
+            //if (!selectedBases.Any())
+            //{
+            //    MessageBox.Show("Не выбрано ни одной базы", MainStorage.AppName,
+            //        MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return;
+            //}
 
-            var selectedNomenclatures = Nomenclatures.Where(x => x.IsChecked).ToList();
-            if (!selectedNomenclatures.Any())
-            {
-                MessageBox.Show("Не выбрана номенклатура", MainStorage.AppName,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            //var selectedNomenclatures = Nomenclatures.Where(x => x.IsChecked).ToList();
+            //if (!selectedNomenclatures.Any())
+            //{
+            //    MessageBox.Show("Не выбрана номенклатура", MainStorage.AppName,
+            //        MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return;
+            //}
 
-            string bases = string.Join(", ", selectedBases.Select(x => x.Text));
+            //string bases = string.Join(", ", selectedBases.Select(x => x.Text));
 
             List<ReportData> reportData = PrepareData();
 
@@ -103,7 +115,7 @@ namespace Zlatmet2.ViewModels.Reports
             Report.Load(_template.Data);
 
             Report.Dictionary.Variables["ReportDate"].Value = Date.ToShortDateString();
-            Report.Dictionary.Variables["Bases"].Value = bases;
+            //Report.Dictionary.Variables["Bases"].Value = bases;
 
             Report.RegBusinessObject("Data", reportData);
 

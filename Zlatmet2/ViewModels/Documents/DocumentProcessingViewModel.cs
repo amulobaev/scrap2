@@ -23,18 +23,27 @@ namespace Zlatmet2.ViewModels.Documents
         /// </summary>
         /// <param name="layout"></param>
         /// <param name="id"></param>
-        public DocumentProcessingViewModel(LayoutDocument layout, Guid id)
+        /// <param name="optional"></param>
+        public DocumentProcessingViewModel(LayoutDocument layout, Guid id, object optional = null)
             : base(layout, typeof(DocumentProcessingView), id)
         {
             if (Id != Guid.Empty)
             {
                 // Загрузка документа
-                LoadDocument();
+                LoadDocument(id);
             }
             else
             {
                 // Новый документ
                 Id = Guid.NewGuid();
+
+                Guid idToLoad;
+                if (optional != null && Guid.TryParse(optional.ToString(), out idToLoad))
+                {
+                    LoadDocument(idToLoad);
+                    Container = null;
+                }
+
                 Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
             }
@@ -128,9 +137,9 @@ namespace Zlatmet2.ViewModels.Documents
             Items.Add(newItem);
         }
 
-        private void LoadDocument()
+        private void LoadDocument(Guid id)
         {
-            Container = MainStorage.Instance.ProcessingRepository.GetById(Id);
+            Container = MainStorage.Instance.ProcessingRepository.GetById(id);
             Number = Container.Number;
             Date = Container.Date;
             ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Container.ResponsiblePersonId);

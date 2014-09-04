@@ -7,7 +7,7 @@ namespace Zlatmet2.ViewModels.References
 {
     public sealed class ReferenceBasesViewModel : BaseReferenceViewModel<OrganizationWrapper>
     {
-        public ReferenceBasesViewModel(LayoutDocument layout)
+        public ReferenceBasesViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceBasesView))
         {
             Title = "Справочник: базы";

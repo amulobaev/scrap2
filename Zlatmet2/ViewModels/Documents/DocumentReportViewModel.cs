@@ -8,6 +8,8 @@ namespace Zlatmet2.ViewModels.Documents
 {
     public class DocumentReportViewModel : UniqueLayoutDocumentViewModel
     {
+        private object _optionalContent;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -15,26 +17,23 @@ namespace Zlatmet2.ViewModels.Documents
         /// <param name="id"></param>
         /// <param name="report"></param>
         public DocumentReportViewModel(LayoutDocument layout, Guid id, StiReport report)
-            : base(layout, typeof(DocumentReportView), id, report)
+            : base(layout, typeof(DocumentReportView), id)
         {
             Title = "ПСА";
+            OptionalContent = report;
         }
 
-        public StiReport Report
+        public override object OptionalContent
         {
-            get { return (StiReport)Container; }
+            get { return _optionalContent; }
             set
             {
-                if (Equals(value, Container))
+                if (Equals(value, _optionalContent))
                     return;
-                Container = value;
-                RaisePropertyChanged("Report");
+                _optionalContent = value;
+                RaisePropertyChanged("OptionalContent");
             }
         }
 
-        public override void SetContainer(object dataForContainer)
-        {
-            Report = dataForContainer as StiReport;
-        }
     }
 }

@@ -28,14 +28,16 @@ namespace Zlatmet2.ViewModels
 
         private ICommand _updateCommand;
         private ICommand _openDocumentCommand;
-        private ICommand _deleteCommand;
+        private ICommand _deleteDocumentCommand;
         private ICommand _documentDoubleClickCommand;
+        private ICommand _duplicateDocumentCommand;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="layout"></param>
-        public JournalViewModel(LayoutDocument layout)
+        /// <param name="optional"></param>
+        public JournalViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(JournalView))
         {
             Title = "Журнал документов";
@@ -107,9 +109,17 @@ namespace Zlatmet2.ViewModels
             get { return _openDocumentCommand ?? (_openDocumentCommand = new RelayCommand(OpenDocument)); }
         }
 
-        public ICommand DeleteCommand
+        public ICommand DuplicateDocumentCommand
         {
-            get { return _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteDocument)); }
+            get
+            {
+                return _duplicateDocumentCommand ?? (_duplicateDocumentCommand = new RelayCommand(DuplicateDocument));
+            }
+        }
+
+        public ICommand DeleteDocumentCommand
+        {
+            get { return _deleteDocumentCommand ?? (_deleteDocumentCommand = new RelayCommand(DeleteDocument)); }
         }
 
         public ICommand DocumentDoubleClickCommand
@@ -192,6 +202,33 @@ namespace Zlatmet2.ViewModels
                     break;
                 case DocumentType.Remains:
                     MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentRemainsViewModel), SelectedItem.Id);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Дублирование документа
+        /// </summary>
+        private void DuplicateDocument()
+        {
+            if (SelectedItem == null)
+                return;
+
+            switch (SelectedItem.Type)
+            {
+                case DocumentType.Transportation:
+                case DocumentType.TransportationAuto:
+                case DocumentType.TransportationTrain:
+                    MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentTransportationViewModel), Guid.Empty,
+                        SelectedItem.Id);
+                    break;
+                case DocumentType.Processing:
+                    MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentProcessingViewModel), Guid.Empty,
+                        SelectedItem.Id);
+                    break;
+                case DocumentType.Remains:
+                    MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentRemainsViewModel), Guid.Empty,
+                        SelectedItem.Id);
                     break;
             }
         }

@@ -3,16 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600">
     <UserControl.Resources>
-        <DataTemplate x:Key="CheckedListBoxTemplate">
-            <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding IsChecked}" VerticalAlignment="Center" Margin="3,0" />
-                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
-            </StackPanel>
-        </DataTemplate>
+        <CollectionViewSource Source="{Binding Bases}" x:Key="BasesCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource Source="{Binding Nomenclatures}" x:Key="NomenclaturesCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -25,34 +32,32 @@
             <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
         </ToolBar>
 
-        <Expander Grid.Row="1" Header="Параметры" IsExpanded="True">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="60" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                <TextBlock Text="На дату:" HorizontalAlignment="Left" Margin="3" />
-                <DatePicker Grid.Row="1" Width="110" Margin="3" SelectedDate="{Binding Date}" />
+            <TextBlock Text="На дату:" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <DatePicker Grid.Column="1" Width="110" Margin="3" SelectedDate="{Binding Date}" HorizontalAlignment="Left" />
 
-                <TextBlock Grid.Column="1" Text="Базы:" Margin="3" HorizontalAlignment="Left" />
-                <ListBox Grid.Column="2" Width="150" Grid.RowSpan="3" Margin="3" ItemsSource="{Binding Bases}"
-                     ItemTemplate="{StaticResource CheckedListBoxTemplate}" Height="120" />
+            <TextBlock Grid.Row="1" Text="Базы:" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <xctk:CheckComboBox Grid.Row="1" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
+                                ItemsSource="{Binding Source={StaticResource BasesCvs}}" />
 
-                <TextBlock Grid.Column="3" Text="Номенклатура:" Margin="3" HorizontalAlignment="Left" />
-                <ListBox Grid.Column="4" Width="150" Grid.RowSpan="3" Margin="3" ItemsSource="{Binding Nomenclatures}"
-                     ItemTemplate="{StaticResource CheckedListBoxTemplate}" VerticalAlignment="Top" Height="120" />
+            <TextBlock Grid.Row="2" Text="Номенклатура:" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <xctk:CheckComboBox Grid.Row="2" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
+                                ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}" />
 
-            </Grid>
-        </Expander>
+        </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"
                                         ShowReportOpen="False" Report="{Binding Report}" />
