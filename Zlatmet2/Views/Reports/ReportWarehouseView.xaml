@@ -28,7 +28,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ToolBar>
+        <ToolBar Background="Transparent">
             <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
         </ToolBar>
 
@@ -51,12 +51,20 @@
 
             <TextBlock Grid.Row="1" Text="Базы:" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <xctk:CheckComboBox Grid.Row="1" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
-                                ItemsSource="{Binding Source={StaticResource BasesCvs}}" />
+                                ItemsSource="{Binding Source={StaticResource BasesCvs}}"
+                                SelectedItemsOverride="{Binding SelectedBases}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3" Command="{Binding SelectAllBasesCommand}" />
+            <Button Grid.Row="1" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
 
             <TextBlock Grid.Row="2" Text="Номенклатура:" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <xctk:CheckComboBox Grid.Row="2" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
-                                ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}" />
+                                ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}"
+                                SelectedItemsOverride="{Binding SelectedNomenclatures}" />
+            <Button Grid.Row="2" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3" Command="{Binding SelectAllNomenclaturesCommand}" />
+            <Button Grid.Row="2" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3" Command="{Binding UnselectAllNomenclaturesCommand}" />
 
+            <CheckBox Grid.Row="3" Content="Подробный отчет" Margin="3" Grid.Column="1" VerticalAlignment="Center"
+                      HorizontalAlignment="Left" />
         </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"

@@ -10,7 +10,8 @@ namespace Zlatmet2.ViewModels.References
         /// Конструктор
         /// </summary>
         /// <param name="layout"></param>
-        public ReferenceNomenclaturesViewModel(LayoutDocument layout)
+        /// <param name="optional"></param>
+        public ReferenceNomenclaturesViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceNomenclaturesView))
         {
             Title = "Справочник: номенклатура";

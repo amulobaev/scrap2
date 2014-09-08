@@ -10,7 +10,7 @@ namespace Zlatmet2.ViewModels.Reports
         private DateTime _dateFrom;
         private DateTime _dateTo;
 
-        public ReportNomenclatureViewModel(LayoutDocument layout, Guid id)
+        public ReportNomenclatureViewModel(LayoutDocument layout, Guid id, object optional = null)
             : base(layout, typeof(ReportNomenclatureView), id)
         {
             Title = "Обороты за период";

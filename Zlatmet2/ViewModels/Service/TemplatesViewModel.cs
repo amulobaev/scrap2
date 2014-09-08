@@ -40,7 +40,8 @@ namespace Zlatmet2.ViewModels.Service
         /// Конструктор
         /// </summary>
         /// <param name="layout"></param>
-        public TemplatesViewModel(LayoutDocument layout)
+        /// <param name="optional"></param>
+        public TemplatesViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(TemplatesView))
         {
             Title = "Шаблоны";

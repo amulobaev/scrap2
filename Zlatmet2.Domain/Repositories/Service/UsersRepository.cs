@@ -51,7 +51,18 @@ namespace Zlatmet2.Domain.Repositories.Service
 
         public override User GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (var connection = ConnectionFactory.Create())
+            {
+                string query = QueryObject.GetByIdQuery(typeof(UserDto));
+                UserDto dto = connection.Query<UserDto>(query, new { Id = id }).FirstOrDefault();
+                if (dto != null)
+                {
+                    User user = new User(dto.Id);
+                    Mapper.Map(dto, user);
+                    return user;
+                }
+                return null;
+            }
         }
 
         public override void Update(User data)

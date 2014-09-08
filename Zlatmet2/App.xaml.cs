@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Configuration;
 using System.Windows;
 using Telerik.Windows.Controls;
+using Zlatmet2.Domain.Repositories.Service;
 using Zlatmet2.Views;
 
 namespace Zlatmet2
@@ -20,8 +21,32 @@ namespace Zlatmet2
 
             // Логин и пароль
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
+
+            //
+#if DEBUG
+            string defaultUserId = ConfigurationManager.AppSettings["DefaultUserId"];
+            Guid userId;
+            if (defaultUserId != null && !string.IsNullOrEmpty(defaultUserId) &&
+                Guid.TryParse(defaultUserId, out userId))
+            {
+                UsersRepository usersRepository = new UsersRepository(MainStorage.Instance);
+                var user = usersRepository.GetById(userId);
+                if (user != null)
+                {
+                    MainStorage.Instance.UserId = user.Id;
+                    MainStorage.Instance.UserName = user.Login;
+                }
+            }
+            else
+            {
+
+#endif
+                LoginWindow loginWindow = new LoginWindow();
+                loginWindow.ShowDialog();
+#if DEBUG
+            }
+#endif
+
 
             if (MainStorage.Instance.UserId == Guid.Empty)
             {

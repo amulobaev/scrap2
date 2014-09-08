@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
+using System.Windows.Input;
+using Dapper;
+using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Service;
+using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
 
 namespace Zlatmet2.ViewModels.Reports
@@ -24,6 +28,14 @@ namespace Zlatmet2.ViewModels.Reports
 
         private readonly ObservableCollection<Nomenclature> _selectedNomenclatures =
             new ObservableCollection<Nomenclature>();
+
+        private ICommand _selectAllBasesCommand;
+
+        private ICommand _unselectAllBasesCommand;
+
+        private ICommand _selectAllNomenclaturesCommand;
+
+        private ICommand _unselectAllNomenclaturesCommand;
 
         /// <summary>
         /// Конструктор
@@ -43,6 +55,9 @@ namespace Zlatmet2.ViewModels.Reports
             _template = MainStorage.Instance.TemplatesRepository.GetByName(ReportName);
 
             Report = new StiReport();
+
+            SelectedBases.AddRange(Bases);
+            SelectedNomenclatures.AddRange(Nomenclatures);
         }
 
         public DateTime Date
@@ -82,6 +97,34 @@ namespace Zlatmet2.ViewModels.Reports
             get { return "Остатки на базе"; }
         }
 
+        public ICommand SelectAllBasesCommand
+        {
+            get { return _selectAllBasesCommand ?? (_selectAllBasesCommand = new RelayCommand(SelectAllBases)); }
+        }
+
+        public ICommand UnselectAllBasesCommand
+        {
+            get { return _unselectAllBasesCommand ?? (_unselectAllBasesCommand = new RelayCommand(UnselectAllBases)); }
+        }
+
+        public ICommand SelectAllNomenclaturesCommand
+        {
+            get
+            {
+                return _selectAllNomenclaturesCommand ??
+                       (_selectAllNomenclaturesCommand = new RelayCommand(SelectAllNomenclatures));
+            }
+        }
+
+        public ICommand UnselectAllNomenclaturesCommand
+        {
+            get
+            {
+                return _unselectAllNomenclaturesCommand ??
+                       (_unselectAllNomenclaturesCommand = new RelayCommand(UnselectAllNomenclatures));
+            }
+        }
+
         protected override void PrepareReport()
         {
             if (_template == null)
@@ -109,31 +152,100 @@ namespace Zlatmet2.ViewModels.Reports
 
             //string bases = string.Join(", ", selectedBases.Select(x => x.Text));
 
-            List<ReportData> reportData = PrepareData();
+            List<Base> reportData = PrepareData();
 
             Report = new StiReport();
             Report.Load(_template.Data);
 
             Report.Dictionary.Variables["ReportDate"].Value = Date.ToShortDateString();
-            //Report.Dictionary.Variables["Bases"].Value = bases;
 
-            Report.RegBusinessObject("Data", reportData);
+            Report.RegBusinessObject("Bases", reportData);
 
             Report.Compile();
-            Report.Render();
+            Report.Render(false);
         }
 
-        private List<ReportData> PrepareData()
+        /// <summary>
+        /// Подготовка данных для отчёта
+        /// </summary>
+        /// <returns></returns>
+        private List<Base> PrepareData()
         {
-            List<ReportData> reportData = new List<ReportData>();
+            List<Base> reportData = new List<Base>();
+
+            string nomenclatures = string.Join(",",
+                SelectedNomenclatures.Select(x => "'" + x.Id.ToString() + "'").ToList());
+
+            foreach (Organization organization in SelectedBases)
+            {
+                Base @base = new Base { Name = organization.Name };
+
+                using (IDbConnection connection = MainStorage.Instance.ConnectionFactory.Create())
+                {
+                    var p = new DynamicParameters();
+                    p.Add("@Date", Date, DbType.Date);
+                    p.Add("@Base", organization.Id, DbType.Guid);
+                    p.Add("@Nomenclatures", nomenclatures, DbType.String);
+
+                    List<Dto> dtos =
+                        connection.Query<Dto>("usp_ReportWarehouse1", p, commandType: CommandType.StoredProcedure)
+                            .ToList();
+                    foreach (Dto dto in dtos)
+                    {
+                        @base.Remains.Add(new Remains { Name = dto.Nomenclature, Weight = dto.Weight });
+                    }
+                }
+
+                reportData.Add(@base);
+            }
 
             return reportData;
         }
 
-        class ReportData
+        private void SelectAllBases()
+        {
+            SelectedBases.Clear();
+            SelectedBases.AddRange(Bases);
+        }
+
+        private void SelectAllNomenclatures()
+        {
+            SelectedNomenclatures.Clear();
+            SelectedNomenclatures.AddRange(Nomenclatures);
+        }
+
+        private void UnselectAllBases()
+        {
+            SelectedBases.Clear();
+        }
+
+        private void UnselectAllNomenclatures()
+        {
+            SelectedNomenclatures.Clear();
+        }
+
+        private class Base
+        {
+            public Base()
+            {
+                Remains = new List<Remains>();
+            }
+
+            public string Name { get; set; }
+
+            public List<Remains> Remains { get; set; }
+        }
+
+        private class Remains
         {
             public int Number { get; set; }
             public string Name { get; set; }
+            public double Weight { get; set; }
+        }
+
+        class Dto
+        {
+            public string Nomenclature { get; set; }
             public double Weight { get; set; }
         }
     }
