@@ -243,7 +243,7 @@ namespace Zlatmet2.ViewModels.Reports
             public double Weight { get; set; }
         }
 
-        class Dto
+        private class Dto
         {
             public string Nomenclature { get; set; }
             public double Weight { get; set; }
