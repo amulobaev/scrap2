@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dapper;
 using Zlatmet2.Core;
-using Zlatmet2.Domain.Dto;
 
 namespace Zlatmet2.Domain.Repositories
 {
     /// <summary>
     /// Базовый обобщённый репозитарий
     /// </summary>
-    /// <typeparam name="TModel"></typeparam>
-    /// <typeparam name="TDto"></typeparam>
-    public abstract class BaseRepository<TModel, TDto> : BaseRepository
-        where TModel : PersistentObject
-        where TDto : BaseDto
+    /// <typeparam name="T"></typeparam>
+    public abstract class BaseRepository<T> : BaseRepository
+        where T : PersistentObject
     {
         /// <summary>
         /// Конструктор
@@ -24,26 +20,23 @@ namespace Zlatmet2.Domain.Repositories
         {
         }
 
-        public abstract void Create(TModel data);
+        public abstract void Create(T data);
 
-        public abstract IEnumerable<TModel> GetAll();
+        public abstract IEnumerable<T> GetAll();
 
-        public abstract TModel GetById(Guid id);
+        public abstract T GetById(Guid id);
 
-        public abstract void Update(TModel data);
+        public abstract void Update(T data);
 
-        public virtual bool Delete(TModel data)
+        /// <summary>
+        /// Удаление сущности по идентификатору
+        /// </summary>
+        /// <param name="id"></param>
+        public abstract bool Delete(Guid id);
+
+        public virtual bool Delete(T data)
         {
             return Delete(data.Id);
-        }
-
-        public virtual bool Delete(Guid id)
-        {
-            using (var connection = ConnectionFactory.Create())
-            {
-                string query = QueryObject.DeleteQuery(typeof(TDto));
-                return connection.Execute(query, new { Id = id }) > 0;
-            }
         }
 
     }

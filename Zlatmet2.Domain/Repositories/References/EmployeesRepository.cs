@@ -11,7 +11,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
-    public abstract class EmployeesRepository : BaseRepository<Employee, EmployeeDto>
+    public abstract class EmployeesRepository : BaseRepository<Employee>
     {
         static EmployeesRepository()
         {
@@ -65,6 +65,11 @@ namespace Zlatmet2.Domain.Repositories.References
                 EmployeeDto dto = Mapper.Map<Employee, EmployeeDto>(data);
                 connection.Execute(dto.UpdateQuery(), dto);
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }

@@ -10,7 +10,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
-    public class NomenclatureRepository : BaseRepository<Nomenclature, NomenclatureDto>
+    public class NomenclatureRepository : BaseRepository<Nomenclature>
     {
         static NomenclatureRepository()
         {
@@ -70,5 +70,9 @@ namespace Zlatmet2.Domain.Repositories.References
             }
         }
 
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

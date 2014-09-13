@@ -11,6 +11,7 @@
     <AssemblyName>Zlatmet2.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>75da9395</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dapper.1.27\lib\net40\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="InteractivePreGeneratedViews">
+      <HintPath>..\packages\EFInteractiveViews.1.0.1\lib\net40\InteractivePreGeneratedViews.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.ComponentModel.DataAnnotations.dll</HintPath>
@@ -67,6 +77,11 @@
     <Compile Include="Dto\References\OrganizationDto.cs" />
     <Compile Include="Dto\References\TransportDto.cs" />
     <Compile Include="Dto\Service\TemplateDto.cs" />
+    <Compile Include="Entities\DocumentEntity.cs" />
+    <Compile Include="Entities\References\BaseEntity.cs" />
+    <Compile Include="Entities\References\OrganizationEntity.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Repositories\Service\UsersRepository.cs" />
     <Compile Include="Dto\TableAttribute.cs" />
     <Compile Include="Dto\Service\UserDto.cs" />
@@ -79,7 +94,6 @@
     <Compile Include="Repositories\Documents\RemainsRepository.cs" />
     <Compile Include="Repositories\Documents\TransportationRepository.cs" />
     <Compile Include="Repositories\References\BasesRepository.cs" />
-    <Compile Include="Repositories\References\CustomersRepository.cs" />
     <Compile Include="Repositories\Documents\DocumentsRepository.cs" />
     <Compile Include="Repositories\References\DivisionsRepository.cs" />
     <Compile Include="Repositories\References\DriversRepository.cs" />
@@ -87,12 +101,14 @@
     <Compile Include="Repositories\References\NomenclatureRepository.cs" />
     <Compile Include="Repositories\References\OrganizationsRepository.cs" />
     <Compile Include="Repositories\References\ResponsiblePersonsRepository.cs" />
-    <Compile Include="Repositories\References\SuppliersRepository.cs" />
+    <Compile Include="Repositories\References\ContractorsRepository.cs" />
     <Compile Include="Repositories\References\TransportsRepository.cs" />
     <Compile Include="Repositories\Service\TemplatesRepository.cs" />
     <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="ZlatmetContext.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +120,19 @@
       <Name>Zlatmet2.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
+  <Import Project="..\packages\Fody.1.25.0\build\Fody.targets" Condition="Exists('..\packages\Fody.1.25.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Включите восстановление пакетов NuGet, чтобы загрузить их. Дополнительные сведения см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.1.25.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.25.0\build\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

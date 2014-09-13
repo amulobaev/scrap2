@@ -46,6 +46,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dapper.1.27\lib\net40\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\net40\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -181,15 +188,12 @@
     <Compile Include="ViewModels\References\ReferenceBasesViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceDriversViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceNomenclaturesViewModel.cs" />
-    <Compile Include="ViewModels\References\ReferenceCustomersViewModel.cs" />
-    <Compile Include="ViewModels\References\ReferenceOrganizationsViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceContractorsViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceResponsiblePersonsViewModel.cs" />
-    <Compile Include="ViewModels\References\ReferenceSuppliersViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceTransportsViewModel.cs" />
     <Compile Include="ViewModels\Reports\BaseReportViewModel.cs" />
-    <Compile Include="ViewModels\Reports\ReportCustomerViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
-    <Compile Include="ViewModels\Reports\ReportSupplierViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportWarehouseViewModel.cs" />
     <Compile Include="ViewModels\Service\Dto\OldDocumentDto.cs" />
     <Compile Include="ViewModels\Service\Dto\OldEmployeeDto.cs" />
@@ -234,20 +238,17 @@
     <Compile Include="Views\References\ReferenceNomenclaturesView.xaml.cs">
       <DependentUpon>ReferenceNomenclaturesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\References\ReferenceOrganizationsView.xaml.cs">
-      <DependentUpon>ReferenceOrganizationsView.xaml</DependentUpon>
+    <Compile Include="Views\References\ReferenceContractorsView.xaml.cs">
+      <DependentUpon>ReferenceContractorsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\References\ReferenceTransportsView.xaml.cs">
       <DependentUpon>ReferenceTransportsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\ReportCustomerView.xaml.cs">
-      <DependentUpon>ReportCustomerView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Reports\ReportNomenclatureView.xaml.cs">
       <DependentUpon>ReportNomenclatureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\ReportSupplierView.xaml.cs">
-      <DependentUpon>ReportSupplierView.xaml</DependentUpon>
+    <Compile Include="Views\Reports\ReportOrganizationView.xaml.cs">
+      <DependentUpon>ReportOrganizationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\ReportWarehouseView.xaml.cs">
       <DependentUpon>ReportWarehouseView.xaml</DependentUpon>
@@ -312,7 +313,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\References\ReferenceOrganizationsView.xaml">
+    <Page Include="Views\References\ReferenceContractorsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -320,15 +321,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\ReportCustomerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Reports\ReportNomenclatureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\ReportSupplierView.xaml">
+    <Page Include="Views\Reports\ReportOrganizationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

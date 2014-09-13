@@ -14,7 +14,7 @@ namespace Zlatmet2.Domain.Repositories.References
     /// <summary>
     /// Базовый репозитарий для подрядчиков/заказчиков/баз
     /// </summary>
-    public abstract class OrganizationsRepository : BaseRepository<Organization, OrganizationDto>
+    public abstract class OrganizationsRepository : BaseRepository<Organization>
     {
         private readonly DivisionsRepository _divisionsRepository;
 
@@ -99,6 +99,11 @@ namespace Zlatmet2.Domain.Repositories.References
                 //connection.Execute("DELETE FROM [ReferenceDivisions] WHERE OrganizationId = @Id", new { dto.Id });
                 //InsertDivisions(connection, dto.Divisions);
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }

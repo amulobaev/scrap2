@@ -470,7 +470,7 @@ namespace Zlatmet2.ViewModels.Service
                 if (supplier != null)
                 {
                     supplierId = supplier.Id;
-                    if (supplier.Type == OrganizationType.Supplier)
+                    if (supplier.Type == OrganizationType.Contractor)
                         supplierDivisionId = supplier.Divisions[0].Id;
                 }
                 else
@@ -483,7 +483,7 @@ namespace Zlatmet2.ViewModels.Service
                 if (customer != null)
                 {
                     customerId = customer.Id;
-                    if (customer.Type == OrganizationType.Customer)
+                    if (customer.Type == OrganizationType.Contractor)
                         customerDivisionId = customer.Divisions[0].Id;
                 }
                 else

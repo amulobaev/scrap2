@@ -1,19 +1,14 @@
 ﻿namespace Zlatmet2.Core.Enums
 {
     /// <summary>
-    /// Тип организации (контрагента)
+    /// Тип организации
     /// </summary>
     public enum OrganizationType
     {
         /// <summary>
-        /// Поставщик
+        /// Контрагент
         /// </summary>
-        Supplier = 0,
-
-        /// <summary>
-        /// Заказчик
-        /// </summary>
-        Customer,
+        Contractor = 0,
 
         /// <summary>
         /// База

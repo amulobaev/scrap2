@@ -9,7 +9,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
-    public class DivisionsRepository : BaseRepository<Division, DivisionDto>
+    public class DivisionsRepository : BaseRepository<Division>
     {
         static DivisionsRepository()
         {
@@ -55,5 +55,9 @@ namespace Zlatmet2.Domain.Repositories.References
             throw new NotImplementedException();
         }
 
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

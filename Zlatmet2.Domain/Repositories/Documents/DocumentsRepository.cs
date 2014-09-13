@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Zlatmet2.Core;
@@ -18,13 +19,20 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public IEnumerable<Document> GetAll(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                var p = new DynamicParameters();
-                p.Add("@DateFrom", dateFrom, DbType.Date);
-                p.Add("@DateTo", dateTo, DbType.Date);
+            //using (var connection = ConnectionFactory.Create())
+            //{
+            //    var p = new DynamicParameters();
+            //    p.Add("@DateFrom", dateFrom, DbType.Date);
+            //    p.Add("@DateTo", dateTo, DbType.Date);
 
-                return connection.Query<Document>("usp_GetDocuments", p, commandType: CommandType.StoredProcedure).ToList();
+            //    return connection.Query<Document>("usp_GetDocuments", p, commandType: CommandType.StoredProcedure).ToList();
+            //}
+
+            using (var context = new ZlatmetContext())
+            {
+                return
+                    context.Database.SqlQuery<Document>("usp_GetDocuments", new SqlParameter("DateFrom", SqlDbType.Date).Value = dateFrom,
+                        new SqlParameter("DateTo", SqlDbType.Date).Value = dateTo).ToList();
             }
         }
 

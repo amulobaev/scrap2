@@ -10,7 +10,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.Documents
 {
-    public class RemainsRepository : BaseRepository<Remains, RemainsDto>
+    public class RemainsRepository : BaseRepository<Remains>
     {
         static RemainsRepository()
         {
@@ -97,6 +97,11 @@ namespace Zlatmet2.Domain.Repositories.Documents
                         QueryObject.GetTable(typeof(RemainsItemDto))), new { dto.Id });
                 connection.Execute(QueryObject.CreateQuery(typeof(RemainsItemDto)), dto.Items);
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }

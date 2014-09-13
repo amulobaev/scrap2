@@ -140,7 +140,7 @@
                         <Style TargetType="{x:Type ComboBox}">
                             <Setter Property="IsEnabled" Value="False" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Supplier.Type}" Value="{x:Static coreEnums:OrganizationType.Supplier}">
+                                <DataTrigger Binding="{Binding Supplier.Type}" Value="{x:Static coreEnums:OrganizationType.Contractor}">
                                     <Setter Property="IsEnabled" Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -162,7 +162,7 @@
                         <Style TargetType="{x:Type ComboBox}">
                             <Setter Property="IsEnabled" Value="False" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Customer.Type}" Value="{x:Static coreEnums:OrganizationType.Customer}">
+                                <DataTrigger Binding="{Binding Customer.Type}" Value="{x:Static coreEnums:OrganizationType.Contractor}">
                                     <Setter Property="IsEnabled" Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>

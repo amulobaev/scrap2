@@ -10,7 +10,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.Documents
 {
-    public class ProcessingRepository : BaseRepository<Processing, ProcessingDto>
+    public class ProcessingRepository : BaseRepository<Processing>
     {
         static ProcessingRepository()
         {
@@ -97,6 +97,11 @@ namespace Zlatmet2.Domain.Repositories.Documents
                         QueryObject.GetTable(typeof(ProcessingItemDto))), new { dto.Id });
                 connection.Execute(QueryObject.CreateQuery(typeof(ProcessingItemDto)), dto.Items);
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }

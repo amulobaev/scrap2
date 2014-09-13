@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -23,10 +22,11 @@ namespace Zlatmet2.ViewModels
 
         private ICommand _showReportWarehouseCommand;
         private ICommand _showReportNomenclatureCommand;
-        private ICommand _showReportSupplierCommand;
-        private ICommand _showReportCustomerCommand;
+        private ICommand _showReportOrganizationCommand;
         private ICommand _showTemplatesCommand;
         private ICommand _importDataCommand;
+
+        private ICommand _showReferenceContractorsCommand;
 
         #endregion
 
@@ -43,8 +43,6 @@ namespace Zlatmet2.ViewModels
             ShowReferenceNomenclatureCommand = new RelayCommand(ShowReferenceNomenclature);
 
             ShowReferenceBasesCommand = new RelayCommand(ShowReferenceBases);
-            ShowReferenceSuppliersCommand = new RelayCommand(ShowReferenceSuppliers);
-            ShowReferenceCustomersCommand = new RelayCommand(ShowReferenceCustomers);
             ShowReferenceResponsiblePersonsCommand = new RelayCommand(ShowReferenceResponsiblePersons);
             ShowReferenceTransportsCommand = new RelayCommand(ShowReferenceTransports);
             ShowReferenceDriversCommand = new RelayCommand(ShowReferenceDrivers);
@@ -71,11 +69,16 @@ namespace Zlatmet2.ViewModels
 
         public ICommand ShowReferenceNomenclatureCommand { get; private set; }
 
+        public ICommand ShowReferenceContractorsCommand
+        {
+            get
+            {
+                return _showReferenceContractorsCommand ??
+                       (_showReferenceContractorsCommand = new RelayCommand(ShowReferenceContractors));
+            }
+        }
+
         public ICommand ShowReferenceBasesCommand { get; private set; }
-
-        public ICommand ShowReferenceSuppliersCommand { get; private set; }
-
-        public ICommand ShowReferenceCustomersCommand { get; private set; }
 
         public ICommand ShowReferenceResponsiblePersonsCommand { get; private set; }
 
@@ -111,21 +114,12 @@ namespace Zlatmet2.ViewModels
             }
         }
 
-        public ICommand ShowReportSupplierCommand
+        public ICommand ShowReportOrganizationCommand
         {
             get
             {
-                return _showReportSupplierCommand ??
-                       (_showReportSupplierCommand = new RelayCommand(ShowReportSupplier));
-            }
-        }
-
-        public ICommand ShowReportCustomerCommand
-        {
-            get
-            {
-                return _showReportCustomerCommand ??
-                       (_showReportCustomerCommand = new RelayCommand(ShowReportCustomer));
+                return _showReportOrganizationCommand ??
+                       (_showReportOrganizationCommand = new RelayCommand(ShowReportOrganization));
             }
         }
 
@@ -224,14 +218,9 @@ namespace Zlatmet2.ViewModels
             ShowLayoutDocument(typeof(ReferenceBasesViewModel));
         }
 
-        private void ShowReferenceSuppliers()
+        private void ShowReferenceContractors()
         {
-            ShowLayoutDocument(typeof(ReferenceSuppliersViewModel));
-        }
-
-        private void ShowReferenceCustomers()
-        {
-            ShowLayoutDocument(typeof(ReferenceCustomersViewModel));
+            ShowLayoutDocument(typeof(ReferenceContractorsViewModel));
         }
 
         private void ShowReferenceResponsiblePersons()
@@ -279,14 +268,9 @@ namespace Zlatmet2.ViewModels
             ShowLayoutDocument(typeof(ReportNomenclatureViewModel), Guid.Empty);
         }
 
-        private void ShowReportSupplier()
+        private void ShowReportOrganization()
         {
-            ShowLayoutDocument(typeof(ReportSupplierViewModel), Guid.Empty);
-        }
-
-        private void ShowReportCustomer()
-        {
-            ShowLayoutDocument(typeof(ReportCustomerViewModel), Guid.Empty);
+            ShowLayoutDocument(typeof(ReportOrganizationViewModel), Guid.Empty);
         }
 
         private void ShowParameters()

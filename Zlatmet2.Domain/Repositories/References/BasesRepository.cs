@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Enums;
@@ -16,5 +17,6 @@ namespace Zlatmet2.Domain.Repositories.References
         {
             return GetAll(OrganizationType.Base);
         }
+
     }
 }

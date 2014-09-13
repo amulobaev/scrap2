@@ -17,9 +17,8 @@
             <MenuItem Header="Справочники">
                 <MenuItem Header="Номенклатура" Command="{Binding ShowReferenceNomenclatureCommand}" />
                 <Separator />
+                <MenuItem Header="Контрагенты" Command="{Binding ShowReferenceContractorsCommand}" />
                 <MenuItem Header="Базы" Command="{Binding ShowReferenceBasesCommand}" />
-                <MenuItem Header="Поставщики" Command="{Binding ShowReferenceSuppliersCommand}" />
-                <MenuItem Header="Заказчики" Command="{Binding ShowReferenceCustomersCommand}" />
                 <Separator />
                 <MenuItem Header="Ответственные лица" Command="{Binding ShowReferenceResponsiblePersonsCommand}" />
                 <MenuItem Header="Водители" Command="{Binding ShowReferenceDriversCommand}" />
@@ -35,8 +34,7 @@
             <MenuItem Header="Отчеты">
                 <MenuItem Header="Остатки на базе" Command="{Binding ShowReportWarehouseCommand}" />
                 <MenuItem Header="Обороты за период" Command="{Binding ShowReportNomenclatureCommand}" />
-                <MenuItem Header="Отчет по поставщику" Command="{Binding ShowReportSupplierCommand}" />
-                <MenuItem Header="Отчет по заказчику" Command="{Binding ShowReportCustomerCommand}" />
+                <MenuItem Header="Отчет по контрагентам" Command="{Binding ShowReportOrganizationCommand}" />
                 <MenuItem Header="Перевозки" />
             </MenuItem>
             <MenuItem Header="Сервис">

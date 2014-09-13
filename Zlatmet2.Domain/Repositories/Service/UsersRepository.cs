@@ -10,7 +10,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.Service
 {
-    public class UsersRepository : BaseRepository<User, UserDto>
+    public class UsersRepository : BaseRepository<User>
     {
         static UsersRepository()
         {
@@ -35,18 +35,26 @@ namespace Zlatmet2.Domain.Repositories.Service
 
         public override IEnumerable<User> GetAll()
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                var dtos = connection.Query<UserDto>(QueryObject.GetAllQuery(typeof(UserDto))).ToList();
-                List<User> users = new List<User>();
-                foreach (UserDto dto in dtos)
-                {
-                    User user = new User(dto.Id);
-                    Mapper.Map(dto, user);
-                    users.Add(user);
-                }
-                return users;
+                return context.Users.ToList()
+                    .Select(
+                        userEntity => new User(userEntity.Id) { Login = userEntity.Login, Password = userEntity.Password })
+                    .ToList();
             }
+
+            //using (var connection = ConnectionFactory.Create())
+            //{
+            //    var dtos = connection.Query<UserDto>(QueryObject.GetAllQuery(typeof(UserDto))).ToList();
+            //    List<User> users = new List<User>();
+            //    foreach (UserDto dto in dtos)
+            //    {
+            //        User user = new User(dto.Id);
+            //        Mapper.Map(dto, user);
+            //        users.Add(user);
+            //    }
+            //    return users;
+            //}
         }
 
         public override User GetById(Guid id)
@@ -69,5 +77,11 @@ namespace Zlatmet2.Domain.Repositories.Service
         {
             throw new NotImplementedException();
         }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -13,7 +13,7 @@ namespace Zlatmet2.Domain.Repositories.Documents
     /// <summary>
     /// Репозитарий документов "Перевозка"
     /// </summary>
-    public sealed class TransportationRepository : BaseRepository<Transportation, TransportationDto>
+    public sealed class TransportationRepository : BaseRepository<Transportation>
     {
         static TransportationRepository()
         {
@@ -103,5 +103,9 @@ namespace Zlatmet2.Domain.Repositories.Documents
             }
         }
 
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

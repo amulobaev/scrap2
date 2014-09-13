@@ -28,11 +28,9 @@ namespace Zlatmet2
 
         private readonly ObservableCollection<Nomenclature> _nomenclatures = new ObservableCollection<Nomenclature>();
 
+        private readonly ObservableCollection<Organization> _contractors = new ObservableCollection<Organization>();
+
         private readonly ObservableCollection<Organization> _bases = new ObservableCollection<Organization>();
-
-        private readonly ObservableCollection<Organization> _suppliers = new ObservableCollection<Organization>();
-
-        private readonly ObservableCollection<Organization> _customers = new ObservableCollection<Organization>();
 
         private readonly ObservableCollection<Employee> _responsiblePersons = new ObservableCollection<Employee>();
 
@@ -57,8 +55,7 @@ namespace Zlatmet2
         {
             Nomenclatures = new ReadOnlyObservableCollection<Nomenclature>(_nomenclatures);
             Bases = new ReadOnlyObservableCollection<Organization>(_bases);
-            Suppliers = new ReadOnlyObservableCollection<Organization>(_suppliers);
-            Customers = new ReadOnlyObservableCollection<Organization>(_customers);
+            Contractors = new ReadOnlyObservableCollection<Organization>(_contractors);
             ResponsiblePersons = new ReadOnlyObservableCollection<Employee>(_responsiblePersons);
             Transports = new ReadOnlyObservableCollection<Transport>(_transports);
             Drivers = new ReadOnlyObservableCollection<Employee>(_drivers);
@@ -77,19 +74,14 @@ namespace Zlatmet2
         public ReadOnlyObservableCollection<Nomenclature> Nomenclatures { get; private set; }
 
         /// <summary>
+        /// Контрагенты
+        /// </summary>
+        public ReadOnlyObservableCollection<Organization> Contractors { get; private set; }
+
+        /// <summary>
         /// Базы
         /// </summary>
         public ReadOnlyObservableCollection<Organization> Bases { get; private set; }
-
-        /// <summary>
-        /// Поставщики
-        /// </summary>
-        public ReadOnlyObservableCollection<Organization> Suppliers { get; private set; }
-
-        /// <summary>
-        /// Заказчики
-        /// </summary>
-        public ReadOnlyObservableCollection<Organization> Customers { get; private set; }
 
         /// <summary>
         /// Ответственные лица
@@ -112,9 +104,7 @@ namespace Zlatmet2
 
         public BasesRepository BasesRepository { get; private set; }
 
-        public SuppliersRepository SuppliersRepository { get; private set; }
-
-        public CustomersRepository CustomersRepository { get; private set; }
+        public ContractorsRepository ContractorsRepository { get; private set; }
 
         public ResponsiblePersonsRepository ResponsiblePersonsRepository { get; private set; }
 
@@ -195,8 +185,7 @@ namespace Zlatmet2
 
             NomenclaturesRepository = new NomenclatureRepository(this);
             BasesRepository = new BasesRepository(this);
-            SuppliersRepository = new SuppliersRepository(this);
-            CustomersRepository = new CustomersRepository(this);
+            ContractorsRepository = new ContractorsRepository(this);
             ResponsiblePersonsRepository = new ResponsiblePersonsRepository(this);
             TransportsRepository = new TransportsRepository(this);
             DriversRepository = new DriversRepository(this);
@@ -210,9 +199,8 @@ namespace Zlatmet2
 
             // Загрузка данных справочников из репозитариев
             _nomenclatures.AddRange(NomenclaturesRepository.GetAll());
+            _contractors.AddRange(ContractorsRepository.GetAll());
             _bases.AddRange(BasesRepository.GetAll());
-            _suppliers.AddRange(SuppliersRepository.GetAll());
-            _customers.AddRange(CustomersRepository.GetAll());
             _responsiblePersons.AddRange(ResponsiblePersonsRepository.GetAll());
             _transports.AddRange(TransportsRepository.GetAll());
             _drivers.AddRange(DriversRepository.GetAll());
@@ -275,26 +263,15 @@ namespace Zlatmet2
         {
             switch (organization.Type)
             {
-                case OrganizationType.Customer:
-                    if (Customers.Any(x => x.Id == organization.Id))
+                case OrganizationType.Contractor:
+                    if (Contractors.Any(x => x.Id == organization.Id))
                     {
-                        CustomersRepository.Update(organization);
+                        ContractorsRepository.Update(organization);
                     }
                     else
                     {
-                        CustomersRepository.Create(organization);
-                        _customers.Add(organization);
-                    }
-                    break;
-                case OrganizationType.Supplier:
-                    if (Suppliers.Any(x => x.Id == organization.Id))
-                    {
-                        SuppliersRepository.Update(organization);
-                    }
-                    else
-                    {
-                        SuppliersRepository.Create(organization);
-                        _suppliers.Add(organization);
+                        ContractorsRepository.Create(organization);
+                        _contractors.Add(organization);
                     }
                     break;
                 case OrganizationType.Base:
@@ -364,13 +341,9 @@ namespace Zlatmet2
                 Organization organization = o as Organization;
                 switch (organization.Type)
                 {
-                    case OrganizationType.Supplier:
-                        SuppliersRepository.Delete(organization.Id);
-                        _suppliers.Remove(organization);
-                        break;
-                    case OrganizationType.Customer:
-                        CustomersRepository.Delete(organization.Id);
-                        _customers.Remove(organization);
+                    case OrganizationType.Contractor:
+                        ContractorsRepository.Delete(organization.Id);
+                        _contractors.Remove(organization);
                         break;
                     case OrganizationType.Base:
                         BasesRepository.Delete(organization.Id);

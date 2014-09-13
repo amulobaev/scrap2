@@ -9,7 +9,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
-    public sealed class TransportsRepository : BaseRepository<Transport, TransportDto>
+    public sealed class TransportsRepository : BaseRepository<Transport>
     {
         static TransportsRepository()
         {
@@ -60,6 +60,11 @@ namespace Zlatmet2.Domain.Repositories.References
                 TransportDto dto = Mapper.Map<Transport, TransportDto>(data);
                 connection.Execute(dto.UpdateQuery(), dto);
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }

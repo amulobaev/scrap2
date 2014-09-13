@@ -10,7 +10,7 @@ using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.Service
 {
-    public class TemplatesRepository : BaseRepository<Template, TemplateDto>
+    public class TemplatesRepository : BaseRepository<Template>
     {
         static TemplatesRepository()
         {
@@ -98,6 +98,11 @@ namespace Zlatmet2.Domain.Repositories.Service
                 TemplateDto dto = Mapper.Map<Template, TemplateDto>(data);
                 connection.Execute(dto.UpdateQuery(), dto);
             }
+        }
+
+        public override bool Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }

@@ -58,20 +58,15 @@ namespace Zlatmet2.ViewModels.Documents
             : base(layout, typeof(DocumentTransportationView), id)
         {
             Suppliers = new ReadOnlyObservableCollection<Organization>(_suppliers);
-            FillSuppliers();
 
             Customers = new ReadOnlyObservableCollection<Organization>(_customers);
-            FillCustomers();
 
-            ((INotifyCollectionChanged)MainStorage.Instance.Suppliers).CollectionChanged +=
-                (sender, args) => FillSuppliers();
-            ((INotifyCollectionChanged)MainStorage.Instance.Customers).CollectionChanged +=
-                (sender, args) => FillCustomers();
-            ((INotifyCollectionChanged)MainStorage.Instance.Bases).CollectionChanged += (sender, args) =>
-            {
-                FillSuppliers();
-                FillCustomers();
-            };
+            FillOrganizations();
+
+            ((INotifyCollectionChanged)MainStorage.Instance.Contractors).CollectionChanged +=
+                (sender, args) => FillOrganizations();
+            ((INotifyCollectionChanged)MainStorage.Instance.Bases).CollectionChanged +=
+                (sender, args) => FillOrganizations();
 
             if (Id != Guid.Empty)
             {
@@ -159,7 +154,7 @@ namespace Zlatmet2.ViewModels.Documents
         {
             get
             {
-                return Supplier != null && Supplier.Type == OrganizationType.Supplier
+                return Supplier != null && Supplier.Type == OrganizationType.Contractor
                     ? _supplierDivision
                     : Division.Empty;
             }
@@ -201,7 +196,7 @@ namespace Zlatmet2.ViewModels.Documents
         {
             get
             {
-                return Customer != null && Customer.Type == OrganizationType.Customer
+                return Customer != null && Customer.Type == OrganizationType.Contractor
                     ? _customerDivision
                     : Division.Empty;
             }
@@ -370,10 +365,10 @@ namespace Zlatmet2.ViewModels.Documents
             DateOfLoading = Container.DateOfLoading;
             DateOfUnloading = Container.DateOfUnloading;
             Supplier = Suppliers.FirstOrDefault(x => x != null && x.Id == Container.SupplierId);
-            if (Supplier != null && Supplier.Type == OrganizationType.Supplier)
+            if (Supplier != null && Supplier.Type == OrganizationType.Contractor)
                 SupplierDivision = Supplier.Divisions.FirstOrDefault(x => x.Id == Container.SupplierDivisionId);
             Customer = Customers.FirstOrDefault(x => x != null && x.Id == Container.CustomerId);
-            if (Customer != null && Customer.Type == OrganizationType.Customer)
+            if (Customer != null && Customer.Type == OrganizationType.Contractor)
                 CustomerDivision = Customer.Divisions.FirstOrDefault(x => x.Id == Container.CustomerDivisionId);
             ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Container.ResponsiblePersonId);
             TransportType = Container.Type;
@@ -402,13 +397,13 @@ namespace Zlatmet2.ViewModels.Documents
                 case "Supplier":
                     if (Supplier == null || (Supplier != null && Supplier.Type == OrganizationType.Base))
                         SupplierDivision = null;
-                    else if (Supplier != null && Supplier.Type == OrganizationType.Supplier)
+                    else if (Supplier != null && Supplier.Type == OrganizationType.Contractor)
                         SupplierDivision = Supplier.Divisions.Any() ? Supplier.Divisions.First() : null;
                     break;
                 case "Customer":
                     if (Customer == null || (Customer != null && Customer.Type == OrganizationType.Base))
                         CustomerDivision = null;
-                    else if (Customer != null && Customer.Type == OrganizationType.Customer)
+                    else if (Customer != null && Customer.Type == OrganizationType.Contractor)
                         CustomerDivision = Customer.Divisions.Any() ? Customer.Divisions.First() : null;
                     break;
                 case "Transport":
@@ -418,27 +413,29 @@ namespace Zlatmet2.ViewModels.Documents
             }
         }
 
-        private void FillSuppliers()
+        /// <summary>
+        /// Заполнение списка организаций
+        /// </summary>
+        private void FillOrganizations()
         {
+            // Поставщики
             Guid supplierId = Supplier != null ? Supplier.Id : Guid.Empty;
 
             _suppliers.Clear();
             _suppliers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
             _suppliers.Add(null);
-            _suppliers.AddRange(MainStorage.Instance.Suppliers.OrderBy(x => x.Name));
+            _suppliers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
 
             if (supplierId != Guid.Empty)
                 Supplier = _suppliers.FirstOrDefault(x => x != null && x.Id == supplierId);
-        }
 
-        private void FillCustomers()
-        {
+            // Заказчики
             Guid customerId = Customer != null ? Customer.Id : Guid.Empty;
 
             _customers.Clear();
             _customers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
             _customers.Add(null);
-            _customers.AddRange(MainStorage.Instance.Customers);
+            _customers.AddRange(MainStorage.Instance.Contractors);
 
             if (customerId != Guid.Empty)
                 Customer = _customers.FirstOrDefault(x => x != null && x.Id == customerId);

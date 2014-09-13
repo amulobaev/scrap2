@@ -36,7 +36,7 @@ namespace Zlatmet2.ViewModels
             _passwordBox = passwordBox;
 
             UsersRepository usersRepository = new UsersRepository(MainStorage.Instance);
-            Users.AddRange(usersRepository.GetAll().ToList());
+            Users.AddRange(usersRepository.GetAll());
         }
 
         public ObservableCollection<User> Users
