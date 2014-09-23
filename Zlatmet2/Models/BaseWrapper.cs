@@ -1,5 +1,4 @@
-﻿using System;
-using Zlatmet2.Classes;
+﻿using Zlatmet2.Classes;
 
 namespace Zlatmet2.Models
 {

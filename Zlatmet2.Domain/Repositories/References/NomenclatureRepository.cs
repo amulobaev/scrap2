@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
-using Zlatmet2.Domain.Dto.References;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.References;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
-    public class NomenclatureRepository : BaseRepository<Nomenclature>
+    /// <summary>
+    /// Репозитарий справочника "Номенклатура"
+    /// </summary>
+    public sealed class NomenclatureRepository : BaseRepository<Nomenclature>
     {
         static NomenclatureRepository()
         {
-            Mapper.CreateMap<Nomenclature, NomenclatureDto>();
-            Mapper.CreateMap<NomenclatureDto, Nomenclature>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+            Mapper.CreateMap<Nomenclature, NomenclatureEntity>();
+            Mapper.CreateMap<NomenclatureEntity, Nomenclature>()
+                .ConstructUsing(x => new Nomenclature(x.Id));
         }
 
         public NomenclatureRepository(IModelContext context)
@@ -26,53 +27,67 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Create(Nomenclature data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                NomenclatureDto dto = Mapper.Map<Nomenclature, NomenclatureDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+                NomenclatureEntity entity = Mapper.Map<Nomenclature, NomenclatureEntity>(data);
+                context.Nomenclatures.Add(entity);
+                context.SaveChanges();
             }
         }
 
         public override IEnumerable<Nomenclature> GetAll()
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query = QueryObject.GetAllQuery(typeof(NomenclatureDto));
-                IEnumerable<NomenclatureDto> dtos = connection.Query<NomenclatureDto>(query);
-
-                List<Nomenclature> nomenclatures = new List<Nomenclature>();
-                foreach (NomenclatureDto dto in dtos)
-                {
-                    Nomenclature nomenclature = new Nomenclature(dto.Id);
-                    Mapper.Map(dto, nomenclature);
-                    nomenclatures.Add(nomenclature);
-                }
-                return nomenclatures;
+                List<NomenclatureEntity> entities = context.Nomenclatures.ToList();
+                return Mapper.Map<List<NomenclatureEntity>, List<Nomenclature>>(entities);
             }
         }
 
         public override Nomenclature GetById(Guid id)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query = QueryObject.GetByIdQuery(typeof(Nomenclature));
-                var dto = connection.Query<NomenclatureDto>(query, new { Id = id }).FirstOrDefault();
-                return dto != null ? Mapper.Map<NomenclatureDto, Nomenclature>(dto) : null;
+                NomenclatureEntity entity = context.Nomenclatures.FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<NomenclatureEntity, Nomenclature>(entity) : null;
             }
         }
 
         public override void Update(Nomenclature data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                NomenclatureDto dto = Mapper.Map<Nomenclature, NomenclatureDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+                NomenclatureEntity entity = context.Nomenclatures.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                NomenclatureEntity entity = context.Nomenclatures.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.Nomenclatures.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

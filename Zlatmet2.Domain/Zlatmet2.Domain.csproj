@@ -73,13 +73,12 @@
     <Compile Include="Dto\Documents\TransportationItemDto.cs" />
     <Compile Include="Dto\References\DivisionDto.cs" />
     <Compile Include="Dto\References\EmployeeDto.cs" />
-    <Compile Include="Dto\References\NomenclatureDto.cs" />
     <Compile Include="Dto\References\OrganizationDto.cs" />
-    <Compile Include="Dto\References\TransportDto.cs" />
     <Compile Include="Dto\Service\TemplateDto.cs" />
     <Compile Include="Entities\DocumentEntity.cs" />
-    <Compile Include="Entities\References\BaseEntity.cs" />
+    <Compile Include="Entities\References\NomenclatureEntity.cs" />
     <Compile Include="Entities\References\OrganizationEntity.cs" />
+    <Compile Include="Entities\References\TransportEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Repositories\Service\UsersRepository.cs" />

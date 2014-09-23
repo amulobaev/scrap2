@@ -1,5 +1,4 @@
-﻿using System;
-using Xceed.Wpf.AvalonDock.Layout;
+﻿using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.References;
 using Zlatmet2.Views.References;
@@ -12,7 +11,8 @@ namespace Zlatmet2.ViewModels.References
         /// 
         /// </summary>
         /// <param name="layout"></param>
-        public ReferenceResponsiblePersonsViewModel(LayoutDocument layout)
+        /// <param name="optional"></param>
+        public ReferenceResponsiblePersonsViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceEmployeesView))
         {
             Title = "Справочник: ответственные лица";

@@ -1,4 +1,6 @@
-﻿using InteractivePreGeneratedViews;
+﻿using System;
+using System.IO;
+using InteractivePreGeneratedViews;
 using Zlatmet2.Domain;
 
 /// <summary>
@@ -11,12 +13,19 @@ public static class ModuleInitializer
     /// </summary>
     public static void Initialize()
     {
-        using (var context = new ZlatmetContext())
+        // Папка для хранения временных файлов
+        var appDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Zlatmet");
+
+        // Если папка не существует, то её нужно создать
+        if (!Directory.Exists(appDataFolder))
+            Directory.CreateDirectory(appDataFolder);
+
+        using (ZlatmetContext context = new ZlatmetContext())
         {
             InteractiveViews
                 .SetViewCacheFactory(
                     context,
-                    new FileViewCacheFactory(@"C:\MyViews.xml"));
+                    new FileViewCacheFactory(Path.Combine(appDataFolder, "MyViews.xml")));
         }
     }
 }

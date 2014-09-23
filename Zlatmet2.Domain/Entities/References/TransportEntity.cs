@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Zlatmet2.Domain.Dto.References
+namespace Zlatmet2.Domain.Entities.References
 {
     [Table("ReferenceTransports")]
-    public class TransportDto : BaseDto
+    internal class TransportEntity
     {
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public string Number { get; set; }

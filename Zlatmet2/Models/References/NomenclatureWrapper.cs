@@ -23,8 +23,8 @@ namespace Zlatmet2.Models.References
             else
             {
                 Id = nomenclature.Id;
-                Name = nomenclature.Name;
-                IsChanged = false;
+                _name = nomenclature.Name;
+                //IsChanged = false;
             }
         }
 

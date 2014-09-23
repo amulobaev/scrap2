@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Zlatmet2.Domain.Entities.References
 {
     [Table("ReferenceOrganizations")]
-    public class OrganizationEntity
+    internal class OrganizationEntity
     {
         public Guid Id { get; set; }
 

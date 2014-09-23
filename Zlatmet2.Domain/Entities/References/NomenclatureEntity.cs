@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Zlatmet2.Domain.Entities.References
 {
-    [Table("ReferenceBases")]
-    class BaseEntity
+    [Table("ReferenceNomenclatures")]
+    internal class NomenclatureEntity
     {
         public Guid Id { get; set; }
 

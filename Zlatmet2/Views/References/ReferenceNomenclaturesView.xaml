@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:classes="clr-namespace:Zlatmet2.Classes"
@@ -15,7 +14,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ToolBar>
+        <ToolBar Background="Transparent">
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
             <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
             <Separator />
@@ -32,12 +31,21 @@
                 <classes:ScrollIntoViewBehavior />
             </i:Interaction.Behaviors>-->
             <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="Наименование" Width="*"
-                                            DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <telerik:GridViewDataColumn Header="Наименование" Width="*" DataMemberBinding="{Binding Name}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
             </telerik:RadGridView.Columns>
             <telerik:RadGridView.RowStyle>
                 <Style TargetType="{x:Type telerik:GridViewRow}">
-                    <Setter Property="FontWeight" Value="Normal" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsChanged}" Value="True">
                             <Setter Property="FontWeight" Value="Bold" />

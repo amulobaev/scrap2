@@ -6,9 +6,12 @@ using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
+    /// <summary>
+    /// Модель представления справочника "Траснспорт"
+    /// </summary>
     public class ReferenceTransportsViewModel : BaseReferenceViewModel<TransportWrapper>
     {
-        public ReferenceTransportsViewModel(LayoutDocument layout)
+        public ReferenceTransportsViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceTransportsView))
         {
             Title = "Справочник: автотранспорт";

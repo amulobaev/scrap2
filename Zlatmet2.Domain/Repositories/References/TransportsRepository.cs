@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Domain.Dto.References;
+using Zlatmet2.Domain.Entities.References;
 using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
+    /// <summary>
+    /// Репозитарий справочника "Транспорт"
+    /// </summary>
     public sealed class TransportsRepository : BaseRepository<Transport>
     {
         static TransportsRepository()
         {
-            Mapper.CreateMap<Transport, TransportDto>();
-            Mapper.CreateMap<TransportDto, Transport>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+            Mapper.CreateMap<Transport, TransportEntity>();
+            Mapper.CreateMap<TransportEntity, Transport>()
+                .ConstructUsing(x => new Transport(x.Id));
         }
 
         public TransportsRepository(IModelContext context)
@@ -25,26 +30,23 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Create(Transport data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                TransportDto dto = Mapper.Map<Transport, TransportDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+                TransportEntity entity = Mapper.Map<Transport, TransportEntity>(data);
+                context.Transports.Add(entity);
+                context.SaveChanges();
             }
         }
 
         public override IEnumerable<Transport> GetAll()
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                var dtos = connection.Query<TransportDto>("SELECT * FROM [ReferenceTransports]");
-                List<Transport> transports = new List<Transport>();
-                foreach (TransportDto dto in dtos)
-                {
-                    Transport transport = new Transport(dto.Id);
-                    Mapper.Map(dto, transport);
-                    transports.Add(transport);
-                }
-                return transports;
+                List<TransportEntity> entities = context.Transports.ToList();
+                return Mapper.Map<List<TransportEntity>, List<Transport>>(entities);
             }
         }
 
@@ -55,16 +57,37 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Update(Transport data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                TransportDto dto = Mapper.Map<Transport, TransportDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+                TransportEntity entity = context.Transports.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                TransportEntity entity = context.Transports.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.Transports.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
         }
 
     }

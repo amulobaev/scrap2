@@ -24,6 +24,10 @@ namespace Zlatmet2.Domain
 
         // Справочники
 
+        public virtual DbSet<NomenclatureEntity> Nomenclatures { get; set; }
+
         public virtual DbSet<OrganizationEntity> Organizations { get; set; }
+
+        public virtual DbSet<TransportEntity> Transports { get; set; }
     }
 }

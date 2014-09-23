@@ -23,7 +23,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ToolBar>
+        <ToolBar Background="Transparent">
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
             <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
             <Separator />
@@ -37,12 +37,34 @@
                 <telerik:SortDescriptor Member="Name"/>
             </telerik:RadGridView.SortDescriptors>
             <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="Марка" Width="*" DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                <telerik:GridViewDataColumn Header="Номер" Width="*" DataMemberBinding="{Binding CarNumber, UpdateSourceTrigger=PropertyChanged}" />
-                <telerik:GridViewDataColumn Header="Тара, т" Width="*">
+                <telerik:GridViewDataColumn Header="Марка" Width="*" DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
                     <telerik:GridViewDataColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Tara}" />
+                            <TextBlock Text="{Binding Name, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Номер" Width="*" DataMemberBinding="{Binding CarNumber, UpdateSourceTrigger=PropertyChanged}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CarNumber, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding CarNumber, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Тара, т" Width="*" DataMemberBinding="{Binding Tara}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Tara, ValidatesOnDataErrors=True}" />
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellTemplate>
                     <telerik:GridViewDataColumn.CellEditTemplate>
@@ -51,7 +73,7 @@
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellEditTemplate>
                 </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Header="Водитель" Width="*">
+                <telerik:GridViewDataColumn Header="Водитель" Width="*" DataMemberBinding="{Binding Driver}">
                     <telerik:GridViewDataColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Driver.Name}" />
