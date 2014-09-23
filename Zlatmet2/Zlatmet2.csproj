@@ -254,6 +254,9 @@
     <Compile Include="Views\Reports\ReportWarehouseView.xaml.cs">
       <DependentUpon>ReportWarehouseView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Service\EditPasswordWindow.xaml.cs">
+      <DependentUpon>EditPasswordWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Service\ImportDataWindow.xaml.cs">
       <DependentUpon>ImportDataWindow.xaml</DependentUpon>
     </Compile>
@@ -334,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Reports\ReportWarehouseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\EditPasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,6 +16,8 @@
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
             <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
             <Separator />
+            <Button Content="Задать пароль" Command="{Binding ChangePasswordCommand}" />
+            <Separator />
             <Button Content="Сохранить изменения" Command="{Binding SaveCommand}" />
         </ToolBar>
 
@@ -36,19 +38,6 @@
                     <telerik:GridViewDataColumn.CellEditTemplate>
                         <DataTemplate>
                             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                        </DataTemplate>
-                    </telerik:GridViewDataColumn.CellEditTemplate>
-                </telerik:GridViewDataColumn>
-                <!--Пароль-->
-                <telerik:GridViewDataColumn Header="Пароль" Width="*">
-                    <telerik:GridViewDataColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock />
-                        </DataTemplate>
-                    </telerik:GridViewDataColumn.CellTemplate>
-                    <telerik:GridViewDataColumn.CellEditTemplate>
-                        <DataTemplate>
-                            <PasswordBox Password="{Binding Password}" />
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellEditTemplate>
                 </telerik:GridViewDataColumn>
