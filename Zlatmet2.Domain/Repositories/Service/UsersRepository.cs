@@ -5,8 +5,7 @@ using AutoMapper;
 using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes;
-using Zlatmet2.Domain.Dto.Service;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities;
 
 namespace Zlatmet2.Domain.Repositories.Service
 {
@@ -14,8 +13,9 @@ namespace Zlatmet2.Domain.Repositories.Service
     {
         static UsersRepository()
         {
-            Mapper.CreateMap<User, UserDto>();
-            Mapper.CreateMap<UserDto, User>()
+            Mapper.CreateMap<User, UserEntity>();
+            Mapper.CreateMap<UserEntity, User>()
+                .ConstructUsing(x => new User(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
@@ -26,10 +26,11 @@ namespace Zlatmet2.Domain.Repositories.Service
 
         public override void Create(User data)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                UserDto dto = Mapper.Map<User, UserDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+                UserEntity userEntity = Mapper.Map<User, UserEntity>(data);
+                context.Users.Add(userEntity);
+                context.SaveChanges();
             }
         }
 
@@ -37,39 +38,17 @@ namespace Zlatmet2.Domain.Repositories.Service
         {
             using (ZlatmetContext context = new ZlatmetContext())
             {
-                return context.Users.ToList()
-                    .Select(
-                        userEntity => new User(userEntity.Id) { Login = userEntity.Login, Password = userEntity.Password })
-                    .ToList();
+                UserEntity[] userEntities = context.Users.ToArray();
+                return Mapper.Map<UserEntity[], User[]>(userEntities);
             }
-
-            //using (var connection = ConnectionFactory.Create())
-            //{
-            //    var dtos = connection.Query<UserDto>(QueryObject.GetAllQuery(typeof(UserDto))).ToList();
-            //    List<User> users = new List<User>();
-            //    foreach (UserDto dto in dtos)
-            //    {
-            //        User user = new User(dto.Id);
-            //        Mapper.Map(dto, user);
-            //        users.Add(user);
-            //    }
-            //    return users;
-            //}
         }
 
         public override User GetById(Guid id)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query = QueryObject.GetByIdQuery(typeof(UserDto));
-                UserDto dto = connection.Query<UserDto>(query, new { Id = id }).FirstOrDefault();
-                if (dto != null)
-                {
-                    User user = new User(dto.Id);
-                    Mapper.Map(dto, user);
-                    return user;
-                }
-                return null;
+                UserEntity userEntity = context.Users.FirstOrDefault(x => x.Id == id);
+                return userEntity != null ? Mapper.Map<UserEntity, User>(userEntity) : null;
             }
         }
 
@@ -83,5 +62,25 @@ namespace Zlatmet2.Domain.Repositories.Service
             throw new NotImplementedException();
         }
 
+        public void CreateOrUpdate(User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                UserEntity userEntity = context.Users.FirstOrDefault(x => x.Id == user.Id);
+                if (userEntity == null)
+                {
+                    userEntity = Mapper.Map<User, UserEntity>(user);
+                    context.Users.Add(userEntity);
+                }
+                else
+                {
+                    Mapper.Map(user, userEntity);
+                }
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -4,11 +4,12 @@ using GalaSoft.MvvmLight.Command;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.References;
+using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
-    public sealed class ReferenceContractorsViewModel : BaseReferenceViewModel<OrganizationWrapper>
+    public sealed class ReferenceContractorsViewModel : BaseEditorViewModel<OrganizationWrapper>
     {
         private ICommand _addDivisionCommand;
         private ICommand _removeDivisionCommand;

@@ -184,7 +184,7 @@
     <Compile Include="ViewModels\Documents\DocumentTransportationViewModel.cs" />
     <Compile Include="ViewModels\JournalViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\References\BaseReferenceViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseEditorViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceBasesViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceDriversViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceNomenclaturesViewModel.cs" />
@@ -206,6 +206,7 @@
     <Compile Include="ViewModels\Service\ParametersViewModel.cs" />
     <Compile Include="ViewModels\Service\TemplatesViewModel.cs" />
     <Compile Include="ViewModels\Service\UsersViewModel.cs" />
+    <Compile Include="Models\Service\UserWrapper.cs" />
     <Compile Include="Views\Documents\DocumentProcessingView.xaml.cs">
       <DependentUpon>DocumentProcessingView.xaml</DependentUpon>
     </Compile>

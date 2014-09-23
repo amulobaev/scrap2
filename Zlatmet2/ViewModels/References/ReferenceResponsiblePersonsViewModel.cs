@@ -1,11 +1,12 @@
 ﻿using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.References;
+using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
-    public class ReferenceResponsiblePersonsViewModel : BaseReferenceViewModel<EmployeeWrapper>
+    public class ReferenceResponsiblePersonsViewModel : BaseEditorViewModel<EmployeeWrapper>
     {
         /// <summary>
         /// 

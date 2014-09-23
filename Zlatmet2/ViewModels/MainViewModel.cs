@@ -28,6 +28,8 @@ namespace Zlatmet2.ViewModels
 
         private ICommand _showReferenceContractorsCommand;
 
+        private ICommand _showUsersCommand;
+
         #endregion
 
         /// <summary>
@@ -131,6 +133,16 @@ namespace Zlatmet2.ViewModels
         public ICommand ImportDataCommand
         {
             get { return _importDataCommand ?? (_importDataCommand = new RelayCommand(ImportData)); }
+        }
+
+        public ICommand ShowUsersCommand
+        {
+            get { return _showUsersCommand ?? (_showUsersCommand = new RelayCommand(ShowUsers)); }
+        }
+
+        private void ShowUsers()
+        {
+            ShowLayoutDocument(typeof(UsersViewModel));
         }
 
         #endregion

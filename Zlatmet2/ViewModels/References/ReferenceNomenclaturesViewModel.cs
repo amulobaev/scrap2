@@ -1,10 +1,11 @@
 ﻿using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Models.References;
+using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
-    public class ReferenceNomenclaturesViewModel : BaseReferenceViewModel<NomenclatureWrapper>
+    public class ReferenceNomenclaturesViewModel : BaseEditorViewModel<NomenclatureWrapper>
     {
         /// <summary>
         /// Конструктор

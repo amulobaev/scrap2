@@ -2,6 +2,7 @@
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Models.References;
+using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
@@ -9,7 +10,7 @@ namespace Zlatmet2.ViewModels.References
     /// <summary>
     /// Модель представления справочника "Траснспорт"
     /// </summary>
-    public class ReferenceTransportsViewModel : BaseReferenceViewModel<TransportWrapper>
+    public class ReferenceTransportsViewModel : BaseEditorViewModel<TransportWrapper>
     {
         public ReferenceTransportsViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceTransportsView))

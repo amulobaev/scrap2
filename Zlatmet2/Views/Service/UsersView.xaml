@@ -16,7 +16,7 @@
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
             <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
             <Separator />
-            <Button Content="Задать пароль" Command="{Binding ChangePasswordCommand}" />
+            <Button Content="Сохранить изменения" Command="{Binding SaveCommand}" />
         </ToolBar>
 
         <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"
@@ -26,8 +26,32 @@
                 <telerik:SortDescriptor Member="Name"/>
             </telerik:RadGridView.SortDescriptors>
             <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="Наименование" Width="*"
-                                            DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <!--Имя пользователя-->
+                <telerik:GridViewDataColumn Header="Имя пользователя" Width="*" DataMemberBinding="{Binding Name}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+                <!--Пароль-->
+                <telerik:GridViewDataColumn Header="Пароль" Width="*">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <PasswordBox Password="{Binding Password}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
             </telerik:RadGridView.Columns>
             <telerik:RadGridView.RowStyle>
                 <Style TargetType="{x:Type telerik:GridViewRow}">

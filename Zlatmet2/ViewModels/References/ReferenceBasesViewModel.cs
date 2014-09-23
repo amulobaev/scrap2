@@ -1,11 +1,12 @@
 ﻿using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.References;
+using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
-    public sealed class ReferenceBasesViewModel : BaseReferenceViewModel<OrganizationWrapper>
+    public sealed class ReferenceBasesViewModel : BaseEditorViewModel<OrganizationWrapper>
     {
         public ReferenceBasesViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceBasesView))

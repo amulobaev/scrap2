@@ -6,14 +6,13 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Models.References;
-using Zlatmet2.ViewModels.Base;
 
-namespace Zlatmet2.ViewModels.References
+namespace Zlatmet2.ViewModels.Base
 {
     /// <summary>
-    /// Базовая модель представления для справочников
+    /// Базовая модель представления для табличного редактора (справочники, пользователи)
     /// </summary>
-    public abstract class BaseReferenceViewModel<T> : SingletonLayoutDocumentViewModel where T : BaseReferenceWrapper
+    public abstract class BaseEditorViewModel<T> : SingletonLayoutDocumentViewModel where T : BaseReferenceWrapper
     {
         private T _selectedItem;
 
@@ -28,7 +27,7 @@ namespace Zlatmet2.ViewModels.References
         /// </summary>
         /// <param name="layout"></param>
         /// <param name="viewType"></param>
-        protected BaseReferenceViewModel(LayoutDocument layout, Type viewType)
+        protected BaseEditorViewModel(LayoutDocument layout, Type viewType)
             : base(layout, viewType)
         {
             Items = new ObservableCollection<T>();

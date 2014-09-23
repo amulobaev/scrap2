@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows;
 using Zlatmet2.Core;
+using Zlatmet2.Core.Classes;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Domain;
@@ -218,8 +219,6 @@ namespace Zlatmet2
             if (o == null)
                 throw new ArgumentNullException("o");
 
-
-
             if (o is Nomenclature)
             {
                 CreateOrUpdateNomenclature(o as Nomenclature);
@@ -244,6 +243,16 @@ namespace Zlatmet2
                 return;
             }
 
+            if (o is User)
+            {
+                CreateOrUpdateUser(o as User);
+                return;
+            }
+        }
+
+        private void CreateOrUpdateUser(User user)
+        {
+            UsersRepository.CreateOrUpdate(user);
         }
 
         private void CreateOrUpdateNomenclature(Nomenclature nomenclature)
