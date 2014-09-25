@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes;
 using Zlatmet2.Domain.Entities;
@@ -54,12 +53,37 @@ namespace Zlatmet2.Domain.Repositories.Service
 
         public override void Update(User data)
         {
-            throw new NotImplementedException();
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                UserEntity userEntity = context.Users.FirstOrDefault(x => x.Id == data.Id);
+                if (userEntity != null)
+                {
+                    if (data.Login != userEntity.Login)
+                        userEntity.Login = data.Login;
+                    if (!string.IsNullOrEmpty(data.Password))
+                        userEntity.Password = data.Password;
+                    context.SaveChanges();
+                }
+            }
         }
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                UserEntity userEntity = context.Users.FirstOrDefault(x => x.Id == id);
+                if (userEntity != null)
+                {
+                    context.Users.Remove(userEntity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
         public void CreateOrUpdate(User user)

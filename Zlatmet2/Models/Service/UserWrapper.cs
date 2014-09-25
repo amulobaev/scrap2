@@ -10,6 +10,7 @@ namespace Zlatmet2.Models.Service
     public class UserWrapper : BaseReferenceWrapper<User>
     {
         private string _name;
+        private string _password;
 
         public UserWrapper(User user = null)
             : base(user)
@@ -38,11 +39,24 @@ namespace Zlatmet2.Models.Service
             }
         }
 
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                if (value == _password)
+                    return;
+                _password = value;
+                RaisePropertyChanged("Password");
+            }
+        }
+
         public override void UpdateContainer()
         {
             if (Container == null)
                 Container = new User(Id);
             Container.Login = Name;
+            Container.Password = Password;
         }
 
     }

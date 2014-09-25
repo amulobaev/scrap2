@@ -380,6 +380,7 @@ namespace Zlatmet2
                 return;
             }
 
+            // Транспорт
             if (o is Transport)
             {
                 Transport transport = o as Transport;
@@ -388,6 +389,13 @@ namespace Zlatmet2
                 return;
             }
 
+
+            // Пользователь
+            if (o is User)
+            {
+                UsersRepository.Delete(o as User);
+                return;
+            }
         }
 
         #endregion

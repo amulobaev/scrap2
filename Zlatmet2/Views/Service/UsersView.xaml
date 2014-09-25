@@ -13,44 +13,30 @@
         </Grid.RowDefinitions>
 
         <ToolBar Background="Transparent">
+            <ToolBar.Resources>
+                <Style x:Key="SelectedItemStyle" TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToolBar.Resources>
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
-            <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
-            <Separator />
-            <Button Content="Задать пароль" Command="{Binding ChangePasswordCommand}" />
-            <Separator />
-            <Button Content="Сохранить изменения" Command="{Binding SaveCommand}" />
+            <Button Content="Изменить" Command="{Binding EditItemCommand}" Style="{StaticResource SelectedItemStyle}" />
+            <Button Content="Удалить" Command="{Binding RemoveItemCommand}" Style="{StaticResource SelectedItemStyle}" />
         </ToolBar>
 
         <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"
                              RowIndicatorVisibility="Collapsed" CanUserFreezeColumns="False" IsFilteringAllowed="False"
-                             ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+                             ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
             <telerik:RadGridView.SortDescriptors>
                 <telerik:SortDescriptor Member="Name"/>
             </telerik:RadGridView.SortDescriptors>
             <telerik:RadGridView.Columns>
                 <!--Имя пользователя-->
-                <telerik:GridViewDataColumn Header="Имя пользователя" Width="*" DataMemberBinding="{Binding Name}">
-                    <telerik:GridViewDataColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name, ValidatesOnDataErrors=True}" />
-                        </DataTemplate>
-                    </telerik:GridViewDataColumn.CellTemplate>
-                    <telerik:GridViewDataColumn.CellEditTemplate>
-                        <DataTemplate>
-                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                        </DataTemplate>
-                    </telerik:GridViewDataColumn.CellEditTemplate>
-                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Имя пользователя" Width="*" DataMemberBinding="{Binding Name}" />
             </telerik:RadGridView.Columns>
-            <telerik:RadGridView.RowStyle>
-                <Style TargetType="{x:Type telerik:GridViewRow}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsChanged}" Value="True">
-                            <Setter Property="FontWeight" Value="Bold" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </telerik:RadGridView.RowStyle>
         </telerik:RadGridView>
     </Grid>
 </UserControl>
