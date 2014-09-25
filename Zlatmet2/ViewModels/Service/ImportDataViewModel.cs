@@ -410,7 +410,7 @@ namespace Zlatmet2.ViewModels.Service
             foreach (OldOrganizationDto oldOrganization in oldOrganizations)
             {
                 Organization organization =
-                    new Organization(oldOrganization.organization_id, (OrganizationType)oldOrganization.type)
+                    new Organization(oldOrganization.organization_id, OrganizationType.Contractor)
                     {
                         Name = oldOrganization.name,
                         FullName = oldOrganization.name_full,

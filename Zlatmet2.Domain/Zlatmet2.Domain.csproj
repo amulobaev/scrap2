@@ -71,14 +71,13 @@
     <Compile Include="Dto\Documents\RemainsItemDto.cs" />
     <Compile Include="Dto\Documents\TransportationDto.cs" />
     <Compile Include="Dto\Documents\TransportationItemDto.cs" />
-    <Compile Include="Dto\References\DivisionDto.cs" />
-    <Compile Include="Dto\References\EmployeeDto.cs" />
-    <Compile Include="Dto\References\OrganizationDto.cs" />
-    <Compile Include="Dto\Service\TemplateDto.cs" />
+    <Compile Include="Entities\TemplateEntity.cs" />
     <Compile Include="Entities\DocumentEntity.cs" />
-    <Compile Include="Entities\References\NomenclatureEntity.cs" />
-    <Compile Include="Entities\References\OrganizationEntity.cs" />
-    <Compile Include="Entities\References\TransportEntity.cs" />
+    <Compile Include="Entities\DivisionEntity.cs" />
+    <Compile Include="Entities\EmployeeEntity.cs" />
+    <Compile Include="Entities\NomenclatureEntity.cs" />
+    <Compile Include="Entities\OrganizationEntity.cs" />
+    <Compile Include="Entities\TransportEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Repositories\Service\UsersRepository.cs" />
@@ -104,6 +103,7 @@
     <Compile Include="Repositories\Service\TemplatesRepository.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="ZlatmetContext.cs" />
+    <Compile Include="ZlatmetContextInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

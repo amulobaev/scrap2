@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Enums;
-using Zlatmet2.Domain.Dto.References;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.References;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
@@ -15,8 +14,9 @@ namespace Zlatmet2.Domain.Repositories.References
     {
         static EmployeesRepository()
         {
-            Mapper.CreateMap<Employee, EmployeeDto>();
-            Mapper.CreateMap<EmployeeDto, Employee>()
+            Mapper.CreateMap<Employee, EmployeeEntity>();
+            Mapper.CreateMap<EmployeeEntity, Employee>()
+                .ConstructUsing(x => new Employee(x.Id, (EmployeeType)x.Type))
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.Type, opt => opt.Ignore());
         }
@@ -28,28 +28,23 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Create(Employee data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                EmployeeDto dto = Mapper.Map<Employee, EmployeeDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+                EmployeeEntity employeeEntity = Mapper.Map<Employee, EmployeeEntity>(data);
+                context.Employees.Add(employeeEntity);
+                context.SaveChanges();
             }
         }
 
         protected IEnumerable<Employee> GetAll(EmployeeType type)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                List<EmployeeDto> dtos = connection.Query<EmployeeDto>(
-                    "SELECT * FROM [ReferenceEmployees] WHERE Type = @Type", new { Type = (int)type }).ToList();
-
-                List<Employee> employees = new List<Employee>();
-                foreach (EmployeeDto dto in dtos)
-                {
-                    Employee employee = new Employee(dto.Id, (EmployeeType)dto.Type);
-                    Mapper.Map(dto, employee);
-                    employees.Add(employee);
-                }
-                return employees;
+                EmployeeEntity[] entities = context.Employees.Where(x => x.Type == (int)type).ToArray();
+                return Mapper.Map<EmployeeEntity[], Employee[]>(entities);
             }
         }
 
@@ -60,10 +55,17 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Update(Employee data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                EmployeeDto dto = Mapper.Map<Employee, EmployeeDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+                EmployeeEntity entity = context.Employees.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 

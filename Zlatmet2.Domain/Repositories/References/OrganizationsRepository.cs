@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Enums;
-using Zlatmet2.Domain.Dto.References;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.References;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
@@ -20,8 +18,13 @@ namespace Zlatmet2.Domain.Repositories.References
 
         static OrganizationsRepository()
         {
-            Mapper.CreateMap<Organization, OrganizationDto>();
-            Mapper.CreateMap<OrganizationDto, Organization>()
+            Mapper.CreateMap<Division, DivisionEntity>();
+            Mapper.CreateMap<DivisionEntity, Division>()
+                .ConstructUsing(x => new Division(x.Id))
+                .ForMember(x => x.Id, opt => opt.Ignore());
+
+            Mapper.CreateMap<Organization, OrganizationEntity>();
+            Mapper.CreateMap<OrganizationEntity, Organization>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.Type, opt => opt.Ignore());
         }
@@ -46,40 +49,24 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Create(Organization data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                OrganizationDto dto = Mapper.Map<Organization, OrganizationDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                DivisionsRepository.Create(dto.Divisions);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                OrganizationEntity organizationEntity = Mapper.Map<Organization, OrganizationEntity>(data);
+                context.Organizations.Add(organizationEntity);
+
+                context.SaveChanges();
             }
         }
 
         protected IEnumerable<Organization> GetAll(OrganizationType type)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                List<OrganizationDto> dtos =
-                    connection.Query<OrganizationDto>("SELECT * FROM [ReferenceOrganizations] WHERE Type = @Type",
-                        new { Type = (int)type }).ToList();
-                foreach (OrganizationDto organizationDto in dtos)
-                {
-                    List<DivisionDto> divisions =
-                        connection.Query<DivisionDto>("SELECT * FROM [ReferenceDivisions] WHERE OrganizationId = @Id",
-                            new { organizationDto.Id }).ToList();
-                    if (divisions.Any())
-                        organizationDto.Divisions.AddRange(divisions);
-                }
-
-                List<Organization> organizations = new List<Organization>();
-                foreach (OrganizationDto organizationDto in dtos)
-                {
-                    Organization organization =
-                        new Organization(organizationDto.Id, (OrganizationType)organizationDto.Type);
-                    Mapper.Map(organizationDto, organization);
-                    organizations.Add(organization);
-                }
-                return organizations;
+                OrganizationEntity[] entities = context.Organizations.Where(x => x.Type == (int)type).ToArray();
+                return Mapper.Map<OrganizationEntity[], Organization[]>(entities);
             }
         }
 
@@ -90,14 +77,17 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Update(Organization data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                OrganizationDto dto = Mapper.Map<Organization, OrganizationDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Подразделения
-                //connection.Execute("DELETE FROM [ReferenceDivisions] WHERE OrganizationId = @Id", new { dto.Id });
-                //InsertDivisions(connection, dto.Divisions);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                OrganizationEntity entity = context.Organizations.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 

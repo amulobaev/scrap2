@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
-using Zlatmet2.Domain.Dto.References;
 using Zlatmet2.Domain.Entities.References;
-using Zlatmet2.Domain.Tools;
 
 namespace Zlatmet2.Domain.Repositories.References
 {

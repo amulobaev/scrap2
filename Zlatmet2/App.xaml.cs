@@ -46,8 +46,7 @@ namespace Zlatmet2
 #if DEBUG
             }
 #endif
-
-
+            
             if (MainStorage.Instance.UserId == Guid.Empty)
             {
                 this.Shutdown();

@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Zlatmet2.Domain.Dto.References
+namespace Zlatmet2.Domain.Entities.References
 {
     [Table("ReferenceOrganizations")]
-    public class OrganizationDto : BaseDto
+    internal class OrganizationEntity
     {
-        private List<DivisionDto> _divisions;
+        [Key]
+        public Guid Id { get; set; }
 
         public int Type { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string FullName { get; set; }
@@ -25,9 +30,6 @@ namespace Zlatmet2.Domain.Dto.References
 
         public string Contract { get; set; }
 
-        public List<DivisionDto> Divisions
-        {
-            get { return _divisions ?? (_divisions = new List<DivisionDto>()); }
-        }
+        public virtual ICollection<DivisionEntity> Divisions { get; set; }
     }
 }

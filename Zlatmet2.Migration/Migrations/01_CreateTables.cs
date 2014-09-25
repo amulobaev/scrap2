@@ -10,61 +10,61 @@ namespace Zlatmet2.Migration.Migrations
         public override void Up()
         {
             // Пользователи
-            Create.Table("Users")
-                .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Login").AsString().Unique().NotNullable()
-                .WithColumn("Password").AsString(Int32.MaxValue).Nullable();
-            Insert.IntoTable("Users")
-                .Row(
-                    new
-                    {
-                        Id = Guid.Parse("{C0B709EA-1DC2-41F8-83AF-380D3AA32019}"),
-                        Login = "Пользователь",
-                        Password = Helpers.Sha1Pass("123")
-                    });
+            //Create.Table("Users")
+            //    .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
+            //    .WithColumn("Login").AsString().Unique().NotNullable()
+            //    .WithColumn("Password").AsString(Int32.MaxValue).Nullable();
+            //Insert.IntoTable("Users")
+            //    .Row(
+            //        new
+            //        {
+            //            Id = Guid.Parse("{C0B709EA-1DC2-41F8-83AF-380D3AA32019}"),
+            //            Login = "Пользователь",
+            //            Password = Helpers.Sha1Pass("123")
+            //        });
 
             #region Справочники
 
             // Номенклатура
-            Create.Table("ReferenceNomenclatures")
-                .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Name").AsString().Unique().NotNullable();
+            //Create.Table("ReferenceNomenclatures")
+            //    .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
+            //    .WithColumn("Name").AsString().Unique().NotNullable();
 
             // Организации
-            Create.Table("ReferenceOrganizations")
-                .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Type").AsInt32().NotNullable()
-                .WithColumn("Name").AsString(Int32.MaxValue).NotNullable()
-                .WithColumn("FullName").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Address").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Phone").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Inn").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Bik").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Bank").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Contract").AsString(Int32.MaxValue).Nullable();
+            //Create.Table("ReferenceOrganizations")
+            //    .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
+            //    .WithColumn("Type").AsInt32().NotNullable()
+            //    .WithColumn("Name").AsString(Int32.MaxValue).NotNullable()
+            //    .WithColumn("FullName").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Address").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Phone").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Inn").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Bik").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Bank").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Contract").AsString(Int32.MaxValue).Nullable();
 
             // Подразделения
-            Create.Table("ReferenceDivisions")
-                .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("OrganizationId").AsGuid().ForeignKey("ReferenceOrganizations", "Id").OnDelete(Rule.Cascade).NotNullable()
-                .WithColumn("Number").AsInt32().NotNullable()
-                .WithColumn("Name").AsString().NotNullable();
+            //Create.Table("ReferenceDivisions")
+            //    .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
+            //    .WithColumn("OrganizationId").AsGuid().ForeignKey("ReferenceOrganizations", "Id").OnDelete(Rule.Cascade).NotNullable()
+            //    .WithColumn("Number").AsInt32().NotNullable()
+            //    .WithColumn("Name").AsString().NotNullable();
 
             // Сотрудники
-            Create.Table("ReferenceEmployees")
-                .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Type").AsInt32().NotNullable()
-                .WithColumn("Name").AsString().Unique().NotNullable()
-                .WithColumn("FullName").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Phone").AsString(Int32.MaxValue).Nullable();
+            //Create.Table("ReferenceEmployees")
+            //    .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
+            //    .WithColumn("Type").AsInt32().NotNullable()
+            //    .WithColumn("Name").AsString().Unique().NotNullable()
+            //    .WithColumn("FullName").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Phone").AsString(Int32.MaxValue).Nullable();
 
             // Транспорт
-            Create.Table("ReferenceTransports")
-                .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
-                .WithColumn("Name").AsString().Unique().NotNullable()
-                .WithColumn("Number").AsString(Int32.MaxValue).Nullable()
-                .WithColumn("Tara").AsDouble().NotNullable()
-                .WithColumn("DriverId").AsGuid().ForeignKey("ReferenceEmployees", "Id").Nullable();
+            //Create.Table("ReferenceTransports")
+            //    .WithColumn("Id").AsGuid().PrimaryKey().NotNullable()
+            //    .WithColumn("Name").AsString().Unique().NotNullable()
+            //    .WithColumn("Number").AsString(Int32.MaxValue).Nullable()
+            //    .WithColumn("Tara").AsDouble().NotNullable()
+            //    .WithColumn("DriverId").AsGuid().ForeignKey("ReferenceEmployees", "Id").Nullable();
 
             #endregion
 

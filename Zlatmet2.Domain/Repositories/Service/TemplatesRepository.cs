@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.Service;
-using Zlatmet2.Domain.Dto.Service;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities;
 
 namespace Zlatmet2.Domain.Repositories.Service
 {
@@ -14,8 +12,9 @@ namespace Zlatmet2.Domain.Repositories.Service
     {
         static TemplatesRepository()
         {
-            Mapper.CreateMap<Template, TemplateDto>();
-            Mapper.CreateMap<TemplateDto, Template>()
+            Mapper.CreateMap<Template, TemplateEntity>();
+            Mapper.CreateMap<TemplateEntity, Template>()
+                .ConstructUsing(x => new Template(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
@@ -30,73 +29,60 @@ namespace Zlatmet2.Domain.Repositories.Service
 
         public override void Create(Template data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                TemplateDto dto = Mapper.Map<Template, TemplateDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+                TemplateEntity entity = Mapper.Map<Template, TemplateEntity>(data);
+                context.Templates.Add(entity);
+                context.SaveChanges();
             }
         }
 
         public override IEnumerable<Template> GetAll()
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                IEnumerable<TemplateDto> dtos =
-                    connection.Query<TemplateDto>(QueryObject.GetAllQuery(typeof(TemplateDto)));
-
-                var templates = new List<Template>();
-                foreach (TemplateDto dto in dtos)
-                {
-                    Template template = new Template(dto.Id);
-                    Mapper.Map(dto, template);
-                    templates.Add(template);
-                }
-                return templates;
+                TemplateEntity[] entities = context.Templates.ToArray();
+                return Mapper.Map<TemplateEntity[], Template[]>(entities);
             }
         }
 
         public override Template GetById(Guid id)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                TemplateDto dto =
-                    connection.Query<TemplateDto>(QueryObject.GetByIdQuery(typeof(TemplateDto)), new { Id = id })
-                        .FirstOrDefault();
-                if (dto != null)
-                {
-                    Template template = new Template(dto.Id);
-                    Mapper.Map(dto, template);
-                    return template;
-                }
-                else
-                    return null;
+                TemplateEntity entity = context.Templates.FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<TemplateEntity, Template>(entity) : null;
             }
         }
 
         public Template GetByName(string name)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("name");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query = string.Format("SELECT * FROM {0} WHERE Name = @Name",
-                    QueryObject.GetTable(typeof(TemplateDto)));
-                TemplateDto dto = connection.Query<TemplateDto>(query, new { Name = name }).FirstOrDefault();
-                if (dto != null)
-                {
-                    Template template = new Template(dto.Id);
-                    Mapper.Map(dto, template);
-                    return template;
-                }
-                else
-                    return null;
+                TemplateEntity entity = context.Templates.FirstOrDefault(x => x.Name == name);
+                return entity != null ? Mapper.Map<TemplateEntity, Template>(entity) : null;
             }
         }
 
         public override void Update(Template data)
         {
-            using (var connection = ConnectionFactory.Create())
+            if (data == null)
+                throw new ArgumentNullException("data");
+
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                TemplateDto dto = Mapper.Map<Template, TemplateDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+                TemplateEntity entity = context.Templates.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(entity, data);
+                    context.SaveChanges();
+                }
             }
         }
 

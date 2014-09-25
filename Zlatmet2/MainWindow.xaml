@@ -32,7 +32,7 @@
                 <MenuItem Header="Корректировка остатков" Command="{Binding ShowDocumentRestsCommand}" />
             </MenuItem>
             <MenuItem Header="Отчеты">
-                <MenuItem Header="Остатки на базе" Command="{Binding ShowReportWarehouseCommand}" />
+                <MenuItem Header="Остатки на базе" Command="{Binding ShowReportRemainsCommand}" />
                 <MenuItem Header="Обороты за период" Command="{Binding ShowReportNomenclatureCommand}" />
                 <MenuItem Header="Отчет по контрагентам" Command="{Binding ShowReportOrganizationCommand}" />
                 <MenuItem Header="Перевозки" />

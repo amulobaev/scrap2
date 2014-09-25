@@ -179,7 +179,7 @@ namespace Zlatmet2
             }
 
             // Обновление структуры базы данных в случае необходимости
-            MigrationManager.Start(_connectionString);
+            //MigrationManager.Start(_connectionString);
 
             // Создание репозитариев
             UsersRepository = new UsersRepository(this);

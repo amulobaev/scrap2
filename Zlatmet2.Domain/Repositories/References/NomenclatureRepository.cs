@@ -17,7 +17,8 @@ namespace Zlatmet2.Domain.Repositories.References
         {
             Mapper.CreateMap<Nomenclature, NomenclatureEntity>();
             Mapper.CreateMap<NomenclatureEntity, Nomenclature>()
-                .ConstructUsing(x => new Nomenclature(x.Id));
+                .ConstructUsing(x => new Nomenclature(x.Id))
+                .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
         public NomenclatureRepository(IModelContext context)
@@ -42,8 +43,8 @@ namespace Zlatmet2.Domain.Repositories.References
         {
             using (ZlatmetContext context = new ZlatmetContext())
             {
-                List<NomenclatureEntity> entities = context.Nomenclatures.ToList();
-                return Mapper.Map<List<NomenclatureEntity>, List<Nomenclature>>(entities);
+                NomenclatureEntity[] entities = context.Nomenclatures.ToArray();
+                return Mapper.Map<NomenclatureEntity[], Nomenclature[]>(entities);
             }
         }
 

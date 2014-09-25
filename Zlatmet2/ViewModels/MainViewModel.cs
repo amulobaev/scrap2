@@ -20,7 +20,7 @@ namespace Zlatmet2.ViewModels
 
         private readonly ObservableCollection<LayoutContent> _documents;
 
-        private ICommand _showReportWarehouseCommand;
+        private ICommand _showReportRemainsCommand;
         private ICommand _showReportNomenclatureCommand;
         private ICommand _showReportOrganizationCommand;
         private ICommand _showTemplatesCommand;
@@ -98,12 +98,12 @@ namespace Zlatmet2.ViewModels
 
         public ICommand ShowParametersCommand { get; private set; }
 
-        public ICommand ShowReportWarehouseCommand
+        public ICommand ShowReportRemainsCommand
         {
             get
             {
-                return _showReportWarehouseCommand ??
-                       (_showReportWarehouseCommand = new RelayCommand(ShowReportWarehouse));
+                return _showReportRemainsCommand ??
+                       (_showReportRemainsCommand = new RelayCommand(ShowReportRemains));
             }
         }
 
@@ -270,7 +270,7 @@ namespace Zlatmet2.ViewModels
             ShowLayoutDocument(typeof(DocumentRemainsViewModel), Guid.Empty);
         }
 
-        private void ShowReportWarehouse()
+        private void ShowReportRemains()
         {
             ShowLayoutDocument(typeof(ReportWarehouseViewModel), Guid.Empty);
         }

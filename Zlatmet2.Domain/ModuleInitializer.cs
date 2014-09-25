@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.IO;
 using InteractivePreGeneratedViews;
 using Zlatmet2.Domain;
@@ -19,6 +20,8 @@ public static class ModuleInitializer
         // Если папка не существует, то её нужно создать
         if (!Directory.Exists(appDataFolder))
             Directory.CreateDirectory(appDataFolder);
+
+        Database.SetInitializer(new ZlatmetContextInitializer());
 
         using (ZlatmetContext context = new ZlatmetContext())
         {

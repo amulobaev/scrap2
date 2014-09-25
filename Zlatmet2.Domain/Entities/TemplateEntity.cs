@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Zlatmet2.Domain.Entities
 {
-    [Table("Users")]
-    public class UserEntity
+    [Table("Templates")]
+    public class TemplateEntity
     {
         [Key]
         public Guid Id { get; set; }
 
         [Required]
-        public string Login { get; set; }
+        public string Name { get; set; }
 
-        public string Password { get; set; }
+        public byte[] Data { get; set; }
     }
 }

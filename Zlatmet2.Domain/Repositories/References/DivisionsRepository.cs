@@ -4,18 +4,17 @@ using AutoMapper;
 using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
-using Zlatmet2.Domain.Dto.References;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.References;
 
 namespace Zlatmet2.Domain.Repositories.References
 {
+    /// <summary>
+    /// Репозитарий справочника "Подразделения"
+    /// </summary>
     public class DivisionsRepository : BaseRepository<Division>
     {
         static DivisionsRepository()
         {
-            Mapper.CreateMap<Division, DivisionDto>();
-            Mapper.CreateMap<DivisionDto, Division>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
         public DivisionsRepository(IModelContext context)
@@ -25,18 +24,14 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override void Create(Division data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                DivisionDto dto = Mapper.Map<Division, DivisionDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
-            }
-        }
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-        public void Create(IEnumerable<DivisionDto> divisions)
-        {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                connection.Execute(QueryObject.CreateQuery(typeof(DivisionDto)), divisions);
+                DivisionEntity entity = Mapper.Map<Division, DivisionEntity>(data);
+                context.Divisions.Add(entity);
+                context.SaveChanges();
             }
         }
 

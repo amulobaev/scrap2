@@ -28,6 +28,22 @@ namespace Zlatmet2.Domain
 
         public virtual DbSet<OrganizationEntity> Organizations { get; set; }
 
+        public virtual DbSet<DivisionEntity> Divisions { get; set; }
+
         public virtual DbSet<TransportEntity> Transports { get; set; }
+
+        public virtual DbSet<EmployeeEntity> Employees { get; set; }
+
+        public virtual DbSet<TemplateEntity> Templates { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // Связь подрядчика и подразделения
+            modelBuilder.Entity<DivisionEntity>()
+                .HasRequired(x => x.Organization)
+                .WithMany(x => x.Divisions)
+                .HasForeignKey(x => x.OrganizationId)
+                .WillCascadeOnDelete();
+        }
     }
 }
