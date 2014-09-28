@@ -65,23 +65,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\BaseDto.cs" />
-    <Compile Include="Dto\Documents\ProcessingItemDto.cs" />
-    <Compile Include="Dto\Documents\RemainsDto.cs" />
-    <Compile Include="Dto\Documents\ProcessingDto.cs" />
-    <Compile Include="Dto\Documents\RemainsItemDto.cs" />
-    <Compile Include="Dto\Documents\TransportationDto.cs" />
-    <Compile Include="Dto\Documents\TransportationItemDto.cs" />
+    <Compile Include="Dto\TableAttribute.cs" />
+    <Compile Include="Entities\Documents\ProcessingEntity.cs" />
+    <Compile Include="Entities\Documents\ProcessingItemEntity.cs" />
+    <Compile Include="Entities\Documents\RemainsEntity.cs" />
+    <Compile Include="Entities\Documents\RemainsItemEntity.cs" />
+    <Compile Include="Entities\Documents\TransportationEntity.cs" />
+    <Compile Include="Entities\Documents\TransportationItemEntity.cs" />
     <Compile Include="Entities\TemplateEntity.cs" />
     <Compile Include="Entities\DocumentEntity.cs" />
-    <Compile Include="Entities\DivisionEntity.cs" />
-    <Compile Include="Entities\EmployeeEntity.cs" />
-    <Compile Include="Entities\NomenclatureEntity.cs" />
-    <Compile Include="Entities\OrganizationEntity.cs" />
-    <Compile Include="Entities\TransportEntity.cs" />
+    <Compile Include="Entities\References\DivisionEntity.cs" />
+    <Compile Include="Entities\References\EmployeeEntity.cs" />
+    <Compile Include="Entities\References\NomenclatureEntity.cs" />
+    <Compile Include="Entities\References\OrganizationEntity.cs" />
+    <Compile Include="Entities\References\TransportEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Repositories\Service\UsersRepository.cs" />
-    <Compile Include="Dto\TableAttribute.cs" />
     <Compile Include="MsSqlConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObject.cs" />
@@ -92,7 +92,6 @@
     <Compile Include="Repositories\Documents\TransportationRepository.cs" />
     <Compile Include="Repositories\References\BasesRepository.cs" />
     <Compile Include="Repositories\Documents\DocumentsRepository.cs" />
-    <Compile Include="Repositories\References\DivisionsRepository.cs" />
     <Compile Include="Repositories\References\DriversRepository.cs" />
     <Compile Include="Repositories\References\EmployeesRepository.cs" />
     <Compile Include="Repositories\References\NomenclatureRepository.cs" />
@@ -120,6 +119,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <EmbeddedResource Include="Scripts\Create_GetDocuments_Udf.sql" />
+    <EmbeddedResource Include="Scripts\Create_Documents_View.sql" />
+    <EmbeddedResource Include="Scripts\Create_DocumentNumbersAndDates_View.sql" />
+    <EmbeddedResource Include="Scripts\Create_GetMaxDocumentNumber_Udf.sql" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

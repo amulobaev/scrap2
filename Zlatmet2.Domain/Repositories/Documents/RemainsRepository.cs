@@ -5,8 +5,7 @@ using AutoMapper;
 using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.Documents;
-using Zlatmet2.Domain.Dto.Documents;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.Documents;
 
 namespace Zlatmet2.Domain.Repositories.Documents
 {
@@ -14,19 +13,23 @@ namespace Zlatmet2.Domain.Repositories.Documents
     {
         static RemainsRepository()
         {
-            // Шапка
-            Mapper.CreateMap<Remains, RemainsDto>()
-                .AfterMap((m, d) =>
+            // Создание маппингов
+
+            // Информация о документе
+            Mapper.CreateMap<Remains, RemainsEntity>()
+                .AfterMap((model, entity) =>
                 {
-                    foreach (var dto in d.Items)
-                        dto.DocumentId = m.Id;
+                    foreach (RemainsItemEntity item in entity.Items)
+                        item.DocumentId = model.Id;
                 });
-            Mapper.CreateMap<RemainsDto, Remains>()
+            Mapper.CreateMap<RemainsEntity, Remains>()
+                .ConstructUsing(x => new Remains(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
 
             // Табличная часть
-            Mapper.CreateMap<RemainsItem, RemainsItemDto>();
-            Mapper.CreateMap<RemainsItemDto, RemainsItem>()
+            Mapper.CreateMap<RemainsItem, RemainsItemEntity>();
+            Mapper.CreateMap<RemainsItemEntity, RemainsItem>()
+                .ConstructUsing(x => new RemainsItem(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
@@ -37,14 +40,14 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override void Create(Remains data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                // Шапка
-                RemainsDto dto = Mapper.Map<Remains, RemainsDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Сохранение табличной части
-                connection.Execute(QueryObject.CreateQuery(typeof(RemainsItemDto)), dto.Items);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                RemainsEntity entity = Mapper.Map<Remains, RemainsEntity>(data);
+                context.DocumentRemains.Add(entity);
+                context.SaveChanges();
             }
         }
 
@@ -55,47 +58,26 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override Remains GetById(Guid id)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query;
-
-                // Шапка
-                query = QueryObject.GetByIdQuery(typeof(RemainsDto));
-                var dto = connection.Query<RemainsDto>(query, new { Id = id }).FirstOrDefault();
-                if (dto == null)
-                    return null;
-
-                var document = new Remains(id);
-                Mapper.Map(dto, document);
-
-                // Табличная часть
-                query = string.Format("SELECT * FROM [{0}] WHERE DocumentId = @Id",
-                    QueryObject.GetTable(typeof(RemainsItemDto)));
-                var items = connection.Query<RemainsItemDto>(query, new { Id = id }).ToList();
-                foreach (var itemDto in items)
-                {
-                    RemainsItem item = new RemainsItem(itemDto.Id);
-                    Mapper.Map(itemDto, item);
-                    document.Items.Add(item);
-                }
-
-                return document;
+                RemainsEntity entity = context.DocumentRemains.FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<RemainsEntity, Remains>(entity) : null;
             }
         }
 
         public override void Update(Remains data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                // Шапка
-                RemainsDto dto = Mapper.Map<Remains, RemainsDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Табличная часть
-                connection.Execute(
-                    string.Format("DELETE FROM [{0}] WHERE DocumentId = @Id",
-                        QueryObject.GetTable(typeof(RemainsItemDto))), new { dto.Id });
-                connection.Execute(QueryObject.CreateQuery(typeof(RemainsItemDto)), dto.Items);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                RemainsEntity entity = context.DocumentRemains.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 

@@ -88,7 +88,18 @@ namespace Zlatmet2.Domain.Repositories.Service
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                TemplateEntity entity = context.Templates.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.Templates.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
     }

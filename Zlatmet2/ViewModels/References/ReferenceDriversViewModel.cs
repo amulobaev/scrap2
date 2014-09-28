@@ -6,13 +6,17 @@ using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
+    /// <summary>
+    /// Модель представления справочника "Водители"
+    /// </summary>
     public class ReferenceDriversViewModel : BaseEditorViewModel<EmployeeWrapper>
     {
         /// <summary>
-        /// 
+        /// Конструктор
         /// </summary>
         /// <param name="layout"></param>
-        public ReferenceDriversViewModel(LayoutDocument layout)
+        /// <param name="optional"></param>
+        public ReferenceDriversViewModel(LayoutDocument layout, object optional = null)
             : base(layout, typeof(ReferenceEmployeesView))
         {
             Title = "Справочник: водители";

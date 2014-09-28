@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Zlatmet2.Domain.Dto.Documents
+namespace Zlatmet2.Domain.Entities.Documents
 {
     [Table("DocumentTransportation")]
-    public class TransportationDto : BaseDto
+    public class TransportationEntity
     {
-        private List<TransportationItemDto> _items;
+        [Key]
+        public Guid Id { get; set; }
 
         public Guid? UserId { get; set; }
 
@@ -42,9 +45,6 @@ namespace Zlatmet2.Domain.Dto.Documents
 
         public string Wagon { get; set; }
 
-        public List<TransportationItemDto> Items
-        {
-            get { return _items ?? (_items = new List<TransportationItemDto>()); }
-        }
+        public virtual ICollection<TransportationItemEntity> Items { get; set; }
     }
 }

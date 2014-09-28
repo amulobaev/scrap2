@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using Zlatmet2.Domain.Entities;
+using Zlatmet2.Domain.Entities.Documents;
 using Zlatmet2.Domain.Entities.References;
 
 namespace Zlatmet2.Domain
@@ -36,14 +37,52 @@ namespace Zlatmet2.Domain
 
         public virtual DbSet<TemplateEntity> Templates { get; set; }
 
+        // Документы
+
+        public virtual DbSet<TransportationEntity> DocumentTransportation { get; set; }
+
+        public virtual DbSet<TransportationItemEntity> DocumentTransportationItems { get; set; }
+
+        public virtual DbSet<ProcessingEntity> DocumentProcessing { get; set; }
+
+        public virtual DbSet<ProcessingItemEntity> DocumentProcessingItems { get; set; }
+
+        public virtual DbSet<RemainsEntity> DocumentRemains { get; set; }
+
+        public virtual DbSet<RemainsItemEntity> DocumentRemainsItems { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Связь подрядчика и подразделения
+            // Настройка внешних ключей
+
+            // Организации и подразделения
             modelBuilder.Entity<DivisionEntity>()
                 .HasRequired(x => x.Organization)
                 .WithMany(x => x.Divisions)
                 .HasForeignKey(x => x.OrganizationId)
                 .WillCascadeOnDelete();
+
+            // Документ "Перевозка"
+            modelBuilder.Entity<TransportationItemEntity>()
+                .HasRequired(x => x.Document)
+                .WithMany(x => x.Items)
+                .HasForeignKey(x => x.DocumentId)
+                .WillCascadeOnDelete();
+
+            // Документ "Переработка"
+            modelBuilder.Entity<ProcessingItemEntity>()
+                .HasRequired(x => x.Document)
+                .WithMany(x => x.Items)
+                .HasForeignKey(x => x.DocumentId)
+                .WillCascadeOnDelete();
+
+            // Документ "Корректировка остатков"
+            modelBuilder.Entity<RemainsItemEntity>()
+                .HasRequired(x => x.Document)
+                .WithMany(x => x.Items)
+                .HasForeignKey(x => x.DocumentId)
+                .WillCascadeOnDelete();
+
         }
     }
 }

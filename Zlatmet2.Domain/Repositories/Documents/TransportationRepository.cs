@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.Documents;
-using Zlatmet2.Domain.Dto.Documents;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.Documents;
 
 namespace Zlatmet2.Domain.Repositories.Documents
 {
@@ -18,19 +16,22 @@ namespace Zlatmet2.Domain.Repositories.Documents
         static TransportationRepository()
         {
             // Создание маппингов
+
             // Информация о документе
-            Mapper.CreateMap<Transportation, TransportationDto>()
-                .AfterMap((m, d) =>
+            Mapper.CreateMap<Transportation, TransportationEntity>()
+                .AfterMap((model, entity) =>
                 {
-                    foreach (var dto in d.Items)
-                        dto.DocumentId = m.Id;
+                    foreach (TransportationItemEntity item in entity.Items)
+                        item.DocumentId = model.Id;
                 });
-            Mapper.CreateMap<TransportationDto, Transportation>()
+            Mapper.CreateMap<TransportationEntity, Transportation>()
+                .ConstructUsing(x => new Transportation(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
 
             // Табличная часть
-            Mapper.CreateMap<TransportationItem, TransportationItemDto>();
-            Mapper.CreateMap<TransportationItemDto, TransportationItem>()
+            Mapper.CreateMap<TransportationItem, TransportationItemEntity>();
+            Mapper.CreateMap<TransportationItemEntity, TransportationItem>()
+                .ConstructUsing(x => new TransportationItem(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
@@ -41,14 +42,14 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override void Create(Transportation data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                // Шапка
-                TransportationDto dto = Mapper.Map<Transportation, TransportationDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Сохранение табличной части
-                connection.Execute(QueryObject.CreateQuery(typeof(TransportationItemDto)), dto.Items);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                TransportationEntity entity = Mapper.Map<Transportation, TransportationEntity>(data);
+                context.DocumentTransportation.Add(entity);
+                context.SaveChanges();
             }
         }
 
@@ -59,47 +60,32 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override Transportation GetById(Guid id)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query;
-
-                // Шапка
-                query = QueryObject.GetByIdQuery(typeof(TransportationDto));
-                var dto = connection.Query<TransportationDto>(query, new { Id = id }).FirstOrDefault();
-                if (dto == null)
-                    return null;
-
-                var document = new Transportation(id);
-                Mapper.Map(dto, document);
-
-                // Табличная часть
-                query = string.Format("SELECT * FROM [{0}] WHERE DocumentId = @Id",
-                    QueryObject.GetTable(typeof(TransportationItemDto)));
-                var items = connection.Query<TransportationItemDto>(query, new { Id = id }).ToList();
-                foreach (var itemDto in items)
+                TransportationEntity entity = context.DocumentTransportation.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
                 {
-                    TransportationItem item = new TransportationItem(itemDto.Id);
-                    Mapper.Map(itemDto, item);
-                    document.Items.Add(item);
+                    var document = Mapper.Map<TransportationEntity, Transportation>(entity);
+                    return document;
                 }
-
-                return document;
+                else
+                    return null;
             }
         }
 
         public override void Update(Transportation data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                // Шапка
-                TransportationDto dto = Mapper.Map<Transportation, TransportationDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Табличная часть
-                connection.Execute(
-                    string.Format("DELETE FROM [{0}] WHERE DocumentId = @Id",
-                        QueryObject.GetTable(typeof(TransportationItemDto))), new { dto.Id });
-                connection.Execute(QueryObject.CreateQuery(typeof(TransportationItemDto)), dto.Items);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                TransportationEntity entity = context.DocumentTransportation.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 

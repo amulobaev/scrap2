@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Data.Entity;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Zlatmet2.Core.Tools;
 using Zlatmet2.Domain.Entities;
 
@@ -17,6 +20,30 @@ namespace Zlatmet2.Domain
             };
             context.Users.Add(userEntity);
             context.SaveChanges();
+
+            // Найдем все скрипты
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            string[] resourceNames =
+                executingAssembly.GetManifestResourceNames()
+                    .Where(x => x.Contains("Scripts") && x.EndsWith(".sql"))
+                    .OrderBy(x => x)
+                    .ToArray();
+            foreach (string resourceName in resourceNames)
+            {
+                string query = GetResourceString(resourceName);
+                context.Database.ExecuteSqlCommand(query);
+            }
+        }
+
+        string GetResourceString(string resourceName)
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
     }
 }

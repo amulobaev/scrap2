@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.Documents;
-using Zlatmet2.Domain.Dto.Documents;
-using Zlatmet2.Domain.Tools;
+using Zlatmet2.Domain.Entities.Documents;
 
 namespace Zlatmet2.Domain.Repositories.Documents
 {
@@ -14,19 +12,23 @@ namespace Zlatmet2.Domain.Repositories.Documents
     {
         static ProcessingRepository()
         {
-            // Шапка
-            Mapper.CreateMap<Processing, ProcessingDto>()
-                .AfterMap((m, d) =>
+            // Создание маппингов
+
+            // Информация о документе
+            Mapper.CreateMap<Processing, ProcessingEntity>()
+                .AfterMap((model, entity) =>
                 {
-                    foreach (var dto in d.Items)
-                        dto.DocumentId = m.Id;
+                    foreach (ProcessingItemEntity item in entity.Items)
+                        item.DocumentId = model.Id;
                 });
-            Mapper.CreateMap<ProcessingDto, Processing>()
+            Mapper.CreateMap<ProcessingEntity, Processing>()
+                .ConstructUsing(x => new Processing(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
 
             // Табличная часть
-            Mapper.CreateMap<ProcessingItem, ProcessingItemDto>();
-            Mapper.CreateMap<ProcessingItemDto, ProcessingItem>()
+            Mapper.CreateMap<ProcessingItem, ProcessingItemEntity>();
+            Mapper.CreateMap<ProcessingItemEntity, ProcessingItem>()
+                .ConstructUsing(x => new ProcessingItem(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
@@ -37,14 +39,14 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override void Create(Processing data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                // Шапка
-                ProcessingDto dto = Mapper.Map<Processing, ProcessingDto>(data);
-                connection.Execute(dto.InsertQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Сохранение табличной части
-                connection.Execute(QueryObject.CreateQuery(typeof(ProcessingItemDto)), dto.Items);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                ProcessingEntity entity = Mapper.Map<Processing, ProcessingEntity>(data);
+                context.DocumentProcessing.Add(entity);
+                context.SaveChanges();
             }
         }
 
@@ -55,47 +57,26 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override Processing GetById(Guid id)
         {
-            using (var connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                string query;
-
-                // Шапка
-                query = QueryObject.GetByIdQuery(typeof(ProcessingDto));
-                var dto = connection.Query<ProcessingDto>(query, new { Id = id }).FirstOrDefault();
-                if (dto == null)
-                    return null;
-
-                var document = new Processing(id);
-                Mapper.Map(dto, document);
-
-                // Табличная часть
-                query = string.Format("SELECT * FROM [{0}] WHERE DocumentId = @Id",
-                    QueryObject.GetTable(typeof(ProcessingItemDto)));
-                var items = connection.Query<ProcessingItemDto>(query, new { Id = id }).ToList();
-                foreach (var itemDto in items)
-                {
-                    ProcessingItem item = new ProcessingItem(itemDto.Id);
-                    Mapper.Map(itemDto, item);
-                    document.Items.Add(item);
-                }
-
-                return document;
+                ProcessingEntity entity = context.DocumentProcessing.FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<ProcessingEntity, Processing>(entity) : null;
             }
         }
 
         public override void Update(Processing data)
         {
-            using (var connection = ConnectionFactory.Create())
-            {
-                // Шапка
-                ProcessingDto dto = Mapper.Map<Processing, ProcessingDto>(data);
-                connection.Execute(dto.UpdateQuery(), dto);
+            if (data == null)
+                throw new ArgumentNullException("data");
 
-                // Табличная часть
-                connection.Execute(
-                    string.Format("DELETE FROM [{0}] WHERE DocumentId = @Id",
-                        QueryObject.GetTable(typeof(ProcessingItemDto))), new { dto.Id });
-                connection.Execute(QueryObject.CreateQuery(typeof(ProcessingItemDto)), dto.Items);
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                ProcessingEntity entity = context.DocumentProcessing.FirstOrDefault(x => x.Id == data.Id);
+                if (entity != null)
+                {
+                    Mapper.Map(data, entity);
+                    context.SaveChanges();
+                }
             }
         }
 

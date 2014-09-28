@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using Zlatmet2.Core.Tools;
 
 namespace Zlatmet2.Migration.Migrations
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
 using Zlatmet2.Core;
@@ -14,19 +15,19 @@ namespace Zlatmet2.Domain.Repositories.References
     /// </summary>
     public abstract class OrganizationsRepository : BaseRepository<Organization>
     {
-        private readonly DivisionsRepository _divisionsRepository;
-
         static OrganizationsRepository()
         {
-            Mapper.CreateMap<Division, DivisionEntity>();
-            Mapper.CreateMap<DivisionEntity, Division>()
-                .ConstructUsing(x => new Division(x.Id))
-                .ForMember(x => x.Id, opt => opt.Ignore());
-
+            // Организации
             Mapper.CreateMap<Organization, OrganizationEntity>();
             Mapper.CreateMap<OrganizationEntity, Organization>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.Type, opt => opt.Ignore());
+
+            // Подразделения
+            Mapper.CreateMap<Division, DivisionEntity>();
+            Mapper.CreateMap<DivisionEntity, Division>()
+                .ConstructUsing(x => new Division(x.Id))
+                .ForMember(x => x.Id, opt => opt.Ignore());
         }
 
         /// <summary>
@@ -36,15 +37,6 @@ namespace Zlatmet2.Domain.Repositories.References
         protected OrganizationsRepository(IModelContext context)
             : base(context)
         {
-            _divisionsRepository = new DivisionsRepository(context);
-        }
-
-        /// <summary>
-        /// Репозитарий для подразделений
-        /// </summary>
-        private DivisionsRepository DivisionsRepository
-        {
-            get { return _divisionsRepository; }
         }
 
         public override void Create(Organization data)
@@ -65,8 +57,10 @@ namespace Zlatmet2.Domain.Repositories.References
         {
             using (ZlatmetContext context = new ZlatmetContext())
             {
-                OrganizationEntity[] entities = context.Organizations.Where(x => x.Type == (int)type).ToArray();
-                return Mapper.Map<OrganizationEntity[], Organization[]>(entities);
+                OrganizationEntity[] entities =
+                    context.Organizations.Where(x => x.Type == (int)type).Include(x => x.Divisions).ToArray();
+                Organization[] organizations = Mapper.Map<OrganizationEntity[], Organization[]>(entities);
+                return organizations;
             }
         }
 

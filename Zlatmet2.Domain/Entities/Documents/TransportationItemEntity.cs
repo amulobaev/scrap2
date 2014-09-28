@@ -1,10 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Zlatmet2.Domain.Dto.Documents
+namespace Zlatmet2.Domain.Entities.Documents
 {
     [Table("DocumentTransportationItems")]
-    public class TransportationItemDto : BaseDto
+    public class TransportationItemEntity
     {
+        [Key]
+        public Guid Id { get; set; }
+
         public Guid DocumentId { get; set; }
 
         public int Number { get; set; }
@@ -22,5 +27,7 @@ namespace Zlatmet2.Domain.Dto.Documents
         public double Garbage { get; set; }
 
         public decimal Price { get; set; }
+
+        public virtual TransportationEntity Document { get; set; }
     }
 }

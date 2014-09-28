@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Zlatmet2.Domain.Dto.Documents
+namespace Zlatmet2.Domain.Entities.Documents
 {
     [Table("DocumentProcessing")]
-    public class ProcessingDto : BaseDto
+    public class ProcessingEntity
     {
-        private List<ProcessingItemDto> _items;
+        [Key]
+        public Guid Id { get; set; }
 
         public Guid? UserId { get; set; }
 
@@ -20,9 +23,6 @@ namespace Zlatmet2.Domain.Dto.Documents
 
         public string Comment { get; set; }
 
-        public List<ProcessingItemDto> Items
-        {
-            get { return _items ?? (_items = new List<ProcessingItemDto>()); }
-        }
+        public virtual ICollection<ProcessingItemEntity> Items { get; set; }
     }
 }
