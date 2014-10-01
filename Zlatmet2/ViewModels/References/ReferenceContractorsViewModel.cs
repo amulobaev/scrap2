@@ -87,6 +87,8 @@ namespace Zlatmet2.ViewModels.References
                 MessageBoxImage.Question) == MessageBoxResult.Yes)
                 SelectedItem.Divisions.Remove(SelectedDivision);
 
+            SelectedItem.IsChanged = true;
+
             UpdateNumbersInDivisions();
         }
 

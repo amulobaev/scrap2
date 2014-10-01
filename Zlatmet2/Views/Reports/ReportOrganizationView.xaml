@@ -6,6 +6,7 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
              xmlns:wrappers="clr-namespace:Zlatmet2.Models.References"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="700">
     <UserControl.Resources>
@@ -30,40 +31,97 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="60" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <!--Период отчёта-->
             <TextBlock Margin="3" Text="На период с:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <TextBlock Grid.Row="1" Margin="3" Text="по:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <DatePicker Margin="3" SelectedDate="{Binding DateFrom}" />
+                <TextBlock Margin="3" Text="по:" VerticalAlignment="Center"  />
+                <DatePicker Margin="3" SelectedDate="{Binding DateTo}" />
+            </StackPanel>
 
-            <DatePicker Grid.Column="1" Margin="3" SelectedDate="{Binding DateFrom}" />
-            <DatePicker Grid.Row="1" Grid.Column="1" Margin="3" SelectedDate="{Binding DateTo}" />
+            <!--Поставщики-->
+            <TextBlock Text="Поставщики:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
+            <xctk:DropDownButton Grid.Row="1" Grid.Column="1" Margin="3" VerticalAlignment="Center" Content="Выбрать поставщиков">
+                <xctk:DropDownButton.DropDownContent>
+                    <Grid Height="250">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Поставщики:" Grid.Column="2" VerticalAlignment="Center" Margin="3" />
+                        <TreeView Margin="3" ItemsSource="{Binding Suppliers}" Grid.ColumnSpan="3">
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate DataType="{x:Type wrappers:OrganizationWrapper}" ItemsSource="{Binding Divisions}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Margin="3,0" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.Resources>
+                        </TreeView>
 
-            <TreeView Grid.Column="3" Width="170" Grid.RowSpan="3" Margin="3" Height="120" ItemsSource="{Binding Suppliers}">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type wrappers:OrganizationWrapper}" ItemsSource="{Binding Divisions}">
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Margin="3,0" />
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-            </TreeView>
+                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllBasesCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
+                        <Button Grid.Row="1" Grid.Column="2" Content="Закрыть" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
+                    </Grid>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
 
-            <CheckBox Content="Номенклатура:" Margin="3" Grid.Column="4" VerticalAlignment="Center" IsChecked="{Binding Nomenclature}" />
-            <ComboBox Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3" Width="130"
+            <!--Заказчики-->
+            <TextBlock Text="Заказчики:" Grid.Row="2" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right" />
+            <xctk:DropDownButton Grid.Row="2" Grid.Column="1" Margin="3" VerticalAlignment="Center" Content="Выбрать заказчиков">
+                <xctk:DropDownButton.DropDownContent>
+                    <Grid Height="250">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TreeView Margin="3" Grid.ColumnSpan="3" ItemsSource="{Binding Suppliers}">
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate DataType="{x:Type wrappers:OrganizationWrapper}" ItemsSource="{Binding Divisions}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Margin="3,0" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.Resources>
+                        </TreeView>
+
+                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllBasesCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
+                        <Button Grid.Row="1" Grid.Column="2" Content="Закрыть" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
+                    </Grid>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
+
+            <!--Номенклатура-->
+            <TextBlock Grid.Row="3" Text="Номенклатура:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <xctk:CheckComboBox Grid.Row="3" Grid.Column="1" Margin="3" 
                       ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}" DisplayMemberPath="Name"
-                      IsEnabled="{Binding Nomenclature}" SelectedItem="{Binding SelectedNomenclature}" />
+                      SelectedItem="{Binding SelectedNomenclature}" />
+            <Button Grid.Row="3" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3" Command="{Binding SelectAllBasesCommand}" />
+            <Button Grid.Row="3" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
         </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" />

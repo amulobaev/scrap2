@@ -18,8 +18,11 @@ namespace Zlatmet2.Domain.Repositories.References
         static OrganizationsRepository()
         {
             // Организации
-            Mapper.CreateMap<Organization, OrganizationEntity>();
+            Mapper.CreateMap<Organization, OrganizationEntity>()
+                .ForMember(x => x.Divisions, opt => opt.Ignore());
+
             Mapper.CreateMap<OrganizationEntity, Organization>()
+                .ConstructUsing(x => new Organization(x.Id, (OrganizationType)x.Type))
                 .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.Type, opt => opt.Ignore());
 
@@ -46,9 +49,9 @@ namespace Zlatmet2.Domain.Repositories.References
 
             using (ZlatmetContext context = new ZlatmetContext())
             {
-                OrganizationEntity organizationEntity = Mapper.Map<Organization, OrganizationEntity>(data);
-                context.Organizations.Add(organizationEntity);
-
+                OrganizationEntity entity = Mapper.Map<Organization, OrganizationEntity>(data);
+                entity.Divisions = Mapper.Map(data.Divisions, entity.Divisions);
+                context.Organizations.Add(entity);
                 context.SaveChanges();
             }
         }
@@ -76,10 +79,44 @@ namespace Zlatmet2.Domain.Repositories.References
 
             using (ZlatmetContext context = new ZlatmetContext())
             {
-                OrganizationEntity entity = context.Organizations.FirstOrDefault(x => x.Id == data.Id);
+                OrganizationEntity entity =
+                    context.Organizations.Include(x => x.Divisions).FirstOrDefault(x => x.Id == data.Id);
                 if (entity != null)
                 {
                     Mapper.Map(data, entity);
+
+                    // Новые и измененные подразделения
+                    foreach (Division division in data.Divisions)
+                    {
+                        // Новое подразделение
+                        if (entity.Divisions.All(x => x.Id != division.Id))
+                        {
+                            entity.Divisions.Add(Mapper.Map<Division, DivisionEntity>(division));
+                            continue;
+                        }
+
+                        // Существующее подразделение
+                        DivisionEntity divisionEntity = entity.Divisions.FirstOrDefault(x => x.Id == division.Id);
+                        if (divisionEntity != null)
+                        {
+                            Mapper.Map(division, divisionEntity);
+                            continue;
+                        }
+                    }
+
+                    // Удалённые подразделения
+                    for (int i = 0; i < entity.Divisions.Count; i++)
+                    {
+                        DivisionEntity divisionEntity = entity.Divisions.ToList()[i];
+                        if (data.Divisions.All(x => x.Id != divisionEntity.Id))
+                        {
+                            DivisionEntity entityToRemove =
+                                context.Divisions.FirstOrDefault(x => x.Id == divisionEntity.Id);
+                            if (entityToRemove != null)
+                                context.Divisions.Remove(entityToRemove);
+                        }
+                    }
+
                     context.SaveChanges();
                 }
             }
@@ -87,7 +124,18 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                OrganizationEntity entity = context.Organizations.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.Organizations.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
     }

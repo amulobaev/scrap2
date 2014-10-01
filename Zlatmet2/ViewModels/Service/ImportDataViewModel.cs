@@ -457,8 +457,6 @@ namespace Zlatmet2.ViewModels.Service
                 });
             }
 
-            Log("Закончено преобразование данных");
-
             // Документы "Перевозка"
             List<Transportation> transportationDocs = new List<Transportation>();
             foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 0))
@@ -512,8 +510,6 @@ namespace Zlatmet2.ViewModels.Service
                     Comment = oldDocument.comment
                 };
 
-                //
-
                 // Табличная часть
                 var tableItems = oldTableItems.Where(x => x.doc_id == oldDocument.doc_id).OrderBy(x => x.number);
                 foreach (OldTableItemDto oldTableItemDto in tableItems)
@@ -538,113 +534,115 @@ namespace Zlatmet2.ViewModels.Service
             List<Processing> processingDocs = new List<Processing>();
             foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 1))
             {
-
             }
 
             // Документы "Корректировка остатков"
             List<Remains> remainsDocs = new List<Remains>();
             foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 2))
             {
-
             }
+
+            Log("Закончено преобразование данных");
 
             //
             // Запись в новую базу
             //
 
             Log("Начата запись данных");
-
-            using (SqlConnection connection = new SqlConnection(MainStorage.Instance.ConnectionString))
+            // Пользователи
+            foreach (User user in users)
             {
-                // Пользователи
-                foreach (User user in users)
+                try
                 {
-                    try
-                    {
-                        MainStorage.Instance.UsersRepository.Create(user);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Ошибка при добавлении пользователя");
-                        Log(ex.Message);
-                    }
+                    User user1 = user;
+                    ThreadContext.BeginInvokeOnUiThread(() => MainStorage.Instance.UsersRepository.Create(user1));
                 }
-
-                // Номенклатура
-                foreach (Nomenclature nomenclature in nomenclatures)
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        MainStorage.Instance.CreateOrUpdateObject(nomenclature);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Ошибка при добавлении номенклатуры");
-                        Log(ex.Message);
-                    }
+                    Log("Ошибка при добавлении пользователя");
+                    Log(ex.Message);
                 }
-
-                // Организации (базы/поставщики/заказчики)
-                foreach (Organization organization in organizations)
-                {
-                    try
-                    {
-                        MainStorage.Instance.CreateOrUpdateObject(organization);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Ошибка при добавлении организации");
-                        Log(ex.Message);
-                    }
-                }
-
-                // Сотрудники
-                foreach (Employee employee in employees)
-                {
-                    try
-                    {
-                        MainStorage.Instance.CreateOrUpdateObject(employee);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Ошибка при добавлении сотрудника");
-                        Log(ex.Message);
-                    }
-                }
-
-                // Транспорт
-                foreach (Transport transport in transports)
-                {
-                    try
-                    {
-                        MainStorage.Instance.CreateOrUpdateObject(transport);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Ошибка при добавлении транспорта");
-                        Log(ex.Message);
-                    }
-                }
-
-                // Документы "Перевозка"
-                foreach (Transportation transportation in transportationDocs)
-                {
-                    try
-                    {
-                        MainStorage.Instance.TransportationRepository.Create(transportation);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Ошибка при добавлении документы \"Перевозка\"");
-                        Log(ex.Message);
-                    }
-                }
-
-                // Документы "Переработка"
-
-                // Документы "Корректировка остатков"
-
             }
+
+            // Номенклатура
+            foreach (Nomenclature nomenclature in nomenclatures)
+            {
+                try
+                {
+                    Nomenclature nomenclature1 = nomenclature;
+                    ThreadContext.BeginInvokeOnUiThread(() => MainStorage.Instance.CreateOrUpdateObject(nomenclature1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении номенклатуры");
+                    Log(ex.Message);
+                }
+            }
+
+            // Организации (базы/поставщики/заказчики)
+            foreach (Organization organization in organizations)
+            {
+                try
+                {
+                    Organization organization1 = organization;
+                    ThreadContext.BeginInvokeOnUiThread(() => MainStorage.Instance.CreateOrUpdateObject(organization1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении организации");
+                    Log(ex.Message);
+                }
+            }
+
+            // Сотрудники
+            foreach (Employee employee in employees)
+            {
+                try
+                {
+                    Employee employee1 = employee;
+                    ThreadContext.BeginInvokeOnUiThread(() => MainStorage.Instance.CreateOrUpdateObject(employee1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении сотрудника");
+                    Log(ex.Message);
+                }
+            }
+
+            // Транспорт
+            foreach (Transport transport in transports)
+            {
+                try
+                {
+                    Transport transport1 = transport;
+                    ThreadContext.BeginInvokeOnUiThread(() => MainStorage.Instance.CreateOrUpdateObject(transport1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении транспорта");
+                    Log(ex.Message);
+                }
+            }
+
+            // Документы "Перевозка"
+            foreach (Transportation transportation in transportationDocs)
+            {
+                try
+                {
+                    Transportation transportation1 = transportation;
+                    ThreadContext.BeginInvokeOnUiThread(
+                        () => MainStorage.Instance.TransportationRepository.Create(transportation1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении документы \"Перевозка\"");
+                    Log(ex.Message);
+                }
+            }
+
+            // Документы "Переработка"
+
+            // Документы "Корректировка остатков"
 
             Log("Закончена запись данных");
 
