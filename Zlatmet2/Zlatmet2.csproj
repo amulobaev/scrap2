@@ -193,6 +193,7 @@
     <Compile Include="ViewModels\References\ReferenceTransportsViewModel.cs" />
     <Compile Include="ViewModels\Reports\BaseReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.Classes.cs" />
     <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportWarehouseViewModel.cs" />
     <Compile Include="ViewModels\Service\Dto\OldDocumentDto.cs" />

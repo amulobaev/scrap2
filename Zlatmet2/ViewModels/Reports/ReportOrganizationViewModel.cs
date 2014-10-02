@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
-using Zlatmet2.Models.References;
-using Zlatmet2.ViewModels.Base;
+using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
 
 namespace Zlatmet2.ViewModels.Reports
@@ -12,12 +13,27 @@ namespace Zlatmet2.ViewModels.Reports
     /// <summary>
     /// Модель представления "Отчёт по контрагентам"
     /// </summary>
-    public class ReportOrganizationViewModel : UniqueLayoutDocumentViewModel
+    public partial class ReportOrganizationViewModel : BaseReportViewModel
     {
-        private bool _nomenclature;
-        private Nomenclature _selectedNomenclature;
         private DateTime? _dateFrom;
+
         private DateTime? _dateTo;
+
+        private readonly ObservableCollection<ContractorWrapper> _suppliers =
+            new ObservableCollection<ContractorWrapper>();
+
+        private readonly ObservableCollection<ContractorWrapper> _customers =
+            new ObservableCollection<ContractorWrapper>();
+
+        private readonly ObservableCollection<Nomenclature> _selectedNomenclatures =
+            new ObservableCollection<Nomenclature>();
+
+        private ICommand _selectAllNomenclatureCommand;
+        private ICommand _unselectAllNomenclatureCommand;
+        private ICommand _closeSuppliersCommand;
+        private bool _suppliersIsOpen;
+        private ICommand _closeCustomersCommand;
+        private bool _customersIsOpen;
 
         /// <summary>
         /// Конструктор
@@ -31,9 +47,21 @@ namespace Zlatmet2.ViewModels.Reports
             Title = "Отчёт по контрагентам";
             Id = Guid.NewGuid();
 
-            Suppliers = new ObservableCollection<OrganizationWrapper>();
-            foreach (Organization supplier in MainStorage.Instance.Contractors.OrderBy(x => x.Name))
-                Suppliers.Add(new OrganizationWrapper(supplier));
+            DateFrom = DateTime.Today;
+            DateTo = DateTime.Today;
+
+            foreach (Organization contractor in MainStorage.Instance.Contractors.OrderBy(x => x.Name))
+            {
+                Suppliers.Add(new ContractorWrapper(contractor));
+                Customers.Add(new ContractorWrapper(contractor));
+            }
+
+            SelectAllNomenclature();
+        }
+
+        public override string ReportName
+        {
+            get { return "Отчет по контрагентам"; }
         }
 
         public DateTime? DateFrom
@@ -60,35 +88,106 @@ namespace Zlatmet2.ViewModels.Reports
             }
         }
 
-        public ObservableCollection<OrganizationWrapper> Suppliers { get; private set; }
-
-        public bool Nomenclature
+        public bool SuppliersIsOpen
         {
-            get { return _nomenclature; }
+            get { return _suppliersIsOpen; }
             set
             {
-                if (value.Equals(_nomenclature))
+                if (value.Equals(_suppliersIsOpen))
                     return;
-                _nomenclature = value;
-                RaisePropertyChanged("Nomenclature");
+                _suppliersIsOpen = value;
+                RaisePropertyChanged("SuppliersIsOpen");
             }
         }
 
-        public Nomenclature SelectedNomenclature
+        public bool CustomersIsOpen
         {
-            get { return _selectedNomenclature; }
+            get { return _customersIsOpen; }
             set
             {
-                if (Equals(value, _selectedNomenclature))
+                if (value.Equals(_customersIsOpen))
                     return;
-                _selectedNomenclature = value;
-                RaisePropertyChanged("SelectedNomenclature");
+                _customersIsOpen = value;
+                RaisePropertyChanged("CustomersIsOpen");
             }
+        }
+
+        /// <summary>
+        /// Поставщики
+        /// </summary>
+        public ObservableCollection<ContractorWrapper> Suppliers
+        {
+            get { return _suppliers; }
+        }
+
+        public ObservableCollection<ContractorWrapper> Customers
+        {
+            get { return _customers; }
         }
 
         public ReadOnlyObservableCollection<Nomenclature> Nomenclatures
         {
             get { return MainStorage.Instance.Nomenclatures; }
         }
+
+        public ObservableCollection<Nomenclature> SelectedNomenclatures
+        {
+            get { return _selectedNomenclatures; }
+        }
+
+        public ICommand CloseSuppliersCommand
+        {
+            get { return _closeSuppliersCommand ?? (_closeSuppliersCommand = new RelayCommand(CloseSuppliers)); }
+        }
+
+        public ICommand CloseCustomersCommand
+        {
+            get { return _closeCustomersCommand ?? (_closeCustomersCommand = new RelayCommand(CloseCustomers)); }
+        }
+
+        public ICommand SelectAllNomenclatureCommand
+        {
+            get
+            {
+                return _selectAllNomenclatureCommand ??
+                       (_selectAllNomenclatureCommand = new RelayCommand(SelectAllNomenclature));
+            }
+        }
+
+        public ICommand UnselectAllNomenclatureCommand
+        {
+            get
+            {
+                return _unselectAllNomenclatureCommand ??
+                       (_unselectAllNomenclatureCommand = new RelayCommand(UnselectAllNomenclature));
+            }
+        }
+
+        private void SelectAllNomenclature()
+        {
+            SelectedNomenclatures.Clear();
+            SelectedNomenclatures.AddRange(Nomenclatures);
+        }
+
+        private void UnselectAllNomenclature()
+        {
+            SelectedNomenclatures.Clear();
+        }
+
+        protected override void PrepareReport()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CloseSuppliers()
+        {
+            SuppliersIsOpen = false;
+        }
+
+        private void CloseCustomers()
+        {
+            CustomersIsOpen = false;
+        }
+
     }
 }
