@@ -30,6 +30,8 @@ namespace Zlatmet2.ViewModels
 
         private ICommand _showUsersCommand;
 
+        private ICommand _showReportTransportCommand;
+
         #endregion
 
         /// <summary>
@@ -122,6 +124,15 @@ namespace Zlatmet2.ViewModels
             {
                 return _showReportOrganizationCommand ??
                        (_showReportOrganizationCommand = new RelayCommand(ShowReportOrganization));
+            }
+        }
+
+        public ICommand ShowReportTransportCommand
+        {
+            get
+            {
+                return _showReportTransportCommand ??
+                       (_showReportTransportCommand = new RelayCommand(ShowReportTransport));
             }
         }
 
@@ -283,6 +294,11 @@ namespace Zlatmet2.ViewModels
         private void ShowReportOrganization()
         {
             ShowLayoutDocument(typeof(ReportOrganizationViewModel), Guid.Empty);
+        }
+
+        private void ShowReportTransport()
+        {
+            ShowLayoutDocument(typeof(ReportTransportViewModel), Guid.Empty);
         }
 
         private void ShowParameters()

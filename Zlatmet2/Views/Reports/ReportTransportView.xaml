@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="Zlatmet2.Views.Reports.ReportTransportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <ToolBar Background="Transparent">
+            <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
+        </ToolBar>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--Тип перевозок-->
+            <TextBlock Margin="3" Text="Тип перевозок:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                <RadioButton Content="Авто" Margin="3" VerticalAlignment="Center" />
+                <RadioButton Content="Ж/Д" Margin="3" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!--Период отчёта-->
+            <TextBlock Grid.Row="1" Margin="3" Text="На период с:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateFrom}" />
+                <TextBlock Margin="3" Text="по:" VerticalAlignment="Center"  />
+                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo}" />
+            </StackPanel>
+
+            <!--Поставщик-->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <CheckBox VerticalAlignment="Center" Margin="3" Content="Поставщик:" />
+            </StackPanel>
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="3" />
+
+            <!--Заказчик-->
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <CheckBox Margin="3" VerticalAlignment="Center" Content="Заказчик:" />
+            </StackPanel>
+            <ComboBox Grid.Row="3" Grid.Column="1" Margin="3" />
+
+            <!--Номенклатура-->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <CheckBox Margin="3" VerticalAlignment="Center" Content="Номенклатура:" />
+            </StackPanel>
+            <ComboBox Grid.Row="4" Grid.Column="1" Margin="3" />
+
+        </Grid>
+
+        <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"
+                                        ShowReportOpen="False" Report="{Binding Report}" />
+    </Grid>
+</UserControl>
