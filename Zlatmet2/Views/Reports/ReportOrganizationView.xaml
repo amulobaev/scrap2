@@ -60,7 +60,7 @@
             <xctk:DropDownButton Grid.Row="1" Grid.Column="1" Content="Выбрать поставщиков"
                                  Margin="3" VerticalAlignment="Center" IsOpen="{Binding SuppliersIsOpen, Mode=TwoWay}" >
                 <xctk:DropDownButton.DropDownContent>
-                    <Grid Height="250">
+                    <Grid Height="300" Width="250">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
@@ -74,8 +74,8 @@
                         <TreeView Margin="3" ItemsSource="{Binding Suppliers}" Grid.ColumnSpan="3"
                                   ItemTemplate="{StaticResource ContractorDataTemplate}" />
 
-                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllBasesCommand}" />
-                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
+                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllSuppliersCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllSuppliersCommand}" />
                         <Button Grid.Row="1" Grid.Column="2" Content="Закрыть" Margin="3" Command="{Binding CloseSuppliersCommand}" />
                     </Grid>
                 </xctk:DropDownButton.DropDownContent>
@@ -86,7 +86,7 @@
             <xctk:DropDownButton Grid.Row="2" Grid.Column="1" Margin="3" VerticalAlignment="Center"
                                  Content="Выбрать заказчиков" IsOpen="{Binding CustomersIsOpen, Mode=TwoWay}">
                 <xctk:DropDownButton.DropDownContent>
-                    <Grid Height="250">
+                    <Grid Height="300" Width="250">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
@@ -100,8 +100,8 @@
                         <TreeView Margin="3" Grid.ColumnSpan="3" ItemsSource="{Binding Suppliers}"
                                   ItemTemplate="{StaticResource ContractorDataTemplate}" />
 
-                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllBasesCommand}" />
-                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllBasesCommand}" />
+                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllCustomersCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllCustomersCommand}" />
                         <Button Grid.Row="1" Grid.Column="2" Content="Закрыть" Margin="3" Command="{Binding CloseCustomersCommand}" />
                     </Grid>
                 </xctk:DropDownButton.DropDownContent>

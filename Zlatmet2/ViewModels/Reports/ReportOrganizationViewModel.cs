@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
+using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Tools;
@@ -15,6 +16,8 @@ namespace Zlatmet2.ViewModels.Reports
     /// </summary>
     public partial class ReportOrganizationViewModel : BaseReportViewModel
     {
+        #region Поля
+
         private DateTime? _dateFrom;
 
         private DateTime? _dateTo;
@@ -34,6 +37,12 @@ namespace Zlatmet2.ViewModels.Reports
         private bool _suppliersIsOpen;
         private ICommand _closeCustomersCommand;
         private bool _customersIsOpen;
+        private ICommand _selectAllSuppliersCommand;
+        private ICommand _unselectAllSuppliersCommand;
+        private ICommand _selectAllCustomersCommand;
+        private ICommand _unselectAllCustomersCommand;
+
+        #endregion // Поля
 
         /// <summary>
         /// Конструктор
@@ -58,6 +67,8 @@ namespace Zlatmet2.ViewModels.Reports
 
             SelectAllNomenclature();
         }
+
+        #region Свойства
 
         public override string ReportName
         {
@@ -135,9 +146,47 @@ namespace Zlatmet2.ViewModels.Reports
             get { return _selectedNomenclatures; }
         }
 
+        #endregion // Свойства
+
+        #region Команды
+
+        public ICommand SelectAllSuppliersCommand
+        {
+            get
+            {
+                return _selectAllSuppliersCommand ?? (_selectAllSuppliersCommand = new RelayCommand(SelectAllSuppliers));
+            }
+        }
+
+        public ICommand UnselectAllSuppliersCommand
+        {
+            get
+            {
+                return _unselectAllSuppliersCommand ??
+                       (_unselectAllSuppliersCommand = new RelayCommand(UnselectAllSuppliers));
+            }
+        }
+
         public ICommand CloseSuppliersCommand
         {
             get { return _closeSuppliersCommand ?? (_closeSuppliersCommand = new RelayCommand(CloseSuppliers)); }
+        }
+
+        public ICommand SelectAllCustomersCommand
+        {
+            get
+            {
+                return _selectAllCustomersCommand ?? (_selectAllCustomersCommand = new RelayCommand(SelectAllCustomers));
+            }
+        }
+
+        public ICommand UnselectAllCustomersCommand
+        {
+            get
+            {
+                return _unselectAllCustomersCommand ??
+                       (_unselectAllCustomersCommand = new RelayCommand(UnselectAllCustomers));
+            }
         }
 
         public ICommand CloseCustomersCommand
@@ -163,6 +212,44 @@ namespace Zlatmet2.ViewModels.Reports
             }
         }
 
+        #endregion // Команды
+
+        #region Методы
+
+        private void SelectAllSuppliers()
+        {
+            foreach (ContractorWrapper supplier in Suppliers)
+                supplier.IsChecked = true;
+        }
+
+        private void UnselectAllSuppliers()
+        {
+            foreach (ContractorWrapper supplier in Suppliers)
+                supplier.IsChecked = false;
+        }
+
+        private void CloseSuppliers()
+        {
+            SuppliersIsOpen = false;
+        }
+
+        private void SelectAllCustomers()
+        {
+            foreach (ContractorWrapper customer in Customers)
+                customer.IsChecked = true;
+        }
+
+        private void UnselectAllCustomers()
+        {
+            foreach (ContractorWrapper customer in Customers)
+                customer.IsChecked = false;
+        }
+
+        private void CloseCustomers()
+        {
+            CustomersIsOpen = false;
+        }
+
         private void SelectAllNomenclature()
         {
             SelectedNomenclatures.Clear();
@@ -179,15 +266,7 @@ namespace Zlatmet2.ViewModels.Reports
             throw new NotImplementedException();
         }
 
-        private void CloseSuppliers()
-        {
-            SuppliersIsOpen = false;
-        }
-
-        private void CloseCustomers()
-        {
-            CustomersIsOpen = false;
-        }
+        #endregion // Методы
 
     }
 }

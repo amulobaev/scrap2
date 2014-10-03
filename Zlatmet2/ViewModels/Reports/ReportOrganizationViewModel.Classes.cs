@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using Zlatmet2.Core.Classes.References;
@@ -56,6 +58,8 @@ namespace Zlatmet2.ViewModels.Reports
 
                 foreach (Division division in contractor.Divisions.OrderBy(x => x.Number))
                     Divisions.Add(new DivisionWrapper(this, division));
+
+                this.PropertyChanged += OnPropertyChanged;
             }
 
             public Organization Contractor
@@ -67,6 +71,18 @@ namespace Zlatmet2.ViewModels.Reports
             {
                 get { return _divisions; }
             }
+
+            private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                switch (e.PropertyName)
+                {
+                    case "IsChecked":
+                        foreach (var division in Divisions)
+                            division.IsChecked = IsChecked;
+                        break;
+                }
+            }
+
         }
 
         /// <summary>
@@ -84,6 +100,21 @@ namespace Zlatmet2.ViewModels.Reports
                 _division = division;
 
                 Name = division.Name;
+
+                this.PropertyChanged += OnPropertyChanged;
+            }
+
+            private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                switch (e.PropertyName)
+                {
+                    case "IsChecked":
+                        if (_contractorWrapper.Divisions.All(x => x.IsChecked) && !_contractorWrapper.IsChecked)
+                            _contractorWrapper.IsChecked = true;
+                        else if (_contractorWrapper.Divisions.All(x => !x.IsChecked) && _contractorWrapper.IsChecked)
+                            _contractorWrapper.IsChecked = false;
+                        break;
+                }
             }
 
             public Division Division
