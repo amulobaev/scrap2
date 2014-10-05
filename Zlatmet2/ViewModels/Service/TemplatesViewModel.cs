@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
+using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Models.Service;
 using Zlatmet2.ViewModels.Base;
 using Zlatmet2.Views.Service;
@@ -19,17 +20,12 @@ namespace Zlatmet2.ViewModels.Service
     /// <summary>
     /// Модель представления вкладки "Шаблоны"
     /// </summary>
-    public class TemplatesViewModel : SingletonLayoutDocumentViewModel
+    public class TemplatesViewModel : BaseEditorViewModel<TemplateWrapper>
     {
         #region Поля
 
-        private readonly ObservableCollection<TemplateWrapper> _items = new ObservableCollection<TemplateWrapper>();
-        private TemplateWrapper _selectedItem;
-
         private StiReport _report;
 
-        private ICommand _addCommand;
-        private ICommand _deleteCommand;
         private ICommand _showDesignerCommand;
         private ICommand _importCommand;
         private ICommand _exportCommand;
@@ -48,7 +44,7 @@ namespace Zlatmet2.ViewModels.Service
 
             Items.CollectionChanged += Items_CollectionChanged;
 
-            foreach (var template in MainStorage.Instance.TemplatesRepository.GetAll())
+            foreach (Template template in MainStorage.Instance.TemplatesRepository.GetAll())
                 Items.Add(new TemplateWrapper(template));
 
             if (Items.Any())
@@ -56,23 +52,6 @@ namespace Zlatmet2.ViewModels.Service
         }
 
         #region Свойства
-
-        public ObservableCollection<TemplateWrapper> Items
-        {
-            get { return _items; }
-        }
-
-        public TemplateWrapper SelectedItem
-        {
-            get { return _selectedItem; }
-            set
-            {
-                if (Equals(value, _selectedItem))
-                    return;
-                _selectedItem = value;
-                RaisePropertyChanged("SelectedItem");
-            }
-        }
 
         public StiReport Report
         {
@@ -89,16 +68,6 @@ namespace Zlatmet2.ViewModels.Service
         #endregion
 
         #region Команды
-
-        public ICommand AddCommand
-        {
-            get { return _addCommand ?? (_addCommand = new RelayCommand(AddTemplate)); }
-        }
-
-        public ICommand DeleteCommand
-        {
-            get { return _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteTemplate)); }
-        }
 
         public ICommand ShowDesignerCommand
         {
@@ -125,6 +94,13 @@ namespace Zlatmet2.ViewModels.Service
 
             foreach (var item in Items)
                 item.PropertyChanged -= Template_PropertyChanged;
+        }
+
+        protected override void AddItem()
+        {
+            TemplateWrapper templateWrapper = new TemplateWrapper { Data = new StiReport().SaveToByteArray() };
+            Items.Add(templateWrapper);
+            SelectedItem = templateWrapper;
         }
 
         protected override void RaisePropertyChanged(string propertyName)
@@ -199,32 +175,12 @@ namespace Zlatmet2.ViewModels.Service
             if (templateWrapper == null)
                 return;
 
-            // Если у обёртки шаблона изменилось какое-либо свойство, то изменения нужно сохранить в базу
-            templateWrapper.Save();
-
             switch (e.PropertyName)
             {
                 case "Data":
                     UpdatePreview();
                     break;
             }
-        }
-
-        private void AddTemplate()
-        {
-            TemplateWrapper templateWrapper = new TemplateWrapper { Data = new StiReport().SaveToByteArray() };
-            Items.Add(templateWrapper);
-            SelectedItem = templateWrapper;
-        }
-
-        private void DeleteTemplate()
-        {
-            if (SelectedItem == null)
-                return;
-
-            if (MessageBox.Show("Действительно удалить?", MainStorage.AppName, MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes)
-                Items.Remove(SelectedItem);
         }
 
         private void ShowDesigner()

@@ -159,8 +159,8 @@
     <Compile Include="Models\Documents\RemainsItemWrapper.cs" />
     <Compile Include="Models\Documents\TransportationItemWrapper.cs" />
     <Compile Include="Models\IgnoreChangesAttribute.cs" />
-    <Compile Include="Models\References\BaseReferenceWrapper.cs" />
-    <Compile Include="Models\References\BaseReferenceWrapperT.cs" />
+    <Compile Include="Models\BaseReferenceWrapper.cs" />
+    <Compile Include="Models\BaseReferenceWrapperT.cs" />
     <Compile Include="Models\References\DivisionWrapper.cs" />
     <Compile Include="Models\References\EmployeeWrapper.cs" />
     <Compile Include="Models\References\NomenclatureWrapper.cs" />

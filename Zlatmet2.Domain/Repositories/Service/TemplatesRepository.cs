@@ -80,7 +80,7 @@ namespace Zlatmet2.Domain.Repositories.Service
                 TemplateEntity entity = context.Templates.FirstOrDefault(x => x.Id == data.Id);
                 if (entity != null)
                 {
-                    Mapper.Map(entity, data);
+                    Mapper.Map(data, entity);
                     context.SaveChanges();
                 }
             }

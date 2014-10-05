@@ -1,6 +1,6 @@
 ﻿using Zlatmet2.Core;
 
-namespace Zlatmet2.Models.References
+namespace Zlatmet2.Models
 {
     public abstract class BaseReferenceWrapper<T> : BaseReferenceWrapper where T : PersistentObject
     {

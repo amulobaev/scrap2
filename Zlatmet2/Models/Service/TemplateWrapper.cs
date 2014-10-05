@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Zlatmet2.Core.Classes.Service;
 
 namespace Zlatmet2.Models.Service
@@ -7,7 +7,7 @@ namespace Zlatmet2.Models.Service
     /// <summary>
     /// Обёртка для шаблона
     /// </summary>
-    public sealed class TemplateWrapper : BaseValidationWrapper<Template>
+    public sealed class TemplateWrapper : BaseReferenceWrapper<Template>
     {
         private string _name;
         private byte[] _data;
@@ -19,8 +19,6 @@ namespace Zlatmet2.Models.Service
         public TemplateWrapper(Template dataForContainer = null)
             : base(dataForContainer)
         {
-            this.PropertyChanged += OnPropertyChanged;
-
             if (dataForContainer == null)
             {
                 // Новый шаблон
@@ -32,13 +30,10 @@ namespace Zlatmet2.Models.Service
                 Id = Container.Id;
                 _name = Container.Name;
                 _data = Container.Data;
-                RaisePropertyChanged("Data");
             }
         }
 
-        [IgnoreChanges]
-        public Guid Id { get; protected set; }
-
+        [Required]
         public string Name
         {
             get { return _name; }
@@ -62,11 +57,6 @@ namespace Zlatmet2.Models.Service
             }
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            //
-        }
-
         public override void UpdateContainer()
         {
             if (Container == null)
@@ -74,20 +64,6 @@ namespace Zlatmet2.Models.Service
             Container.Name = Name;
             Container.Data = Data;
         }
-
-        public void Save()
-        {
-            if (!IsChanged)
-                return;
-
-            bool isNew = Container == null;
-            UpdateContainer();
-            if (isNew)
-                MainStorage.Instance.TemplatesRepository.Create(Container);
-            else
-                MainStorage.Instance.TemplatesRepository.Update(Container);
-
-            IsChanged = false;
-        }
+        
     }
 }

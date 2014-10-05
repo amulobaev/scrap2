@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Xceed.Wpf.AvalonDock.Layout;
+using Zlatmet2.Models;
 using Zlatmet2.Models.References;
 
 namespace Zlatmet2.ViewModels.Base

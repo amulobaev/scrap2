@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Zlatmet2.Models.References
+namespace Zlatmet2.Models
 {
     public abstract class BaseReferenceWrapper : BaseWrapper
     {
@@ -15,6 +15,7 @@ namespace Zlatmet2.Models.References
         {
             if (!IsChanged)
                 return;
+
             UpdateContainer();
             MainStorage.Instance.CreateOrUpdateObject(Container);
             IsChanged = false;

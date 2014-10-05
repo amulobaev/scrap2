@@ -7,6 +7,7 @@ using System.Windows;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes;
 using Zlatmet2.Core.Classes.References;
+using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Domain;
 using Zlatmet2.Domain.Repositories.Documents;
@@ -39,6 +40,8 @@ namespace Zlatmet2
 
         private readonly ObservableCollection<Employee> _drivers = new ObservableCollection<Employee>();
 
+        private readonly ObservableCollection<Template> _templates = new ObservableCollection<Template>();
+
         #endregion
 
         /// <summary>
@@ -60,6 +63,8 @@ namespace Zlatmet2
             ResponsiblePersons = new ReadOnlyObservableCollection<Employee>(_responsiblePersons);
             Transports = new ReadOnlyObservableCollection<Transport>(_transports);
             Drivers = new ReadOnlyObservableCollection<Employee>(_drivers);
+
+            Templates = new ReadOnlyObservableCollection<Template>(_templates);
         }
 
         #region Свойства
@@ -93,6 +98,11 @@ namespace Zlatmet2
         /// Автотранспорт
         /// </summary>
         public ReadOnlyObservableCollection<Transport> Transports { get; private set; }
+
+        /// <summary>
+        /// Шаблоны
+        /// </summary>
+        public ReadOnlyObservableCollection<Template> Templates { get; private set; }
 
         /// <summary>
         /// Водители
@@ -206,7 +216,7 @@ namespace Zlatmet2
             _transports.AddRange(TransportsRepository.GetAll());
             _drivers.AddRange(DriversRepository.GetAll());
 
-            // Подписка коллекций на изменения
+            _templates.AddRange(TemplatesRepository.GetAll());
         }
 
         public void Dispose()
@@ -243,10 +253,29 @@ namespace Zlatmet2
                 return;
             }
 
+            if (o is Template)
+            {
+                CreateOrUpdateTemplate(o as Template);
+                return;
+            }
+
             if (o is User)
             {
                 CreateOrUpdateUser(o as User);
                 return;
+            }
+        }
+
+        private void CreateOrUpdateTemplate(Template template)
+        {
+            if (Templates.Any(x => x.Id == template.Id))
+            {
+                TemplatesRepository.Update(template);
+            }
+            else
+            {
+                TemplatesRepository.Create(template);
+                _templates.Add(template);
             }
         }
 
@@ -389,6 +418,14 @@ namespace Zlatmet2
                 return;
             }
 
+            // Шаблон
+            if (o is Template)
+            {
+                Template template = o as Template;
+                TemplatesRepository.Delete(template);
+                _templates.Remove(template);
+                return;
+            }
 
             // Пользователь
             if (o is User)
