@@ -182,7 +182,7 @@
     <Compile Include="ViewModels\Documents\DocumentRemainsViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentReportViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentTransportationViewModel.cs" />
-    <Compile Include="ViewModels\JournalViewModel.cs" />
+    <Compile Include="ViewModels\Documents\JournalViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseEditorViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceBasesViewModel.cs" />
@@ -221,7 +221,7 @@
     <Compile Include="Views\Documents\DocumentTransportationView.xaml.cs">
       <DependentUpon>DocumentTransportationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\JournalView.xaml.cs">
+    <Compile Include="Views\Documents\JournalView.xaml.cs">
       <DependentUpon>JournalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Base\LayoutDocumentViewModel.cs" />
@@ -305,7 +305,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\JournalView.xaml">
+    <Page Include="Views\Documents\JournalView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

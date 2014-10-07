@@ -21,11 +21,6 @@ namespace Zlatmet2.Domain.Repositories.Documents
             // Информация о документе
             Mapper.CreateMap<Transportation, TransportationEntity>()
                 .ForMember(x => x.Items, opt => opt.Ignore());
-            //.AfterMap((model, entity) =>
-            //{
-            //    foreach (TransportationItemEntity item in entity.Items)
-            //        item.DocumentId = model.Id;
-            //});
             Mapper.CreateMap<TransportationEntity, Transportation>()
                 .ConstructUsing(x => new Transportation(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
@@ -67,13 +62,7 @@ namespace Zlatmet2.Domain.Repositories.Documents
             {
                 TransportationEntity entity =
                     context.DocumentTransportation.Include(x => x.Items).FirstOrDefault(x => x.Id == id);
-                if (entity != null)
-                {
-                    var document = Mapper.Map<TransportationEntity, Transportation>(entity);
-                    return document;
-                }
-                else
-                    return null;
+                return entity != null ? Mapper.Map<TransportationEntity, Transportation>(entity) : null;
             }
         }
 
@@ -89,17 +78,17 @@ namespace Zlatmet2.Domain.Repositories.Documents
                 {
                     Mapper.Map(data, entity);
 
-                    // Новые и измененные строки табличной части
+                    // Новые и изменённые строки табличной части
                     foreach (TransportationItem item in data.Items)
                     {
-                        // Новое подразделение
+                        // Новая строка
                         if (entity.Items.All(x => x.Id != item.Id))
                         {
                             entity.Items.Add(Mapper.Map<TransportationItem, TransportationItemEntity>(item));
                             continue;
                         }
 
-                        // Существующее подразделение
+                        // Существующая строка
                         TransportationItemEntity itemEntity = entity.Items.FirstOrDefault(x => x.Id == item.Id);
                         if (itemEntity != null)
                         {
@@ -128,7 +117,18 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context = new ZlatmetContext())
+            {
+                TransportationEntity entity = context.DocumentTransportation.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.DocumentTransportation.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
     }
 }

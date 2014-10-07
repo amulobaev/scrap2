@@ -50,7 +50,11 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override Employee GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                EmployeeEntity entity = context.Employees.FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<EmployeeEntity, Employee>(entity) : null;
+            }
         }
 
         public override void Update(Employee data)
@@ -71,7 +75,18 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                EmployeeEntity entity = context.Employees.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.Employees.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
     }

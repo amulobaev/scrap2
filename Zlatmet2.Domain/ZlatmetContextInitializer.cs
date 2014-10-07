@@ -35,7 +35,7 @@ namespace Zlatmet2.Domain
             }
         }
 
-        string GetResourceString(string resourceName)
+        private string GetResourceString(string resourceName)
         {
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {

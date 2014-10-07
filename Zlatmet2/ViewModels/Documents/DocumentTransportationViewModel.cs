@@ -58,14 +58,13 @@ namespace Zlatmet2.ViewModels.Documents
             : base(layout, typeof(DocumentTransportationView), id)
         {
             Suppliers = new ReadOnlyObservableCollection<Organization>(_suppliers);
-
             Customers = new ReadOnlyObservableCollection<Organization>(_customers);
 
             FillOrganizations();
 
-            ((INotifyCollectionChanged)MainStorage.Instance.Contractors).CollectionChanged +=
-                (sender, args) => FillOrganizations();
             ((INotifyCollectionChanged)MainStorage.Instance.Bases).CollectionChanged +=
+                (sender, args) => FillOrganizations();
+            ((INotifyCollectionChanged)MainStorage.Instance.Contractors).CollectionChanged +=
                 (sender, args) => FillOrganizations();
 
             if (Id != Guid.Empty)
@@ -85,7 +84,7 @@ namespace Zlatmet2.ViewModels.Documents
                     Container = null;
                 }
 
-                Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
+                Number = MainStorage.Instance.JournalRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
 
                 DateOfLoading = DateTime.Today;
@@ -435,7 +434,7 @@ namespace Zlatmet2.ViewModels.Documents
             _customers.Clear();
             _customers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
             _customers.Add(null);
-            _customers.AddRange(MainStorage.Instance.Contractors);
+            _customers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
 
             if (customerId != Guid.Empty)
                 Customer = _customers.FirstOrDefault(x => x != null && x.Id == customerId);

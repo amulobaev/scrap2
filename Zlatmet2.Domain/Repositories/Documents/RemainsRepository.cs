@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
-using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Domain.Entities.Documents;
@@ -17,11 +17,7 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
             // Информация о документе
             Mapper.CreateMap<Remains, RemainsEntity>()
-                .AfterMap((model, entity) =>
-                {
-                    foreach (RemainsItemEntity item in entity.Items)
-                        item.DocumentId = model.Id;
-                });
+                .ForMember(x => x.Items, opt => opt.Ignore());
             Mapper.CreateMap<RemainsEntity, Remains>()
                 .ConstructUsing(x => new Remains(x.Id))
                 .ForMember(x => x.Id, opt => opt.Ignore());
@@ -46,6 +42,7 @@ namespace Zlatmet2.Domain.Repositories.Documents
             using (ZlatmetContext context = new ZlatmetContext())
             {
                 RemainsEntity entity = Mapper.Map<Remains, RemainsEntity>(data);
+                entity.Items = Mapper.Map(data.Items, entity.Items);
                 context.DocumentRemains.Add(entity);
                 context.SaveChanges();
             }
@@ -60,7 +57,7 @@ namespace Zlatmet2.Domain.Repositories.Documents
         {
             using (ZlatmetContext context = new ZlatmetContext())
             {
-                RemainsEntity entity = context.DocumentRemains.FirstOrDefault(x => x.Id == id);
+                RemainsEntity entity = context.DocumentRemains.Include(x => x.Items).FirstOrDefault(x => x.Id == id);
                 return entity != null ? Mapper.Map<RemainsEntity, Remains>(entity) : null;
             }
         }
@@ -76,6 +73,39 @@ namespace Zlatmet2.Domain.Repositories.Documents
                 if (entity != null)
                 {
                     Mapper.Map(data, entity);
+
+                    // Новые и изменённые строки табличной части
+                    foreach (RemainsItem item in data.Items)
+                    {
+                        // Новая строка
+                        if (entity.Items.All(x => x.Id != item.Id))
+                        {
+                            entity.Items.Add(Mapper.Map<RemainsItem, RemainsItemEntity>(item));
+                            continue;
+                        }
+
+                        // Существующая строка
+                        RemainsItemEntity itemEntity = entity.Items.FirstOrDefault(x => x.Id == item.Id);
+                        if (itemEntity != null)
+                        {
+                            Mapper.Map(item, itemEntity);
+                            continue;
+                        }
+                    }
+
+                    // Удалённые строки табличной части
+                    for (int i = 0; i < entity.Items.Count; i++)
+                    {
+                        RemainsItemEntity itemEntity = entity.Items.ToList()[i];
+                        if (data.Items.All(x => x.Id != itemEntity.Id))
+                        {
+                            RemainsItemEntity entityToRemove =
+                                context.DocumentRemainsItems.FirstOrDefault(x => x.Id == itemEntity.Id);
+                            if (entityToRemove != null)
+                                context.DocumentRemainsItems.Remove(entityToRemove);
+                        }
+                    }
+
                     context.SaveChanges();
                 }
             }
@@ -83,7 +113,18 @@ namespace Zlatmet2.Domain.Repositories.Documents
 
         public override bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                RemainsEntity entity = context.DocumentRemains.FirstOrDefault(x => x.Id == id);
+                if (entity != null)
+                {
+                    context.DocumentRemains.Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
     }

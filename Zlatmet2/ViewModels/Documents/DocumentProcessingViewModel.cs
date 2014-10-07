@@ -17,6 +17,7 @@ namespace Zlatmet2.ViewModels.Documents
         private Employee _responsiblePerson;
 
         private string _comment;
+        private Organization _base;
 
         /// <summary>
         /// Конструктор
@@ -44,11 +45,29 @@ namespace Zlatmet2.ViewModels.Documents
                     Container = null;
                 }
 
-                Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
+                Number = MainStorage.Instance.JournalRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
             }
 
             UpdateTitle();
+        }
+
+        public ReadOnlyObservableCollection<Organization> Bases
+        {
+            get { return MainStorage.Instance.Bases; }
+        }
+
+        [Required(ErrorMessage = @"Не выбрана база")]
+        public Organization Base
+        {
+            get { return _base; }
+            set
+            {
+                if (Equals(value, _base))
+                    return;
+                _base = value;
+                RaisePropertyChanged("Base");
+            }
         }
 
         /// <summary>
@@ -113,6 +132,7 @@ namespace Zlatmet2.ViewModels.Documents
             Container.Type = DocumentType.Processing;
             Container.Number = Number;
             Container.Date = Date.Value;
+            Container.BaseId = Base.Id;
             Container.ResponsiblePersonId = ResponsiblePerson.Id;
             Container.Comment = Comment;
 
@@ -142,6 +162,7 @@ namespace Zlatmet2.ViewModels.Documents
             Container = MainStorage.Instance.ProcessingRepository.GetById(id);
             Number = Container.Number;
             Date = Container.Date;
+            Base = Bases.FirstOrDefault(x => x.Id == Container.BaseId);
             ResponsiblePerson = ResponsiblePersons.FirstOrDefault(x => x.Id == Container.ResponsiblePersonId);
             Comment = Container.Comment;
 

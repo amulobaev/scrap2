@@ -19,6 +19,8 @@ namespace Zlatmet2.Domain.Entities.Documents
 
         public DateTime Date { get; set; }
 
+        public Guid? BaseId { get; set; }
+
         public virtual ICollection<RemainsItemEntity> Items { get; set; }
     }
 }

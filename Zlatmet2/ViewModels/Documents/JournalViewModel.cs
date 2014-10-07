@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -8,10 +9,9 @@ using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Tools;
 using Zlatmet2.ViewModels.Base;
-using Zlatmet2.ViewModels.Documents;
-using Zlatmet2.Views;
+using Zlatmet2.Views.Documents;
 
-namespace Zlatmet2.ViewModels
+namespace Zlatmet2.ViewModels.Documents
 {
     /// <summary>
     /// Модель представления журнала документов
@@ -20,7 +20,7 @@ namespace Zlatmet2.ViewModels
     {
         private ObservableCollection<Document> _items;
 
-        private JournalPeriodType _periodType = JournalPeriodType.ThisWeek;
+        private JournalPeriodType _periodType;
         private DateTime? _dateFrom;
         private DateTime? _dateTo;
 
@@ -41,6 +41,11 @@ namespace Zlatmet2.ViewModels
             : base(layout, typeof(JournalView))
         {
             Title = "Журнал документов";
+
+            this.PropertyChanged += OnPropertyChanged;
+
+            // TODO сделать загрузку из настроек
+            PeriodType = JournalPeriodType.ThisWeek;
         }
 
         public ObservableCollection<Document> Items
@@ -74,9 +79,6 @@ namespace Zlatmet2.ViewModels
                     return;
                 _periodType = value;
                 RaisePropertyChanged("PeriodType");
-
-                CalcPeriod();
-                Update();
             }
         }
 
@@ -131,6 +133,24 @@ namespace Zlatmet2.ViewModels
             }
         }
 
+        public override void Dispose()
+        {
+            this.PropertyChanged -= OnPropertyChanged;
+
+            base.Dispose();
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "PeriodType":
+                    CalcPeriod();
+                    Update();
+                    break;
+            }
+        }
+
         private void Update()
         {
             Items.Clear();
@@ -138,7 +158,7 @@ namespace Zlatmet2.ViewModels
                 ? DateFrom.Value
                 : (DateTime?)null;
             DateTime? dateTo = DateTo.HasValue && DateTo.Value != DateTime.MinValue ? DateTo.Value : (DateTime?)null;
-            Items.AddRange(MainStorage.Instance.DocumentsRepository.GetAll(dateFrom, dateTo));
+            Items.AddRange(MainStorage.Instance.JournalRepository.GetAll(dateFrom, dateTo));
         }
 
         private void CalcPeriod()

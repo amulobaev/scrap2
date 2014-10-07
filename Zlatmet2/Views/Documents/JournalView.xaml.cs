@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Zlatmet2.Views
+namespace Zlatmet2.Views.Documents
 {
     /// <summary>
     /// Логика взаимодействия для JournalView.xaml

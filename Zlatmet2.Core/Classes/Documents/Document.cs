@@ -23,7 +23,7 @@ namespace Zlatmet2.Core.Classes.Documents
 
         public string Nomenclature { get; set; }
 
-        public double Netto { get; set; }
+        public double? Netto { get; set; }
 
         public string Comment { get; set; }
     }

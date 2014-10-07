@@ -123,7 +123,7 @@ namespace Zlatmet2
 
         public DriversRepository DriversRepository { get; private set; }
 
-        public DocumentsRepository DocumentsRepository { get; private set; }
+        public JournalRepository JournalRepository { get; private set; }
 
         public TransportationRepository TransportationRepository { get; private set; }
 
@@ -201,7 +201,7 @@ namespace Zlatmet2
             TransportsRepository = new TransportsRepository(this);
             DriversRepository = new DriversRepository(this);
 
-            DocumentsRepository = new DocumentsRepository(this);
+            JournalRepository = new JournalRepository();
             TransportationRepository = new TransportationRepository(this);
             ProcessingRepository = new ProcessingRepository(this);
             RemainsRepository = new RemainsRepository(this);

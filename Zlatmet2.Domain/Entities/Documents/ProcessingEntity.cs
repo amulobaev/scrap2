@@ -19,6 +19,8 @@ namespace Zlatmet2.Domain.Entities.Documents
 
         public DateTime Date { get; set; }
 
+        public Guid? BaseId { get; set; }
+
         public Guid? ResponsiblePersonId { get; set; }
 
         public string Comment { get; set; }

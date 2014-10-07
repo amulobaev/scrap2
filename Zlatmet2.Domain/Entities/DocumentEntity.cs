@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Zlatmet2.Core.Enums;
 
@@ -7,6 +8,7 @@ namespace Zlatmet2.Domain.Entities
     [Table("Documents")]
     public class DocumentEntity
     {
+        [Key]
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }
@@ -27,7 +29,7 @@ namespace Zlatmet2.Domain.Entities
 
         public string Nomenclature { get; set; }
 
-        public double Netto { get; set; }
+        public double? Netto { get; set; }
 
         public string Comment { get; set; }
     }

@@ -39,6 +39,8 @@ namespace Zlatmet2.Domain
 
         // Документы
 
+        //public virtual DbSet<DocumentEntity> Documents { get; set; }
+
         public virtual DbSet<TransportationEntity> DocumentTransportation { get; set; }
 
         public virtual DbSet<TransportationItemEntity> DocumentTransportationItems { get; set; }
@@ -53,6 +55,8 @@ namespace Zlatmet2.Domain
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // Настройка внешних ключей
 
             // Организации и подразделения
@@ -83,6 +87,8 @@ namespace Zlatmet2.Domain
                 .HasForeignKey(x => x.DocumentId)
                 .WillCascadeOnDelete();
 
+            //
+            //modelBuilder.Ignore<DocumentEntity>();
         }
     }
 }

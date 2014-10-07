@@ -69,7 +69,12 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override Organization GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                OrganizationEntity entity =
+                    context.Organizations.Include(x => x.Divisions).FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<OrganizationEntity, Organization>(entity) : null;
+            }
         }
 
         public override void Update(Organization data)

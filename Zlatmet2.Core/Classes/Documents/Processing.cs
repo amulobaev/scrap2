@@ -15,8 +15,10 @@ namespace Zlatmet2.Core.Classes.Documents
         {
         }
 
+        public Guid? BaseId { get; set; }
+
         public Guid? ResponsiblePersonId { get; set; }
-        
+
         public string Comment { get; set; }
 
         public List<ProcessingItem> Items

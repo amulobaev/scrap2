@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.Documents;
+using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.Documents;
 using Zlatmet2.Views.Documents;
@@ -11,6 +14,8 @@ namespace Zlatmet2.ViewModels.Documents
 {
     public class DocumentRemainsViewModel : BaseDocumentViewModel<Remains, RemainsItemWrapper>
     {
+        private Organization _base;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -29,7 +34,7 @@ namespace Zlatmet2.ViewModels.Documents
             {
                 // Новый документ
                 Id = Guid.NewGuid();
-                
+
                 Guid idToLoad;
                 if (optional != null && Guid.TryParse(optional.ToString(), out idToLoad))
                 {
@@ -37,7 +42,7 @@ namespace Zlatmet2.ViewModels.Documents
                     Container = null;
                 }
 
-                Number = MainStorage.Instance.DocumentsRepository.GetNextDocumentNumber();
+                Number = MainStorage.Instance.JournalRepository.GetNextDocumentNumber();
                 Date = DateTime.Now;
             }
 
@@ -49,11 +54,29 @@ namespace Zlatmet2.ViewModels.Documents
             get { return "Корректировка остатков"; }
         }
 
+        public ReadOnlyObservableCollection<Organization> Bases
+        {
+            get { return MainStorage.Instance.Bases; }
+        }
+
+        [Required(ErrorMessage = @"Не выбрана база")]
+        public Organization Base
+        {
+            get { return _base; }
+            set
+            {
+                if (Equals(value, _base))
+                    return;
+                _base = value;
+                RaisePropertyChanged("Base");
+            }
+        }
         private void LoadDocument(Guid id)
         {
             Container = MainStorage.Instance.RemainsRepository.GetById(id);
             Number = Container.Number;
             Date = Container.Date;
+            Base = Bases.FirstOrDefault(x => x.Id == Container.BaseId);
 
             foreach (RemainsItem item in Container.Items)
                 Items.Add(new RemainsItemWrapper(item));
@@ -78,6 +101,7 @@ namespace Zlatmet2.ViewModels.Documents
             Container.Type = DocumentType.Remains;
             Container.Number = Number;
             Container.Date = Date.Value;
+            Container.BaseId = Base.Id;
 
             if (Container.Items.Any())
                 Container.Items.Clear();

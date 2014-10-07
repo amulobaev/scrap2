@@ -49,7 +49,11 @@ namespace Zlatmet2.Domain.Repositories.References
 
         public override Transport GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                TransportEntity entity = context.Transports.FirstOrDefault(x => x.Id == id);
+                return entity != null ? Mapper.Map<TransportEntity, Transport>(entity) : null;
+            }
         }
 
         public override void Update(Transport data)

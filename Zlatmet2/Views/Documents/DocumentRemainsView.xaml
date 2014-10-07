@@ -6,11 +6,15 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:classes="clr-namespace:Zlatmet2.Classes"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600">
     <UserControl.Resources>
+        <CollectionViewSource Source="{Binding Bases}" x:Key="BasesCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
         <CollectionViewSource Source="{Binding Nomenclatures}" x:Key="NomenclaturesCvs">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="Name"/>
@@ -30,17 +34,33 @@
 
         <GroupBox Grid.Row="1" Header="Основание:" Margin="3">
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="87" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="220" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Номер:" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right" />
-                <xctk:IntegerUpDown Grid.Column="1" Margin="3" Value="{Binding Number}" />
-                <TextBlock Grid.Column="2" Text="от" Margin="3" VerticalAlignment="Center" />
-                <DatePicker Grid.Column="3" Width="110" Margin="3" SelectedDate="{Binding Date}" />
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <xctk:IntegerUpDown Margin="3" Value="{Binding Number, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Grid.Column="1" Text="от" Margin="3" VerticalAlignment="Center" />
+                    <DatePicker Grid.Column="2" Width="110" Margin="3" SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+
+                <!--База-->
+                <TextBlock Grid.Row="1" Text="База:" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right" />
+                <ComboBox Grid.Row="1" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
+                          ItemsSource="{Binding Source={StaticResource BasesCvs}}"
+                          SelectedItem="{Binding Base, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             </Grid>
         </GroupBox>
 
@@ -85,8 +105,7 @@
                             </telerik:GridViewDataColumn.CellTemplate>
                             <telerik:GridViewDataColumn.CellEditTemplate>
                                 <DataTemplate>
-                                    <xctk:DoubleUpDown Value="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              Minimum="0" />
+                                    <xctk:DoubleUpDown Value="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                         </telerik:GridViewDataColumn>

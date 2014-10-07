@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Zlatmet2.Views.JournalView"
+﻿<UserControl x:Class="Zlatmet2.Views.Documents.JournalView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -59,7 +59,7 @@
                 </ToolBar.Resources>
                 <TextBlock Text="Период:" VerticalAlignment="Center" Margin="3" />
                 <ComboBox Width="150" Margin="3" ItemsSource="{Binding Source={StaticResource JournalPeriodTypeDataProvider}}"
-                          SelectedItem="{Binding PeriodType}">
+                          SelectedItem="{Binding PeriodType, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />

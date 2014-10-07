@@ -15,6 +15,8 @@ namespace Zlatmet2.Core.Classes.Documents
         {
         }
 
+        public Guid? BaseId { get; set; }
+        
         public List<RemainsItem> Items
         {
             get { return _items ?? (_items = new List<RemainsItem>()); }
