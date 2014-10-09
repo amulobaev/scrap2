@@ -92,12 +92,12 @@ namespace Zlatmet2.ViewModels.Reports
 
             using (IDbConnection connection = MainStorage.Instance.ConnectionFactory.Create())
             {
-                var p = new DynamicParameters();
-                p.Add("@DateFrom", DateFrom, DbType.Date);
-                p.Add("@DateTo", DateTo, DbType.Date);
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@DateFrom", DateFrom, DbType.Date);
+                parameters.Add("@DateTo", DateTo, DbType.Date);
 
                 List<Dto> dtos =
-                    connection.Query<Dto>("usp_ReportNomenclature", p, commandType: CommandType.StoredProcedure)
+                    connection.Query<Dto>("usp_ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
                         .ToList();
                 for (int i = 0; i < dtos.Count; i++)
                 {

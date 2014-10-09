@@ -49,6 +49,7 @@
     <Compile Include="Classes\Documents\RemainsItem.cs" />
     <Compile Include="Classes\Documents\Transportation.cs" />
     <Compile Include="Classes\Documents\TransportationItem.cs" />
+    <Compile Include="Classes\ObservableCollectionEx.cs" />
     <Compile Include="Classes\References\Division.cs" />
     <Compile Include="Classes\References\Employee.cs" />
     <Compile Include="Classes\References\Nomenclature.cs" />

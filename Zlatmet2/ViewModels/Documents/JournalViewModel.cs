@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Xceed.Wpf.AvalonDock.Layout;
+using Zlatmet2.Core.Classes;
 using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Tools;
@@ -18,7 +18,7 @@ namespace Zlatmet2.ViewModels.Documents
     /// </summary>
     public class JournalViewModel : SingletonLayoutDocumentViewModel
     {
-        private ObservableCollection<Document> _items;
+        private readonly ObservableCollectionEx<Document> _items = new ObservableCollectionEx<Document>();
 
         private JournalPeriodType _periodType;
         private DateTime? _dateFrom;
@@ -48,9 +48,9 @@ namespace Zlatmet2.ViewModels.Documents
             PeriodType = JournalPeriodType.ThisWeek;
         }
 
-        public ObservableCollection<Document> Items
+        public ObservableCollectionEx<Document> Items
         {
-            get { return _items ?? (_items = new ObservableCollection<Document>()); }
+            get { return _items; }
         }
 
         public Document SelectedItem

@@ -119,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <EmbeddedResource Include="Scripts\05_Create_usp_ReportWarehouse.sql" />
+    <EmbeddedResource Include="Scripts\06_Create_usp_ReportNomenclature.sql" />
     <EmbeddedResource Include="Scripts\03_Create_GetDocuments_Udf.sql" />
     <EmbeddedResource Include="Scripts\01_Create_Documents_View.sql" />
     <EmbeddedResource Include="Scripts\02_Create_DocumentNumbersAndDates_View.sql" />
