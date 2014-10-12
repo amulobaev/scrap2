@@ -42,6 +42,7 @@ namespace Zlatmet2.ViewModels
             Instance = this;
 
             _documents = MainWindow.Instance.MainDocumentPane.Children;
+            Documents = new ReadOnlyObservableCollection<LayoutContent>(_documents);
 
             // Инициализация команд
             ShowReferenceNomenclatureCommand = new RelayCommand(ShowReferenceNomenclature);
@@ -66,6 +67,8 @@ namespace Zlatmet2.ViewModels
         #region Свойства
 
         public static MainViewModel Instance { get; private set; }
+
+        public ReadOnlyObservableCollection<LayoutContent> Documents { get; private set; }
 
         #endregion
 

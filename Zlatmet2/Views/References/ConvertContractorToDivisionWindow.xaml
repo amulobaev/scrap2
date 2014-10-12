@@ -1,0 +1,39 @@
+﻿<Window x:Class="Zlatmet2.Views.References.ConvertContractorToDivisionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        Title="Преобразование контрагента в подразделение" WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding Contractors}" x:Key="ContractorsCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Контрагент:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+        <ComboBox Grid.Column="1" Margin="3" ItemsSource="{Binding Source={StaticResource ContractorsCvs}}"
+                  DisplayMemberPath="Name" SelectedItem="{Binding Contractor, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Grid.Row="1" Text="Подразделение:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding Division, UpdateSourceTrigger=PropertyChanged}" />
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="3">
+            <Button Content="OK" Width="75" Margin="3" Command="{Binding OkCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+            <Button Content="Отмена" Width="75"  Margin="3" Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+        </StackPanel>
+    </Grid>
+</Window>

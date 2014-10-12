@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Windows.Controls;
 using System.Windows.Interactivity;
+using Telerik.Windows.Controls;
 
-namespace Zlatmet2.Classes
+namespace Zlatmet2.Behaviors
 {
-    public class ScrollIntoViewBehavior : Behavior<DataGrid>
+    public class RadGridViewScrollIntoViewBehavior : Behavior<RadGridView>
     {
         protected override void OnAttached()
         {
@@ -12,9 +12,9 @@ namespace Zlatmet2.Classes
             this.AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
         }
 
-        void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AssociatedObject_SelectionChanged(object sender, SelectionChangeEventArgs e)
         {
-            DataGrid grid = sender as DataGrid;
+            RadGridView grid = sender as RadGridView;
             if (grid == null)
                 return;
 
@@ -22,8 +22,7 @@ namespace Zlatmet2.Classes
             {
                 if (grid.SelectedItem == null)
                     return;
-                
-                //grid.UpdateLayout();
+
                 grid.Focus();
                 grid.ScrollIntoView(grid.SelectedItem);
             }));

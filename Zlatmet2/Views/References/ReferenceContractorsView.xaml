@@ -6,8 +6,26 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:classes="clr-namespace:Zlatmet2.Classes"
+             xmlns:behaviors="clr-namespace:Zlatmet2.Behaviors"
              mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="600">
+    <UserControl.Resources>
+        <!--SelectedItemStyle-->
+        <Style TargetType="{x:Type Button}" x:Key="SelectedItemStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!--SelectedDivisionStyle-->
+        <Style TargetType="{x:Type Button}" x:Key="SelectedDivisionStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedDivision}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,9 +35,11 @@
 
         <ToolBar Background="Transparent">
             <Button Content="Добавить" Command="{Binding AddItemCommand}" />
-            <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
+            <Button Content="Удалить" Command="{Binding RemoveItemCommand}" Style="{StaticResource SelectedItemStyle}" />
             <Separator />
             <Button Content="Сохранить изменения" Command="{Binding SaveCommand}" />
+            <Separator />
+            <Button Content="Преобразовать в подразделение" Command="{Binding ConvertToDivisionCommand}" Style="{StaticResource SelectedItemStyle}" />
         </ToolBar>
 
         <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"
@@ -41,9 +61,9 @@
                     </Style.Triggers>
                 </Style>
             </telerik:RadGridView.RowStyle>
-            <!--<i:Interaction.Behaviors>
-                <classes:ScrollIntoViewBehavior />
-            </i:Interaction.Behaviors>-->
+            <i:Interaction.Behaviors>
+                <behaviors:RadGridViewScrollIntoViewBehavior />
+            </i:Interaction.Behaviors>
         </telerik:RadGridView>
 
         <GroupBox Grid.Row="2" Margin="2">
@@ -113,28 +133,7 @@
                         </Grid.RowDefinitions>
 
                         <ToolBar Background="Transparent">
-                            <ToolBar.Resources>
-                                <Style TargetType="{x:Type Button}" x:Key="SelectedDivisionStyle">
-                                    <Setter Property="IsEnabled" Value="True" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedDivision}" Value="{x:Null}">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToolBar.Resources>
-                            <Button Content="Добавить" Command="{Binding AddDivisionCommand}">
-                                <Button.Style>
-                                    <Style TargetType="{x:Type Button}">
-                                        <Setter Property="IsEnabled" Value="True" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
-                                                <Setter Property="IsEnabled" Value="False" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
+                            <Button Content="Добавить" Command="{Binding AddDivisionCommand}" Style="{StaticResource SelectedItemStyle}" />
                             <Button Content="Удалить" Command="{Binding RemoveDivisionCommand}" Style="{StaticResource SelectedDivisionStyle}" />
                             <Separator />
                             <Button Content="Выше" Command="{Binding MoveDivisionUpCommand}" Style="{StaticResource SelectedDivisionStyle}" />
@@ -159,7 +158,7 @@
                                 </Style>
                             </DataGrid.RowStyle>
                             <i:Interaction.Behaviors>
-                                <classes:ScrollIntoViewBehavior />
+                                <behaviors:DataGridScrollIntoViewBehavior />
                             </i:Interaction.Behaviors>
                         </DataGrid>
                     </Grid>

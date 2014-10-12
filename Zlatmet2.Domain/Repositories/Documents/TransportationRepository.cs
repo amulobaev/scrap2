@@ -130,5 +130,43 @@ namespace Zlatmet2.Domain.Repositories.Documents
                     return false;
             }
         }
+
+        /// <summary>
+        /// Замена контрагента в документах
+        /// </summary>
+        /// <param name="contractorId"></param>
+        /// <param name="divisionId"></param>
+        /// <param name="newContractorId"></param>
+        /// <param name="newDivisionId"></param>
+        public void ConvertContractorToDivision(Guid contractorId, Guid divisionId, Guid newContractorId, Guid newDivisionId)
+        {
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                List<TransportationEntity> documents = null;
+
+                // Найти документы, у которых заказчик данный контрагент
+                documents =
+                    context.DocumentTransportation.Where(
+                        x => x.SupplierId == contractorId && x.SupplierDivisionId == divisionId).ToList();
+                foreach (TransportationEntity document in documents)
+                {
+                    document.SupplierId = newContractorId;
+                    document.SupplierDivisionId = newDivisionId;
+                }
+
+                // Найти документы, у которых поставщик данный контрагент
+                documents =
+                    context.DocumentTransportation.Where(
+                        x => x.CustomerId == contractorId && x.CustomerDivisionId == divisionId).ToList();
+                foreach (TransportationEntity document in documents)
+                {
+                    document.CustomerId = newContractorId;
+                    document.CustomerDivisionId = newDivisionId;
+                }
+
+                // Сохранить изменения
+                context.SaveChanges();
+            }
+        }
     }
 }

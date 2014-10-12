@@ -79,7 +79,7 @@ namespace Zlatmet2.ViewModels.Base
             }
         }
 
-        private void SaveChanges()
+        protected void SaveChanges()
         {
             foreach (var item in Items.Where(x => x.IsChanged))
                 item.Save();

@@ -141,9 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\RadGridViewScrollIntoViewBehavior.cs" />
     <Compile Include="Classes\BaseModel.cs" />
     <Compile Include="Classes\BaseValidationModel.cs" />
-    <Compile Include="Classes\ScrollIntoViewBehavior.cs" />
+    <Compile Include="Behaviors\DataGridScrollIntoViewBehavior.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\RadioButtonCheckedConverter.cs" />
     <Compile Include="MainStorage.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="ViewModels\Documents\JournalViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseEditorViewModel.cs" />
+    <Compile Include="ViewModels\References\ConvertContractorToDivisionViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceBasesViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceDriversViewModel.cs" />
     <Compile Include="ViewModels\References\ReferenceNomenclaturesViewModel.cs" />
@@ -231,6 +233,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ConvertContractorToDivisionWindow.xaml.cs">
+      <DependentUpon>ConvertContractorToDivisionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\References\ReferenceBasesView.xaml.cs">
       <DependentUpon>ReferenceBasesView.xaml</DependentUpon>
@@ -310,6 +315,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\References\ConvertContractorToDivisionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

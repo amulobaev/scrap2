@@ -1,14 +1,20 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Models.References;
 using Zlatmet2.ViewModels.Base;
+using Zlatmet2.ViewModels.Documents;
 using Zlatmet2.Views.References;
 
 namespace Zlatmet2.ViewModels.References
 {
+    /// <summary>
+    /// Модель представления справочника "Контрагенты"
+    /// </summary>
     public sealed class ReferenceContractorsViewModel : BaseEditorViewModel<OrganizationWrapper>
     {
         private ICommand _addDivisionCommand;
@@ -16,6 +22,7 @@ namespace Zlatmet2.ViewModels.References
         private ICommand _moveDivisionUpCommand;
         private ICommand _moveDivisionDownCommand;
         private DivisionWrapper _selectedDivision;
+        private ICommand _convertToDivisionCommand;
 
         /// <summary>
         /// Конструктор
@@ -32,6 +39,22 @@ namespace Zlatmet2.ViewModels.References
         }
 
         #region Свойства
+
+        public DivisionWrapper SelectedDivision
+        {
+            get { return _selectedDivision; }
+            set
+            {
+                if (Equals(value, _selectedDivision))
+                    return;
+                _selectedDivision = value;
+                RaisePropertyChanged("SelectedDivision");
+            }
+        }
+
+        #endregion
+
+        #region Команды
 
         public ICommand AddDivisionCommand
         {
@@ -53,19 +76,15 @@ namespace Zlatmet2.ViewModels.References
             get { return _moveDivisionDownCommand ?? (_moveDivisionDownCommand = new RelayCommand(MoveDivisionDown)); }
         }
 
-        #endregion
-
-        public DivisionWrapper SelectedDivision
+        public ICommand ConvertToDivisionCommand
         {
-            get { return _selectedDivision; }
-            set
+            get
             {
-                if (Equals(value, _selectedDivision))
-                    return;
-                _selectedDivision = value;
-                RaisePropertyChanged("SelectedDivision");
+                return _convertToDivisionCommand ?? (_convertToDivisionCommand = new RelayCommand(ConvertToDivision));
             }
         }
+
+        #endregion
 
         private void AddDivision()
         {
@@ -145,6 +164,61 @@ namespace Zlatmet2.ViewModels.References
             supplier.Divisions.Add(new DivisionWrapper(supplier.Id, 1, "Основное"));
             Items.Add(supplier);
             SelectedItem = supplier;
+        }
+
+        private void ConvertToDivision()
+        {
+            if (SelectedItem == null)
+                return;
+
+            // Проверка количества подразделений у контрагента
+            if (SelectedItem.Divisions.Count > 1)
+            {
+                MessageBox.Show("У контрагента для преобразования может быть только одно подразделение", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            // Попросить закрыть все документы "Перевозка"
+            if (MainViewModel.Instance.Documents.Any(
+                    x =>
+                        x.Content is FrameworkElement &&
+                        (x.Content as FrameworkElement).DataContext is DocumentTransportationViewModel))
+            {
+                MessageBox.Show("Закройте все документы \"Перевозка\"", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            //
+            ConvertContractorToDivisionWindow window = new ConvertContractorToDivisionWindow(SelectedItem.Id)
+            {
+                Owner = MainWindow.Instance
+            };
+            if (window.ShowDialog() == true)
+            {
+                // Нужно создать подразделение у целевого контрагента
+                OrganizationWrapper newContractorWrapper = Items.FirstOrDefault(x => x.Id == window.ViewModel.Contractor.Id);
+                if (newContractorWrapper == null)
+                    return;
+                DivisionWrapper newDivisionWrapper = new DivisionWrapper(newContractorWrapper.Id,
+                    newContractorWrapper.Divisions.Count + 1, window.ViewModel.Division);
+                newContractorWrapper.Divisions.Add(newDivisionWrapper);
+                newContractorWrapper.IsChanged = true;
+
+                // Сохранение изменений
+                SaveChanges();
+
+                // Замена контрагента в документах
+                MainStorage.Instance.TransportationRepository.ConvertContractorToDivision(SelectedItem.Id,
+                    SelectedItem.Divisions[0].Id, newContractorWrapper.Id, newDivisionWrapper.Id);
+
+                // Удаление контрагента
+                MainStorage.Instance.DeleteObject(SelectedItem.Container);
+                Items.Remove(SelectedItem);
+
+                SelectedItem = newContractorWrapper;
+            }
         }
 
     }

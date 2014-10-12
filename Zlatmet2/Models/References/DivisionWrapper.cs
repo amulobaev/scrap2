@@ -3,12 +3,21 @@ using Zlatmet2.Core.Classes.References;
 
 namespace Zlatmet2.Models.References
 {
+    /// <summary>
+    /// Обёртка для подразделения контрагента
+    /// </summary>
     public class DivisionWrapper : BaseReferenceWrapper<Division>
     {
         private int _number;
 
         private string _name;
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="number"></param>
+        /// <param name="name"></param>
         public DivisionWrapper(Guid organizationId, int number, string name)
         {
             Id = Guid.NewGuid();
