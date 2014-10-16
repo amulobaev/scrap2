@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
@@ -176,7 +177,28 @@ namespace Zlatmet2.ViewModels.Reports
 
         protected override void PrepareReport()
         {
-            throw new NotImplementedException();
+            if (_template == null)
+            {
+                MessageBox.Show(string.Format("Отсутствует шаблон \"{0}\"", ReportName), MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Report = new StiReport();
+            Report.Load(_template.Data);
+
+            Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
+            Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
+            Report.Dictionary.Variables["ТипПеревозок"].Value = TransportType == TransportType.Auto
+                ? "автомобильным"
+                : "ж/д";
+            Report.Dictionary.Variables["НомерТранспорта"].Value = TransportType == TransportType.Auto
+                ? "Автомобиль и номер"
+                : "Номер вагона";
+
+            Report.Compile();
+            Report.Render(false);
         }
+
     }
 }
