@@ -1,4 +1,6 @@
-﻿namespace Zlatmet2.Core.Enums
+﻿using System.ComponentModel;
+
+namespace Zlatmet2.Core.Enums
 {
     /// <summary>
     /// Тип организации
@@ -8,11 +10,13 @@
         /// <summary>
         /// Контрагент
         /// </summary>
+        [Description("Контрагент")]
         Contractor = 0,
 
         /// <summary>
         /// База
         /// </summary>
+        [Description("База")]
         Base
     }
 }

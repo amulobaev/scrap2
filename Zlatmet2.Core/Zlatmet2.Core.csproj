@@ -63,6 +63,7 @@
     <Compile Include="Enums\EmployeeType.cs" />
     <Compile Include="Enums\JournalPeriodType.cs" />
     <Compile Include="Enums\OrganizationType.cs" />
+    <Compile Include="Enums\TransportType.cs" />
     <Compile Include="IConnectionFactory.cs" />
     <Compile Include="IModelContext.cs" />
     <Compile Include="PersistentObject.cs" />

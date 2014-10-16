@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Zlatmet2.Annotations;
+using System.Linq.Expressions;
+using GalaSoft.MvvmLight;
 using Zlatmet2.Models;
 
 namespace Zlatmet2.Classes
@@ -9,7 +10,7 @@ namespace Zlatmet2.Classes
     /// <summary>
     /// Базовый класс для моделей
     /// </summary>
-    public abstract class BaseModel : INotifyPropertyChanged
+    public abstract class BaseModel : ObservableObject
     {
         private bool _isChanged;
 
@@ -34,31 +35,30 @@ namespace Zlatmet2.Classes
         public bool IsChanged
         {
             get { return _isChanged; }
-            set
-            {
-                if (value.Equals(_isChanged))
-                    return;
-                _isChanged = value;
-                RaisePropertyChanged("IsChanged");
-            }
+            set { Set(() => IsChanged, ref _isChanged, value); }
         }
 
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void RaisePropertyChanged(string propertyName)
+        protected override void RaisePropertyChanged(string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            base.RaisePropertyChanged(propertyName);
 
-            if (_ignoreProperties.All(x => x != propertyName))
+            if (!InIgnoreList(propertyName))
                 IsChanged = true;
         }
 
-        #endregion
+        protected override void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
+        {
+            base.RaisePropertyChanged(propertyExpression);
+
+            string propertyName = GetPropertyName(propertyExpression);
+            if (!InIgnoreList(propertyName))
+                IsChanged = true;
+        }
+
+        private bool InIgnoreList(string propertyName)
+        {
+            return _ignoreProperties.Any(x => string.Equals(x, propertyName));
+        }
 
     }
 }

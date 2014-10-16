@@ -3,9 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
+             xmlns:coreEnums="clr-namespace:Zlatmet2.Core.Enums;assembly=Zlatmet2.Core"
+             xmlns:converters="clr-namespace:Zlatmet2.Converters"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600">
+    <UserControl.Resources>
+        <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+
+        <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}" x:Key="ComboBoxItemWithSeparatorStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                <Separator HorizontalAlignment="Stretch" IsEnabled="False"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <CollectionViewSource Source="{Binding Nomenclatures}" x:Key="NomenclaturesCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <Style TargetType="{x:Type FrameworkElement}" x:Key="NomenclatureIsEnabledStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding NomenclatureIsEnabled}" Value="False">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -35,8 +70,10 @@
             <!--Тип перевозок-->
             <TextBlock Margin="3" Text="Тип перевозок:" VerticalAlignment="Center" HorizontalAlignment="Left" />
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                <RadioButton Content="Авто" Margin="3" VerticalAlignment="Center" />
-                <RadioButton Content="Ж/Д" Margin="3" VerticalAlignment="Center" />
+                <RadioButton Content="Авто" Margin="3" VerticalAlignment="Center" GroupName="TransportTypeGroup"
+                             IsChecked="{Binding TransportType, ConverterParameter={x:Static coreEnums:TransportType.Auto}, Converter={StaticResource RadioButtonCheckedConverter}}" />
+                <RadioButton Content="Ж/Д" Margin="3" VerticalAlignment="Center" GroupName="TransportTypeGroup" 
+                             IsChecked="{Binding TransportType, ConverterParameter={x:Static coreEnums:TransportType.Train}, Converter={StaticResource RadioButtonCheckedConverter}}" />
             </StackPanel>
 
             <!--Период отчёта-->
@@ -49,21 +86,53 @@
 
             <!--Поставщик-->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <CheckBox VerticalAlignment="Center" Margin="3" Content="Поставщик:" />
+                <CheckBox VerticalAlignment="Center" Margin="3" Content="Поставщик:" IsChecked="{Binding SupplierIsEnabled}" />
             </StackPanel>
-            <ComboBox Grid.Row="2" Grid.Column="1" Margin="3" />
+            <ComboBox Grid.Row="2" Grid.Column="1" Margin="3" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Name"
+                      SelectedItem="{Binding Supplier, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                      ItemContainerStyle="{StaticResource ComboBoxItemWithSeparatorStyle}">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SupplierIsEnabled}" Value="False">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
 
             <!--Заказчик-->
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <CheckBox Margin="3" VerticalAlignment="Center" Content="Заказчик:" />
+                <CheckBox Margin="3" VerticalAlignment="Center" Content="Заказчик:" IsChecked="{Binding CustomerIsEnabled}" />
             </StackPanel>
-            <ComboBox Grid.Row="3" Grid.Column="1" Margin="3" />
+            <ComboBox Grid.Row="3" Grid.Column="1" Margin="3" ItemsSource="{Binding Customers}" DisplayMemberPath="Name"
+                          SelectedItem="{Binding Customer, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                      ItemContainerStyle="{StaticResource ComboBoxItemWithSeparatorStyle}">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CustomerIsEnabled}" Value="False">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
 
             <!--Номенклатура-->
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <CheckBox Margin="3" VerticalAlignment="Center" Content="Номенклатура:" />
+                <CheckBox Margin="3" VerticalAlignment="Center" Content="Номенклатура:" IsChecked="{Binding NomenclatureIsEnabled}" />
             </StackPanel>
-            <ComboBox Grid.Row="4" Grid.Column="1" Margin="3" />
+            <xctk:CheckComboBox Grid.Row="4" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
+                                ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}"
+                                SelectedItemsOverride="{Binding SelectedNomenclatures}"
+                                Style="{StaticResource NomenclatureIsEnabledStyle}" />
+            <Button Grid.Row="4" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3"
+                    Command="{Binding SelectAllNomenclaturesCommand}" Style="{StaticResource NomenclatureIsEnabledStyle}" />
+            <Button Grid.Row="4" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3"
+                    Command="{Binding UnselectAllNomenclaturesCommand}"
+                     Style="{StaticResource NomenclatureIsEnabledStyle}" />
 
         </Grid>
 

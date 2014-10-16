@@ -424,7 +424,24 @@
       <Name>Zlatmet2.Migration</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
+    <Resource Include="Images\cancel.png" />
+    <Resource Include="Images\configure.png" />
+    <Resource Include="Images\delete.png" />
+    <Resource Include="Images\down.png" />
+    <Resource Include="Images\edit.png" />
+    <Resource Include="Images\exit.png" />
+    <Resource Include="Images\ok.png" />
+    <Resource Include="Images\print.png" />
+    <Resource Include="Images\reload.png" />
+    <Resource Include="Images\reports.png" />
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
