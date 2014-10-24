@@ -401,8 +401,8 @@ namespace Zlatmet2.ViewModels.Service
 
             // Базы и организации
             List<Organization> organizations = new List<Organization>();
-
-            organizations.Add(new Organization(Guid.Parse("CA761232-ED42-11CE-BACD-00AA0057B223"), OrganizationType.Base)
+            Guid oldBaseId = Guid.Parse("CA761232-ED42-11CE-BACD-00AA0057B223");
+            organizations.Add(new Organization(oldBaseId, OrganizationType.Base)
             {
                 Name = "Основная база"
             });
@@ -534,12 +534,60 @@ namespace Zlatmet2.ViewModels.Service
             List<Processing> processingDocs = new List<Processing>();
             foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 1))
             {
+                Processing processingDoc = new Processing(oldDocument.doc_id)
+                {
+                    UserId = oldDocument.user_id,
+                    Type = DocumentType.Processing,
+                    Number = oldDocument.number,
+                    Date = oldDocument.doc_date,
+                    BaseId = oldBaseId,
+                    ResponsiblePersonId = oldDocument.responsible_id,
+                    Comment = oldDocument.comment
+                };
+
+                // Табличная часть
+                var tableItems = oldTableItems.Where(x => x.doc_id == oldDocument.doc_id).OrderBy(x => x.number);
+                foreach (OldTableItemDto oldTableItemDto in tableItems)
+                {
+                    processingDoc.Items.Add(new ProcessingItem(oldTableItemDto.tableitem_id)
+                    {
+                        Number = oldTableItemDto.number,
+                        InputNomenclatureId = oldTableItemDto.nompog_id,
+                        InputWeight = oldTableItemDto.massapog,
+                        OutputNomenclatureId = oldTableItemDto.nomraz_id,
+                        OutputWeight = oldTableItemDto.massaraz
+                    });
+                }
+
+                processingDocs.Add(processingDoc);
             }
 
             // Документы "Корректировка остатков"
             List<Remains> remainsDocs = new List<Remains>();
             foreach (OldDocumentDto oldDocument in oldDocuments.Where(x => x.doc_type == 2))
             {
+                Remains remainsDoc = new Remains(oldDocument.doc_id)
+                {
+                    UserId = oldDocument.user_id,
+                    Type = DocumentType.Remains,
+                    Number = oldDocument.number,
+                    Date = oldDocument.doc_date,
+                    BaseId = oldBaseId
+                };
+
+                // Табличная часть
+                var tableItems = oldTableItems.Where(x => x.doc_id == oldDocument.doc_id).OrderBy(x => x.number);
+                foreach (OldTableItemDto oldTableItemDto in tableItems)
+                {
+                    remainsDoc.Items.Add(new RemainsItem(oldTableItemDto.tableitem_id)
+                    {
+                        Number = oldTableItemDto.number,
+                        NomenclatureId = oldTableItemDto.nompog_id,
+                        Weight = oldTableItemDto.massapog
+                    });
+                }
+
+                remainsDocs.Add(remainsDoc);
             }
 
             Log("Закончено преобразование данных");
@@ -641,8 +689,36 @@ namespace Zlatmet2.ViewModels.Service
             }
 
             // Документы "Переработка"
+            foreach (Processing processing in processingDocs)
+            {
+                try
+                {
+                    Processing processing1 = processing;
+                    ThreadContext.BeginInvokeOnUiThread(
+                        () => MainStorage.Instance.ProcessingRepository.Create(processing1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении документы \"Переработка\"");
+                    Log(ex.Message);
+                }
+            }
 
             // Документы "Корректировка остатков"
+            foreach (Remains remains in remainsDocs)
+            {
+                try
+                {
+                    Remains remains1 = remains;
+                    ThreadContext.BeginInvokeOnUiThread(
+                        () => MainStorage.Instance.RemainsRepository.Create(remains1));
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка при добавлении документы \"Переработка\"");
+                    Log(ex.Message);
+                }
+            }
 
             Log("Закончена запись данных");
 

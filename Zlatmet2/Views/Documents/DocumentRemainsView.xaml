@@ -29,7 +29,12 @@
         </Grid.RowDefinitions>
 
         <ToolBar Background="Transparent">
-            <Button Content="Сохранить" Command="{Binding SaveDocumentCommand}" />
+            <Button Command="{Binding SaveDocumentCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/save.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Сохранить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
         </ToolBar>
 
         <GroupBox Grid.Row="1" Header="Основание:" Margin="3">
@@ -72,11 +77,31 @@
                 </Grid.RowDefinitions>
 
                 <ToolBar Background="Transparent">
-                    <Button Content="Добавить" Command="{Binding AddItemCommand}" />
-                    <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
+                    <Button Command="{Binding AddItemCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../../Images/add.png" Stretch="None" Width="16" Height="16" />
+                            <TextBlock Text="Добавить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding RemoveItemCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../../Images/cancel.png" Stretch="None" Width="16" Height="16" />
+                            <TextBlock Text="Удалить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                        </StackPanel>
+                    </Button>
                     <Separator />
-                    <Button Content="Выше" Command="{Binding MoveItemUpCommand}" />
-                    <Button Content="Ниже" Command="{Binding MoveItemDownCommand}" />
+                    <Button Command="{Binding MoveItemUpCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../../Images/up.png" Stretch="None" Width="16" Height="16" />
+                            <TextBlock Text="Выше" VerticalAlignment="Center" Margin="2,0,0,0" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding MoveItemDownCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../../Images/down.png" Stretch="None" Width="16" Height="16" />
+                            <TextBlock Text="Ниже" VerticalAlignment="Center" Margin="2,0,0,0" />
+                        </StackPanel>
+                    </Button>
                 </ToolBar>
 
                 <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" CanUserReorderColumns="False" ShowGroupPanel="False"

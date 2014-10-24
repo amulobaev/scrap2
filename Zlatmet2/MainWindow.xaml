@@ -17,8 +17,8 @@
             <MenuItem Header="Справочники">
                 <MenuItem Header="Номенклатура" Command="{Binding ShowReferenceNomenclatureCommand}" />
                 <Separator />
-                <MenuItem Header="Контрагенты" Command="{Binding ShowReferenceContractorsCommand}" />
                 <MenuItem Header="Базы" Command="{Binding ShowReferenceBasesCommand}" />
+                <MenuItem Header="Контрагенты" Command="{Binding ShowReferenceContractorsCommand}" />
                 <Separator />
                 <MenuItem Header="Ответственные лица" Command="{Binding ShowReferenceResponsiblePersonsCommand}" />
                 <MenuItem Header="Водители" Command="{Binding ShowReferenceDriversCommand}" />

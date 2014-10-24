@@ -22,9 +22,24 @@
                     </Style.Triggers>
                 </Style>
             </ToolBar.Resources>
-            <Button Content="Добавить" Command="{Binding AddItemCommand}" />
-            <Button Content="Изменить" Command="{Binding EditItemCommand}" Style="{StaticResource SelectedItemStyle}" />
-            <Button Content="Удалить" Command="{Binding RemoveItemCommand}" Style="{StaticResource SelectedItemStyle}" />
+            <Button Command="{Binding AddItemCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/add.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Добавить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding EditItemCommand}" Style="{StaticResource SelectedItemStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/edit.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Изменить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding RemoveItemCommand}" Style="{StaticResource SelectedItemStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/cancel.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Удалить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
         </ToolBar>
 
         <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"

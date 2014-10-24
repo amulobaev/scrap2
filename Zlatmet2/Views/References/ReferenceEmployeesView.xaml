@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
-             xmlns:classes="clr-namespace:Zlatmet2.Classes"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:behaviors="clr-namespace:Zlatmet2.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
     <Grid>
@@ -15,10 +15,35 @@
         </Grid.RowDefinitions>
 
         <ToolBar Background="Transparent">
-            <Button Content="Добавить" Command="{Binding AddItemCommand}" />
-            <Button Content="Удалить" Command="{Binding RemoveItemCommand}" />
+            <ToolBar.Resources>
+                <!--SelectedItemStyle-->
+                <Style TargetType="{x:Type Button}" x:Key="SelectedItemStyle">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToolBar.Resources>
+            <Button Command="{Binding AddItemCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/add.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Добавить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding RemoveItemCommand}" Style="{StaticResource SelectedItemStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/cancel.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Удалить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
             <Separator />
-            <Button Content="Сохранить изменения" Command="{Binding SaveCommand}" />
+            <Button Command="{Binding SaveCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/save.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Сохранить изменения" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
         </ToolBar>
 
         <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"
@@ -27,9 +52,6 @@
             <telerik:RadGridView.SortDescriptors>
                 <telerik:SortDescriptor Member="Name"/>
             </telerik:RadGridView.SortDescriptors>
-            <!--<i:Interaction.Behaviors>
-                <classes:ScrollIntoViewBehavior />
-            </i:Interaction.Behaviors>-->
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn Header="Фамилия, инициалы" Width="*" DataMemberBinding="{Binding Name}">
                     <telerik:GridViewDataColumn.CellTemplate>
@@ -77,6 +99,9 @@
                     </Style.Triggers>
                 </Style>
             </telerik:RadGridView.RowStyle>
+            <i:Interaction.Behaviors>
+                <behaviors:RadGridViewScrollIntoViewBehavior />
+            </i:Interaction.Behaviors>
         </telerik:RadGridView>
     </Grid>
 </UserControl>
