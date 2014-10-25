@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Windows;
+using Stimulsoft.Report;
 using Telerik.Windows.Controls;
 using Zlatmet2.Domain.Repositories.Service;
 using Zlatmet2.Views;
@@ -15,6 +16,8 @@ namespace Zlatmet2
         private void App_Startup(object sender, StartupEventArgs e)
         {
             StyleManager.ApplicationTheme = new Office_SilverTheme();
+
+            StiConfig.LoadLocalization("ru.xml");
 
             // Инициализация хранилища
             MainStorage.Instance.Initialize();
@@ -46,7 +49,7 @@ namespace Zlatmet2
 #if DEBUG
             }
 #endif
-            
+
             if (MainStorage.Instance.UserId == Guid.Empty)
             {
                 this.Shutdown();
