@@ -1,11 +1,12 @@
-﻿using Zlatmet2.Classes;
+﻿using System;
+using Zlatmet2.Classes;
 
 namespace Zlatmet2.ViewModels.Base
 {
     /// <summary>
     /// Базовая модель представления
     /// </summary>
-    public abstract class ViewModelBase : BaseModel
+    public abstract class ViewModelBase : BaseModel, IDisposable
     {
     }
 }

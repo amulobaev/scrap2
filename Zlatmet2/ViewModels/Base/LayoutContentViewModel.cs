@@ -8,7 +8,7 @@ namespace Zlatmet2.ViewModels.Base
     /// <summary>
     /// Базовая модель представления для вкладок
     /// </summary>
-    public abstract class LayoutContentViewModel : ValidationViewModelBase, IDisposable
+    public abstract class LayoutContentViewModel : ValidationViewModelBase
     {
         private string _title;
 
@@ -75,9 +75,11 @@ namespace Zlatmet2.ViewModels.Base
             return true;
         }
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             this.PropertyChanged -= OnPropertyChanged;
+
+            base.Dispose();
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

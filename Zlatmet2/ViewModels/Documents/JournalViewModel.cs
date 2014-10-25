@@ -44,8 +44,14 @@ namespace Zlatmet2.ViewModels.Documents
 
             this.PropertyChanged += OnPropertyChanged;
 
-            // TODO сделать загрузку из настроек
-            PeriodType = JournalPeriodType.ThisWeek;
+            // Загрузка настроек журнала
+            DateFrom = MainStorage.Instance.JournalPeriodFrom != DateTime.MinValue
+                ? MainStorage.Instance.JournalPeriodFrom
+                : (DateTime?)null;
+            DateTo = MainStorage.Instance.JournalPeriodTo != DateTime.MinValue
+                ? MainStorage.Instance.JournalPeriodTo
+                : (DateTime?)null;
+            PeriodType = (JournalPeriodType)MainStorage.Instance.JournalPeriodType;
         }
 
         public ObservableCollectionEx<Document> Items
@@ -135,6 +141,11 @@ namespace Zlatmet2.ViewModels.Documents
 
         public override void Dispose()
         {
+            // Сохранение настроек
+            MainStorage.Instance.JournalPeriodType = (int)PeriodType;
+            MainStorage.Instance.JournalPeriodFrom = DateFrom.HasValue ? DateFrom.Value : DateTime.MinValue;
+            MainStorage.Instance.JournalPeriodTo = DateTo.HasValue ? DateTo.Value : DateTime.MinValue;
+
             this.PropertyChanged -= OnPropertyChanged;
 
             base.Dispose();

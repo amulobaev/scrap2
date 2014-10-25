@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -14,7 +15,7 @@ using Zlatmet2.Views.Service;
 
 namespace Zlatmet2.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : ValidationViewModelBase
     {
         #region Поля
 
@@ -325,6 +326,20 @@ namespace Zlatmet2.ViewModels
 
             ImportDataWindow importDataWindow = new ImportDataWindow { Owner = MainWindow.Instance };
             importDataWindow.ShowDialog();
+        }
+
+        public override void Dispose()
+        {
+            List<IDisposable> viewModelsToDispose =
+                _documents.Select(x => x.Content)
+                    .OfType<FrameworkElement>()
+                    .Select(x => x.DataContext)
+                    .OfType<IDisposable>()
+                    .ToList();
+            foreach (var viewModel in viewModelsToDispose)
+                viewModel.Dispose();
+
+            base.Dispose();
         }
 
         #endregion

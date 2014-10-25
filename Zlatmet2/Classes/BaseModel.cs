@@ -10,7 +10,7 @@ namespace Zlatmet2.Classes
     /// <summary>
     /// Базовый класс для моделей
     /// </summary>
-    public abstract class BaseModel : ObservableObject
+    public abstract class BaseModel : ObservableObject, IDisposable
     {
         private bool _isChanged;
 
@@ -58,6 +58,10 @@ namespace Zlatmet2.Classes
         private bool InIgnoreList(string propertyName)
         {
             return _ignoreProperties.Any(x => string.Equals(x, propertyName));
+        }
+
+        public virtual void Dispose()
+        {
         }
 
     }

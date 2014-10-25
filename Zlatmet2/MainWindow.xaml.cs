@@ -28,6 +28,11 @@ namespace Zlatmet2
 
         public static MainWindow Instance { get; private set; }
 
+        public MainViewModel ViewModel
+        {
+            get { return this.DataContext as MainViewModel; }
+        }
+
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -35,6 +40,8 @@ namespace Zlatmet2
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            ViewModel.Dispose();
+
             // Сохранение настроек окна
             MainStorage.Instance.MainWindowWidth = this.Width;
             MainStorage.Instance.MainWindowHeight = this.Height;

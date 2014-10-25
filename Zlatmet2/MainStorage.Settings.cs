@@ -1,20 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Zlatmet2.Properties;
 
 namespace Zlatmet2
 {
     public sealed partial class MainStorage
     {
+        /// <summary>
+        /// Ширина главного окна
+        /// </summary>
         public double MainWindowWidth { get; set; }
 
+        /// <summary>
+        /// Высота главного окна
+        /// </summary>
         public double MainWindowHeight { get; set; }
 
+        /// <summary>
+        /// Состояние главного окна
+        /// </summary>
         public int MainWindowState { get; set; }
 
+        /// <summary>
+        /// Показывать журнал при запуске
+        /// </summary>
         public bool ShowJournal { get; set; }
+
+        /// <summary>
+        /// Период журнала
+        /// </summary>
+        public int JournalPeriodType { get; set; }
+
+        /// <summary>
+        /// От
+        /// </summary>
+        public DateTime JournalPeriodFrom { get; set; }
+
+        /// <summary>
+        /// До
+        /// </summary>
+        public DateTime JournalPeriodTo { get; set; }
 
         private void LoadSettings()
         {
@@ -30,6 +54,9 @@ namespace Zlatmet2
             MainWindowState = Settings.Default.MainWindowState;
 
             ShowJournal = Settings.Default.ShowJournal;
+            JournalPeriodType = Settings.Default.JournalPeriodType;
+            JournalPeriodFrom = Settings.Default.JournalPeriodFrom;
+            JournalPeriodTo = Settings.Default.JournalPeriodTo;
         }
 
         public void SaveSettings()
@@ -39,6 +66,9 @@ namespace Zlatmet2
             Settings.Default.MainWindowState = MainWindowState;
 
             Settings.Default.ShowJournal = ShowJournal;
+            Settings.Default.JournalPeriodType = JournalPeriodType;
+            Settings.Default.JournalPeriodFrom = JournalPeriodFrom;
+            Settings.Default.JournalPeriodTo = JournalPeriodTo;
 
             Settings.Default.Save();
         }

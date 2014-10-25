@@ -94,6 +94,8 @@ namespace Zlatmet2.ViewModels.Service
 
             foreach (var item in Items)
                 item.PropertyChanged -= Template_PropertyChanged;
+
+            base.Dispose();
         }
 
         protected override void AddItem()
