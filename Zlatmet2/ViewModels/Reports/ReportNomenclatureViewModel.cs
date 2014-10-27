@@ -78,7 +78,8 @@ namespace Zlatmet2.ViewModels.Reports
             Report = new StiReport();
             Report.Load(_template.Data);
 
-            //Report.Dictionary.Variables["ReportDate"].Value = Date.ToShortDateString();
+            Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
+            Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
 
             Report.RegBusinessObject("Data", reportData);
 
