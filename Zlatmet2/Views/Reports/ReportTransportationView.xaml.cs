@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Zlatmet2.Views.Reports
 {
     /// <summary>
-    /// Логика взаимодействия для ReportTransportView.xaml
+    /// Логика взаимодействия для ReportTransportationView.xaml
     /// </summary>
-    public partial class ReportTransportView : UserControl
+    public partial class ReportTransportationView : UserControl
     {
-        public ReportTransportView()
+        public ReportTransportationView()
         {
             InitializeComponent();
         }

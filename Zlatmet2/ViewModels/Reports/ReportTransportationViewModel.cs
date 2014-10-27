@@ -17,7 +17,7 @@ namespace Zlatmet2.ViewModels.Reports
     /// <summary>
     /// Модель представления отчёта "Перевозки"
     /// </summary>
-    public class ReportTransportViewModel : BaseReportViewModel
+    public class ReportTransportationViewModel : BaseReportViewModel
     {
         private readonly Template _template;
 
@@ -43,8 +43,8 @@ namespace Zlatmet2.ViewModels.Reports
         /// <param name="layout"></param>
         /// <param name="id"></param>
         /// <param name="optional"></param>
-        public ReportTransportViewModel(LayoutDocument layout, Guid id, object optional = null)
-            : base(layout, typeof(ReportTransportView), id)
+        public ReportTransportationViewModel(LayoutDocument layout, Guid id, object optional = null)
+            : base(layout, typeof(ReportTransportationView), id)
         {
             Title = "Отчет по перевозкам";
 

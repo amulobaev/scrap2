@@ -197,7 +197,7 @@
     <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.Classes.cs" />
     <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.cs" />
-    <Compile Include="ViewModels\Reports\ReportTransportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportTransportationViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportWarehouseViewModel.cs" />
     <Compile Include="ViewModels\Service\Dto\OldDocumentDto.cs" />
     <Compile Include="ViewModels\Service\Dto\OldEmployeeDto.cs" />
@@ -258,8 +258,8 @@
     <Compile Include="Views\Reports\ReportOrganizationView.xaml.cs">
       <DependentUpon>ReportOrganizationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\ReportTransportView.xaml.cs">
-      <DependentUpon>ReportTransportView.xaml</DependentUpon>
+    <Compile Include="Views\Reports\ReportTransportationView.xaml.cs">
+      <DependentUpon>ReportTransportationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\ReportWarehouseView.xaml.cs">
       <DependentUpon>ReportWarehouseView.xaml</DependentUpon>
@@ -350,7 +350,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\ReportTransportView.xaml">
+    <Page Include="Views\Reports\ReportTransportationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

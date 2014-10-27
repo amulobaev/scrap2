@@ -37,14 +37,38 @@
                         </Style.Triggers>
                     </Style>
                 </ToolBar.Resources>
-                <TextBlock Text="Новый документ:" VerticalAlignment="Center" Margin="3" />
-                <Button Content="Перевозка" />
-                <Button Content="Переработка" />
-                <Button Content="Корректировка остатков" />
+
+                <ToggleButton x:Name="ToggleButtonAdd" Click="ToggleButtonAdd_Click" ContextMenuService.IsEnabled="False" Focusable="False">
+                    <ToggleButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../../Images/add.png" VerticalAlignment="Center" Margin="0,0,3,0" />
+                            <TextBlock Text="Новый документ" VerticalAlignment="Center" />
+                            <Path Margin="4,5,2,2" VerticalAlignment="Center" Width="6" Fill="#FF527DB5" Stretch="Uniform"
+                              Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z "/>
+                        </StackPanel>
+                    </ToggleButton.Content>
+                    <ToggleButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Перевозка" Command="{Binding NewDocumentTransportationCommand}" />
+                            <MenuItem Header="Переработка" Command="{Binding NewDocumentProcessingCommand}" />
+                            <MenuItem Header="Корректировка остатков" Command="{Binding NewDocumentRemainsCommand}" />
+                        </ContextMenu>
+                    </ToggleButton.ContextMenu>
+                </ToggleButton>
                 <Separator />
-                <Button Content="Открыть" Command="{Binding OpenDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}" />
+                <Button Command="{Binding OpenDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/edit.png" Stretch="None" Width="16" Height="16" />
+                        <TextBlock Text="Открыть" VerticalAlignment="Center" Margin="2,0,0,0" />
+                    </StackPanel>
+                </Button>
                 <Button Content="Дублировать" Command="{Binding DuplicateDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}" />
-                <Button Content="Удалить" Command="{Binding DeleteDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}" />
+                <Button Command="{Binding DeleteDocumentCommand}" Style="{StaticResource SelectedDocumentStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/delete.png" Stretch="None" Width="16" Height="16" />
+                        <TextBlock Text="Удалить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
             <ToolBar Grid.Row="1" Background="Transparent">
                 <ToolBar.Resources>

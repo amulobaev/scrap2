@@ -131,7 +131,7 @@ namespace Zlatmet2.ViewModels
             }
         }
 
-        public ICommand ShowReportTransportCommand
+        public ICommand ShowReportTransportationCommand
         {
             get
             {
@@ -302,7 +302,7 @@ namespace Zlatmet2.ViewModels
 
         private void ShowReportTransport()
         {
-            ShowLayoutDocument(typeof(ReportTransportViewModel), Guid.Empty);
+            ShowLayoutDocument(typeof(ReportTransportationViewModel), Guid.Empty);
         }
 
         private void ShowParameters()

@@ -86,9 +86,6 @@ namespace Zlatmet2.Domain
                 .WithMany(x => x.Items)
                 .HasForeignKey(x => x.DocumentId)
                 .WillCascadeOnDelete();
-
-            //
-            //modelBuilder.Ignore<DocumentEntity>();
         }
     }
 }

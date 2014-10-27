@@ -31,6 +31,9 @@ namespace Zlatmet2.ViewModels.Documents
         private ICommand _deleteDocumentCommand;
         private ICommand _documentDoubleClickCommand;
         private ICommand _duplicateDocumentCommand;
+        private ICommand _newDocumentTransportationCommand;
+        private ICommand _newDocumentProcessingCommand;
+        private ICommand _newDocumentRemainsCommand;
 
         /// <summary>
         /// Конструктор
@@ -109,6 +112,32 @@ namespace Zlatmet2.ViewModels.Documents
                     return;
                 _dateTo = value;
                 RaisePropertyChanged("DateTo");
+            }
+        }
+
+        public ICommand NewDocumentTransportationCommand
+        {
+            get
+            {
+                return _newDocumentTransportationCommand ??
+                       (_newDocumentTransportationCommand = new RelayCommand(NewDocumentTransportation));
+            }
+        }
+
+        public ICommand NewDocumentProcessingCommand
+        {
+            get
+            {
+                return _newDocumentProcessingCommand ??
+                       (_newDocumentProcessingCommand = new RelayCommand(NewDocumentProcessing));
+            }
+        }
+
+        public ICommand NewDocumentRemainsCommand
+        {
+            get
+            {
+                return _newDocumentRemainsCommand ?? (_newDocumentRemainsCommand = new RelayCommand(NewDocumentRemains));
             }
         }
 
@@ -213,6 +242,21 @@ namespace Zlatmet2.ViewModels.Documents
                     DateTo = DateTime.Today;
                     break;
             }
+        }
+
+        private void NewDocumentTransportation()
+        {
+            MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentTransportationViewModel), Guid.Empty);
+        }
+
+        private void NewDocumentProcessing()
+        {
+            MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentProcessingViewModel), Guid.Empty);
+        }
+
+        private void NewDocumentRemains()
+        {
+            MainViewModel.Instance.ShowLayoutDocument(typeof(DocumentRemainsViewModel), Guid.Empty);
         }
 
         private void OpenDocument()
