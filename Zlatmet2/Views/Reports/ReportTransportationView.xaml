@@ -40,6 +40,13 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <HierarchicalDataTemplate x:Key="ContractorDataTemplate" ItemsSource="{Binding Divisions}">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Margin="3,0" IsChecked="{Binding IsChecked}" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -68,62 +75,76 @@
             </Grid.ColumnDefinitions>
 
             <!--Тип перевозок-->
-            <TextBlock Margin="3" Text="Тип перевозок:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <TextBlock Margin="3" Text="Тип перевозок:" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                <RadioButton Content="Авто" Margin="3" VerticalAlignment="Center" GroupName="TransportTypeGroup"
-                             IsChecked="{Binding TransportType, ConverterParameter={x:Static coreEnums:TransportType.Auto}, Converter={StaticResource RadioButtonCheckedConverter}}" />
-                <RadioButton Content="Ж/Д" Margin="3" VerticalAlignment="Center" GroupName="TransportTypeGroup" 
-                             IsChecked="{Binding TransportType, ConverterParameter={x:Static coreEnums:TransportType.Train}, Converter={StaticResource RadioButtonCheckedConverter}}" />
+                <CheckBox Content="Авто" Margin="3" VerticalAlignment="Center"
+                          IsChecked="{Binding IsAuto, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Content="Ж/Д" Margin="3" VerticalAlignment="Center"
+                          IsChecked="{Binding IsTrain, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--Период отчёта-->
-            <TextBlock Grid.Row="1" Margin="3" Text="На период с:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="1" Margin="3" Text="На период с:" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateFrom}" />
+                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Margin="3" Text="по:" VerticalAlignment="Center"  />
-                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo}" />
+                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--Поставщик-->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <CheckBox VerticalAlignment="Center" Margin="3" Content="Поставщик:" IsChecked="{Binding SupplierIsEnabled}" />
-            </StackPanel>
-            <ComboBox Grid.Row="2" Grid.Column="1" Margin="3" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Name"
-                      SelectedItem="{Binding Supplier, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                      ItemContainerStyle="{StaticResource ComboBoxItemWithSeparatorStyle}">
-                <ComboBox.Style>
-                    <Style TargetType="{x:Type ComboBox}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SupplierIsEnabled}" Value="False">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ComboBox.Style>
-            </ComboBox>
+            <TextBlock Grid.Row="2" Text="Поставщики:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
+            <xctk:DropDownButton Grid.Row="2" Grid.Column="1" Content="Выбрать поставщиков"
+                                 Margin="3" VerticalAlignment="Center" IsOpen="{Binding SuppliersIsOpen, Mode=TwoWay}" >
+                <xctk:DropDownButton.DropDownContent>
+                    <Grid Height="300" Width="250">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TreeView Margin="3" ItemsSource="{Binding Suppliers}" Grid.ColumnSpan="3"
+                                  ItemTemplate="{StaticResource ContractorDataTemplate}" />
+
+                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllSuppliersCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllSuppliersCommand}" />
+                        <Button Grid.Row="1" Grid.Column="2" Content="Закрыть" Margin="3" Command="{Binding CloseSuppliersCommand}" />
+                    </Grid>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
 
             <!--Заказчик-->
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <CheckBox Margin="3" VerticalAlignment="Center" Content="Заказчик:" IsChecked="{Binding CustomerIsEnabled}" />
-            </StackPanel>
-            <ComboBox Grid.Row="3" Grid.Column="1" Margin="3" ItemsSource="{Binding Customers}" DisplayMemberPath="Name"
-                          SelectedItem="{Binding Customer, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                      ItemContainerStyle="{StaticResource ComboBoxItemWithSeparatorStyle}">
-                <ComboBox.Style>
-                    <Style TargetType="{x:Type ComboBox}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CustomerIsEnabled}" Value="False">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ComboBox.Style>
-            </ComboBox>
+            <TextBlock Grid.Row="3" Text="Заказчики:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <xctk:DropDownButton Grid.Row="3" Grid.Column="1" Margin="3" VerticalAlignment="Center"
+                                 Content="Выбрать заказчиков" IsOpen="{Binding CustomersIsOpen, Mode=TwoWay}">
+                <xctk:DropDownButton.DropDownContent>
+                    <Grid Height="300" Width="250">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TreeView Margin="3" Grid.ColumnSpan="3" ItemsSource="{Binding Customers}"
+                                  ItemTemplate="{StaticResource ContractorDataTemplate}" />
+
+                        <Button Grid.Row="1" Content="Выбрать все" Margin="3" Command="{Binding SelectAllCustomersCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" Content="Снять выбор" Margin="3" Command="{Binding UnselectAllCustomersCommand}" />
+                        <Button Grid.Row="1" Grid.Column="2" Content="Закрыть" Margin="3" Command="{Binding CloseCustomersCommand}" />
+                    </Grid>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
 
             <!--Номенклатура-->
-            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <CheckBox Margin="3" VerticalAlignment="Center" Content="Номенклатура:" IsChecked="{Binding NomenclatureIsEnabled}" />
-            </StackPanel>
+            <TextBlock Grid.Row="4" Text="Номенклатура:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <xctk:CheckComboBox Grid.Row="4" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
                                 ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}"
                                 SelectedItemsOverride="{Binding SelectedNomenclatures}"

@@ -8,7 +8,6 @@ using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Service;
-using Zlatmet2.Core.Enums;
 using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
 
@@ -17,25 +16,28 @@ namespace Zlatmet2.ViewModels.Reports
     /// <summary>
     /// Модель представления отчёта "Перевозки"
     /// </summary>
-    public class ReportTransportationViewModel : BaseReportViewModel
+    public partial class ReportTransportationViewModel : BaseReportViewModel
     {
         private readonly Template _template;
 
         private DateTime _dateFrom;
         private DateTime _dateTo;
-        private Organization _supplier;
-        private Organization _customer;
-        private Nomenclature _nomenclature;
-        private readonly ObservableCollection<Organization> _suppliers = new ObservableCollection<Organization>();
-        private readonly ObservableCollection<Organization> _customers = new ObservableCollection<Organization>();
-        private bool _supplierIsEnabled;
-        private bool _customerIsEnabled;
-        private bool _nomenclatureIsEnabled;
+        private readonly ObservableCollection<ContractorWrapper> _suppliers = new ObservableCollection<ContractorWrapper>();
+        private readonly ObservableCollection<ContractorWrapper> _customers = new ObservableCollection<ContractorWrapper>();
         private readonly ObservableCollection<Nomenclature> _selectedNomenclatures =
             new ObservableCollection<Nomenclature>();
-        private TransportType _transportType;
         private ICommand _selectAllNomenclaturesCommand;
         private ICommand _unselectAllNomenclaturesCommand;
+        private bool _isAuto = true;
+        private bool _isTrain = true;
+        private bool _suppliersIsOpen;
+        private bool _customersIsOpen;
+        private ICommand _selectAllSuppliersCommand;
+        private ICommand _unselectAllSuppliersCommand;
+        private ICommand _closeSuppliersCommand;
+        private ICommand _selectAllCustomersCommand;
+        private ICommand _unselectAllCustomersCommand;
+        private ICommand _closeCustomersCommand;
 
         /// <summary>
         /// Конструктор
@@ -57,31 +59,41 @@ namespace Zlatmet2.ViewModels.Reports
 
             Report = new StiReport();
 
-            FillOrganizations();
+            foreach (Organization contractor in MainStorage.Instance.Contractors.OrderBy(x => x.Name))
+            {
+                Suppliers.Add(new ContractorWrapper(contractor));
+                Customers.Add(new ContractorWrapper(contractor));
+            }
 
-            SelectedNomenclatures.AddRange(Nomenclatures);
+            SelectAllNomenclatures();
         }
 
-        private void FillOrganizations()
-        {
-            _suppliers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
-            _suppliers.Add(null);
-            _suppliers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
+        //private void FillOrganizations()
+        //{
+        //    _suppliers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
+        //    _suppliers.Add(null);
+        //    _suppliers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
 
-            _customers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
-            _customers.Add(null);
-            _customers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
-        }
+        //    _customers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
+        //    _customers.Add(null);
+        //    _customers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
+        //}
 
         public override string ReportName
         {
             get { return "Отчет по перевозкам"; }
         }
 
-        public TransportType TransportType
+        public bool IsAuto
         {
-            get { return _transportType; }
-            set { Set(() => TransportType, ref _transportType, value); }
+            get { return _isAuto; }
+            set { Set(() => IsAuto, ref _isAuto, value); }
+        }
+
+        public bool IsTrain
+        {
+            get { return _isTrain; }
+            set { Set(() => IsTrain, ref _isTrain, value); }
         }
 
         public DateTime DateFrom
@@ -96,54 +108,86 @@ namespace Zlatmet2.ViewModels.Reports
             set { Set(() => DateTo, ref _dateTo, value); }
         }
 
-        public bool SupplierIsEnabled
+        public bool SuppliersIsOpen
         {
-            get { return _supplierIsEnabled; }
-            set { Set(() => SupplierIsEnabled, ref _supplierIsEnabled, value); }
+            get { return _suppliersIsOpen; }
+            set { Set(() => SuppliersIsOpen, ref _suppliersIsOpen, value); }
         }
 
-        public ObservableCollection<Organization> Suppliers
+        public bool CustomersIsOpen
+        {
+            get { return _customersIsOpen; }
+            set { Set(() => CustomersIsOpen, ref _customersIsOpen, value); }
+        }
+
+        public ObservableCollection<ContractorWrapper> Suppliers
         {
             get { return _suppliers; }
         }
 
-        public Organization Supplier
-        {
-            get { return _supplier; }
-            set { Set(() => Supplier, ref _supplier, value); }
-        }
-
-        public bool CustomerIsEnabled
-        {
-            get { return _customerIsEnabled; }
-            set { Set(() => CustomerIsEnabled, ref _customerIsEnabled, value); }
-        }
-
-        public ObservableCollection<Organization> Customers
+        public ObservableCollection<ContractorWrapper> Customers
         {
             get { return _customers; }
         }
 
-        public Organization Customer
-        {
-            get { return _customer; }
-            set { Set(() => Customer, ref _customer, value); }
-        }
-
-        public bool NomenclatureIsEnabled
-        {
-            get { return _nomenclatureIsEnabled; }
-            set { Set(() => NomenclatureIsEnabled, ref _nomenclatureIsEnabled, value); }
-        }
-
+        /// <summary>
+        /// Вся номенклатура
+        /// </summary>
         public ReadOnlyObservableCollection<Nomenclature> Nomenclatures
         {
             get { return MainStorage.Instance.Nomenclatures; }
         }
 
+        /// <summary>
+        /// Выбранная номенклатура
+        /// </summary>
         public ObservableCollection<Nomenclature> SelectedNomenclatures
         {
             get { return _selectedNomenclatures; }
+        }
+
+        public ICommand SelectAllSuppliersCommand
+        {
+            get
+            {
+                return _selectAllSuppliersCommand ?? (_selectAllSuppliersCommand = new RelayCommand(SelectAllSuppliers));
+            }
+        }
+
+        public ICommand UnselectAllSuppliersCommand
+        {
+            get
+            {
+                return _unselectAllSuppliersCommand ??
+                       (_unselectAllSuppliersCommand = new RelayCommand(UnselectAllSuppliers));
+            }
+        }
+
+        public ICommand CloseSuppliersCommand
+        {
+            get { return _closeSuppliersCommand ?? (_closeSuppliersCommand = new RelayCommand(CloseSuppliers)); }
+        }
+
+        public ICommand SelectAllCustomersCommand
+        {
+            get
+            {
+                return _selectAllCustomersCommand ?? (_selectAllCustomersCommand = new RelayCommand(SelectAllCustomers));
+            }
+        }
+
+        public ICommand UnselectAllCustomersCommand
+        {
+            get
+            {
+                return _unselectAllCustomersCommand ??
+                       (_unselectAllCustomersCommand = new RelayCommand(UnselectAllCustomers));
+            }
+        }
+
+        public ICommand CloseCustomersCommand
+        {
+            get { return _closeCustomersCommand ?? (_closeCustomersCommand = new RelayCommand(CloseCustomers)); }
         }
 
         public ICommand SelectAllNomenclaturesCommand
@@ -162,6 +206,40 @@ namespace Zlatmet2.ViewModels.Reports
                 return _unselectAllNomenclaturesCommand ??
                        (_unselectAllNomenclaturesCommand = new RelayCommand(UnselectAllNomenclatures));
             }
+        }
+
+        private void SelectAllSuppliers()
+        {
+            foreach (ContractorWrapper supplier in Suppliers)
+                supplier.IsChecked = true;
+        }
+
+        private void UnselectAllSuppliers()
+        {
+            foreach (ContractorWrapper supplier in Suppliers)
+                supplier.IsChecked = false;
+        }
+
+        private void CloseSuppliers()
+        {
+            SuppliersIsOpen = false;
+        }
+
+        private void SelectAllCustomers()
+        {
+            foreach (ContractorWrapper customer in Customers)
+                customer.IsChecked = true;
+        }
+
+        private void UnselectAllCustomers()
+        {
+            foreach (ContractorWrapper customer in Customers)
+                customer.IsChecked = false;
+        }
+
+        private void CloseCustomers()
+        {
+            CustomersIsOpen = false;
         }
 
         private void SelectAllNomenclatures()
@@ -189,12 +267,12 @@ namespace Zlatmet2.ViewModels.Reports
 
             Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
             Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
-            Report.Dictionary.Variables["ТипПеревозок"].Value = TransportType == TransportType.Auto
-                ? "автомобильным"
-                : "ж/д";
-            Report.Dictionary.Variables["НомерТранспорта"].Value = TransportType == TransportType.Auto
-                ? "Автомобиль и номер"
-                : "Номер вагона";
+            //Report.Dictionary.Variables["ТипПеревозок"].Value = TransportType == TransportType.Auto
+            //    ? "автомобильным"
+            //    : "ж/д";
+            //Report.Dictionary.Variables["НомерТранспорта"].Value = TransportType == TransportType.Auto
+            //    ? "Автомобиль и номер"
+            //    : "Номер вагона";
 
             Report.Compile();
             Report.Render(false);

@@ -35,7 +35,7 @@
                 <MenuItem Header="Остатки на базе" Command="{Binding ShowReportRemainsCommand}" />
                 <MenuItem Header="Обороты за период" Command="{Binding ShowReportNomenclatureCommand}" />
                 <MenuItem Header="Перевозки" Command="{Binding ShowReportTransportationCommand}" />
-                <MenuItem Header="Отчет по контрагентам" Command="{Binding ShowReportOrganizationCommand}" />
+                <!--<MenuItem Header="Отчет по контрагентам" Command="{Binding ShowReportOrganizationCommand}" />-->
             </MenuItem>
             <MenuItem Header="Сервис">
                 <MenuItem Header="Параметры..." Command="{Binding ShowParametersCommand}" />

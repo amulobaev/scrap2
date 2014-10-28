@@ -55,6 +55,7 @@ namespace Zlatmet2.ViewModels.Documents
                 ? MainStorage.Instance.JournalPeriodTo
                 : (DateTime?)null;
             PeriodType = (JournalPeriodType)MainStorage.Instance.JournalPeriodType;
+            RaisePropertyChanged(() => PeriodType);
         }
 
         public ObservableCollectionEx<Document> Items
@@ -65,13 +66,7 @@ namespace Zlatmet2.ViewModels.Documents
         public Document SelectedItem
         {
             get { return _selectedItem; }
-            set
-            {
-                if (Equals(value, _selectedItem))
-                    return;
-                _selectedItem = value;
-                RaisePropertyChanged("SelectedItem");
-            }
+            set { Set(() => SelectedItem, ref _selectedItem, value); }
         }
 
         public ICommand UpdateCommand
@@ -82,37 +77,19 @@ namespace Zlatmet2.ViewModels.Documents
         public JournalPeriodType PeriodType
         {
             get { return _periodType; }
-            set
-            {
-                if (value == _periodType)
-                    return;
-                _periodType = value;
-                RaisePropertyChanged("PeriodType");
-            }
+            set { Set(() => PeriodType, ref _periodType, value); }
         }
 
         public DateTime? DateFrom
         {
             get { return _dateFrom; }
-            set
-            {
-                if (value.Equals(_dateFrom))
-                    return;
-                _dateFrom = value;
-                RaisePropertyChanged("DateFrom");
-            }
+            set { Set(() => DateFrom, ref _dateFrom, value); }
         }
 
         public DateTime? DateTo
         {
             get { return _dateTo; }
-            set
-            {
-                if (value.Equals(_dateTo))
-                    return;
-                _dateTo = value;
-                RaisePropertyChanged("DateTo");
-            }
+            set { Set(() => DateTo, ref _dateTo, value); }
         }
 
         public ICommand NewDocumentTransportationCommand
