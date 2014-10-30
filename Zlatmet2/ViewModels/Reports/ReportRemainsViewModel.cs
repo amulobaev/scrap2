@@ -7,7 +7,6 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
-using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Reports;
 using Zlatmet2.Core.Classes.Service;
@@ -17,9 +16,9 @@ using Zlatmet2.Views.Reports;
 namespace Zlatmet2.ViewModels.Reports
 {
     /// <summary>
-    /// Модель представления "Остатки на базе"
+    /// Модель представления отчета "Остатки на базе"
     /// </summary>
-    public class ReportWarehouseViewModel : BaseReportViewModel
+    public class ReportRemainsViewModel : BaseReportViewModel
     {
         private DateTime _date;
 
@@ -43,8 +42,8 @@ namespace Zlatmet2.ViewModels.Reports
         /// <param name="layout"></param>
         /// <param name="id"></param>
         /// <param name="optional"></param>
-        public ReportWarehouseViewModel(LayoutDocument layout, Guid id, object optional = null)
-            : base(layout, typeof(ReportWarehouseView), id)
+        public ReportRemainsViewModel(LayoutDocument layout, Guid id, object optional = null)
+            : base(layout, typeof(ReportRemainsView), id)
         {
             Title = "Остатки на базе";
 
@@ -141,18 +140,15 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
-            //var selectedNomenclatures = Nomenclatures.Where(x => x.IsChecked).ToList();
-            //if (!selectedNomenclatures.Any())
-            //{
-            //    MessageBox.Show("Не выбрана номенклатура", MainStorage.AppName,
-            //        MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return;
-            //}
-
-            //string bases = string.Join(", ", selectedBases.Select(x => x.Text));
+            if (!SelectedNomenclatures.Any())
+            {
+                MessageBox.Show("Не выбрана номенклатура", MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             List<ReportRemainsBase> reportData = MainStorage.Instance.ReportsRepository.ReportRemains(Date,
-                SelectedBases.ToArray(), SelectedNomenclatures.Select(x => x.Id).ToArray());
+                SelectedBases, SelectedNomenclatures.Select(x => x.Id));
 
             Report = new StiReport();
             Report.Load(_template.Data);

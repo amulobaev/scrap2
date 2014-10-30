@@ -8,7 +8,7 @@
         <Category />
         <Columns isList="true" count="4">
           <value>Number,System.Int32</value>
-          <value>Name,System.String</value>
+          <value>Nomenclature,System.String</value>
           <value>Purchased,System.Double</value>
           <value>Sold,System.Double</value>
         </Columns>
@@ -187,9 +187,9 @@
               <Name>Text2</Name>
               <Page isRef="3" />
               <Parent isRef="13" />
-              <Text>{Data.Name}</Text>
+              <Text>{Data.Nomenclature}</Text>
               <TextBrush>Black</TextBrush>
-              <Type>Expression</Type>
+              <Type>DataColumn</Type>
             </Text2>
             <Text7 Ref="15" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
@@ -396,10 +396,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/27/2014 4:57:13 PM</ReportChanged>
+  <ReportChanged>10/30/2014 9:45:53 PM</ReportChanged>
   <ReportCreated>7/21/2014 10:54:37 PM</ReportCreated>
-  <ReportFile>Y:\Projects\Zlatmet\Материал\Шаблоны\Обороты за период.mrt</ReportFile>
-  <ReportGuid>b7d3edf0b5084dd89dfb4e6129bd0a81</ReportGuid>
+  <ReportFile>Y:\Projects\Zlatmet\Версия 2\Шаблоны\Обороты за период.mrt</ReportFile>
+  <ReportGuid>7be3086ffad540869a0b10a44a2e43fb</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2014.1.1900</ReportVersion>

@@ -6,11 +6,15 @@ using System.Windows;
 using Dapper;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
+using Zlatmet2.Core.Classes.Reports;
 using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Views.Reports;
 
 namespace Zlatmet2.ViewModels.Reports
 {
+    /// <summary>
+    /// Модель представления отчета "Обороты за период"
+    /// </summary>
     public sealed class ReportNomenclatureViewModel : BaseReportViewModel
     {
         private readonly Template _template;
@@ -19,6 +23,12 @@ namespace Zlatmet2.ViewModels.Reports
 
         private DateTime _dateTo;
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="id"></param>
+        /// <param name="optional"></param>
         public ReportNomenclatureViewModel(LayoutDocument layout, Guid id, object optional = null)
             : base(layout, typeof(ReportNomenclatureView), id)
         {
@@ -73,7 +83,8 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
-            List<ReportData> reportData = PrepareData();
+            List<ReportNomenclatureData> reportData = MainStorage.Instance.ReportsRepository.ReportNomenclature(
+                DateFrom, DateTo);
 
             Report = new StiReport();
             Report.Load(_template.Data);
@@ -87,48 +98,5 @@ namespace Zlatmet2.ViewModels.Reports
             Report.Render(false);
         }
 
-        private List<ReportData> PrepareData()
-        {
-            List<ReportData> reportData = new List<ReportData>();
-
-            using (IDbConnection connection = MainStorage.Instance.ConnectionFactory.Create())
-            {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@DateFrom", DateFrom, DbType.Date);
-                parameters.Add("@DateTo", DateTo, DbType.Date);
-
-                List<Dto> dtos =
-                    connection.Query<Dto>("ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
-                        .ToList();
-                for (int i = 0; i < dtos.Count; i++)
-                {
-                    Dto dto = dtos[i];
-                    reportData.Add(new ReportData
-                    {
-                        Number = i + 1,
-                        Name = dto.Nomenclature,
-                        Purchased = dto.Purchased,
-                        Sold = dto.Sold
-                    });
-                }
-            }
-
-            return reportData;
-        }
-
-        private class ReportData
-        {
-            public int Number { get; set; }
-            public string Name { get; set; }
-            public double Purchased { get; set; }
-            public double Sold { get; set; }
-        }
-
-        private class Dto
-        {
-            public string Nomenclature { get; set; }
-            public double Purchased { get; set; }
-            public double Sold { get; set; }
-        }
     }
 }

@@ -287,7 +287,7 @@ namespace Zlatmet2.ViewModels
 
         private void ShowReportRemains()
         {
-            ShowLayoutDocument(typeof(ReportWarehouseViewModel), Guid.Empty);
+            ShowLayoutDocument(typeof(ReportRemainsViewModel), Guid.Empty);
         }
 
         private void ShowReportNomenclature()

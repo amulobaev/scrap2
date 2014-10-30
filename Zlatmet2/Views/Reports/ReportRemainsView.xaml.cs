@@ -4,11 +4,11 @@ using Stimulsoft.Report;
 namespace Zlatmet2.Views.Reports
 {
     /// <summary>
-    /// Логика взаимодействия для ReportWarehouseView.xaml
+    /// Логика взаимодействия для ReportRemainsView.xaml
     /// </summary>
-    public partial class ReportWarehouseView : UserControl
+    public partial class ReportRemainsView : UserControl
     {
-        public ReportWarehouseView()
+        public ReportRemainsView()
         {
             InitializeComponent();
 

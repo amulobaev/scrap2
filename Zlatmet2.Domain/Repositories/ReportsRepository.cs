@@ -30,7 +30,8 @@ namespace Zlatmet2.Domain.Repositories
         /// <param name="bases"></param>
         /// <param name="nomenclatures"></param>
         /// <returns></returns>
-        public List<ReportRemainsBase> ReportRemains(DateTime date, Organization[] bases, Guid[] nomenclatures)
+        public List<ReportRemainsBase> ReportRemains(DateTime date, IEnumerable<Organization> bases,
+            IEnumerable<Guid> nomenclatures)
         {
             List<ReportRemainsBase> reportData = new List<ReportRemainsBase>();
 
@@ -53,6 +54,25 @@ namespace Zlatmet2.Domain.Repositories
             }
 
             return reportData;
+        }
+
+
+        public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo)
+        {
+            using (IDbConnection connection = ConnectionFactory.Create())
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@DateFrom", dateFrom, DbType.Date);
+                parameters.Add("@DateTo", dateTo, DbType.Date);
+
+                List<ReportNomenclatureData> data =
+                    connection.Query<ReportNomenclatureData>("ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
+                        .ToList();
+                for (int i = 0; i < data.Count; i++)
+                    data[i].Number = i + 1;
+
+                return data;
+            }
         }
 
     }
