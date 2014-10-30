@@ -1,4 +1,9 @@
-CREATE PROCEDURE [dbo].[ReportTransportation]
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'ReportTransportation')
+   exec('CREATE PROCEDURE [dbo].[ReportTransportation] AS BEGIN SET NOCOUNT ON; END')
+
+GO
+
+ALTER PROCEDURE [dbo].[ReportTransportation]
 @IsAuto BIT,
 @IsTrain BIT,
 @DateFrom date = null,
@@ -10,11 +15,10 @@ CREATE PROCEDURE [dbo].[ReportTransportation]
 @Nomenclatures nvarchar(max)
 AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+DECLARE @CMD nvarchar(max)
 
-    -- Insert statements for procedure here
-	SELECT <@Param1, sysname, @p1>, <@Param2, sysname, @p2>
+print @CMD
+
+EXEC sp_executesql @CMD
 END
-GO
+

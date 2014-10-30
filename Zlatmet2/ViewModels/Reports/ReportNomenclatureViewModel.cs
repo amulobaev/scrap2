@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Windows;
-using Dapper;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.Reports;
@@ -67,7 +64,6 @@ namespace Zlatmet2.ViewModels.Reports
                 RaisePropertyChanged("DateTo");
             }
         }
-
 
         public override string ReportName
         {
