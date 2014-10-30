@@ -59,6 +59,12 @@ namespace Zlatmet2.ViewModels.Reports
 
             Report = new StiReport();
 
+            foreach (Organization @base in MainStorage.Instance.Bases.OrderBy(x => x.Name))
+            {
+                Suppliers.Add(new ContractorWrapper(@base));
+                Customers.Add(new ContractorWrapper(@base));
+            }
+
             foreach (Organization contractor in MainStorage.Instance.Contractors.OrderBy(x => x.Name))
             {
                 Suppliers.Add(new ContractorWrapper(contractor));
@@ -67,17 +73,6 @@ namespace Zlatmet2.ViewModels.Reports
 
             SelectAllNomenclatures();
         }
-
-        //private void FillOrganizations()
-        //{
-        //    _suppliers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
-        //    _suppliers.Add(null);
-        //    _suppliers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
-
-        //    _customers.AddRange(MainStorage.Instance.Bases.OrderBy(x => x.Name));
-        //    _customers.Add(null);
-        //    _customers.AddRange(MainStorage.Instance.Contractors.OrderBy(x => x.Name));
-        //}
 
         public override string ReportName
         {

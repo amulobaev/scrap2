@@ -188,7 +188,7 @@ namespace Zlatmet2.ViewModels.Reports
                     parameters.Add("@Nomenclatures", nomenclatures, DbType.String);
 
                     List<Dto> dtos =
-                        connection.Query<Dto>("usp_ReportWarehouse", parameters, commandType: CommandType.StoredProcedure)
+                        connection.Query<Dto>("ReportWarehouse", parameters, commandType: CommandType.StoredProcedure)
                             .ToList();
                     foreach (Dto dto in dtos)
                     {

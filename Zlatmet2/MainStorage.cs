@@ -10,10 +10,10 @@ using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Core.Enums;
 using Zlatmet2.Domain;
+using Zlatmet2.Domain.Repositories;
 using Zlatmet2.Domain.Repositories.Documents;
 using Zlatmet2.Domain.Repositories.References;
 using Zlatmet2.Domain.Repositories.Service;
-using Zlatmet2.Migration;
 using Zlatmet2.Tools;
 
 namespace Zlatmet2
@@ -133,6 +133,8 @@ namespace Zlatmet2
 
         public TemplatesRepository TemplatesRepository { get; private set; }
 
+        public ReportsRepository ReportsRepository { get; private set; }
+
         public string ConnectionString
         {
             get { return _connectionString; }
@@ -207,6 +209,7 @@ namespace Zlatmet2
             RemainsRepository = new RemainsRepository(this);
 
             TemplatesRepository = new TemplatesRepository(this);
+            ReportsRepository = new ReportsRepository();
 
             // Загрузка данных справочников из репозитариев
             _nomenclatures.AddRange(NomenclaturesRepository.GetAll());

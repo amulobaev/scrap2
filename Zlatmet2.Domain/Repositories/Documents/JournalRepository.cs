@@ -47,7 +47,7 @@ namespace Zlatmet2.Domain.Repositories.Documents
                     });
                 }
 
-                return context.Database.SqlQuery<Document>("usp_GetDocuments " + string.Join(",", parameters),
+                return context.Database.SqlQuery<Document>("GetDocuments " + string.Join(",", parameters),
                         sqlParameters.ToArray()).ToList();
             }
         }

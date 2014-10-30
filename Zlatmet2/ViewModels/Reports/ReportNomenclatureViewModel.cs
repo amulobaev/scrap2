@@ -98,7 +98,7 @@ namespace Zlatmet2.ViewModels.Reports
                 parameters.Add("@DateTo", DateTo, DbType.Date);
 
                 List<Dto> dtos =
-                    connection.Query<Dto>("usp_ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
+                    connection.Query<Dto>("ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
                         .ToList();
                 for (int i = 0; i < dtos.Count; i++)
                 {

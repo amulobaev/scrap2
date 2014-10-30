@@ -37,9 +37,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper, Version=1.27.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Dapper, Version=1.37.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dapper.1.27\lib\net40\Dapper.dll</HintPath>
+      <HintPath>..\packages\Dapper.1.37\lib\net40\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
@@ -81,6 +81,7 @@
     <Compile Include="Entities\References\TransportEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="ModuleInitializer.cs" />
+    <Compile Include="Repositories\ReportsRepository.cs" />
     <Compile Include="Repositories\Service\UsersRepository.cs" />
     <Compile Include="MsSqlConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,12 +120,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
-    <EmbeddedResource Include="Scripts\05_Create_usp_ReportWarehouse.sql" />
-    <EmbeddedResource Include="Scripts\06_Create_usp_ReportNomenclature.sql" />
-    <EmbeddedResource Include="Scripts\03_Create_GetDocuments_Udf.sql" />
-    <EmbeddedResource Include="Scripts\01_Create_Documents_View.sql" />
-    <EmbeddedResource Include="Scripts\02_Create_DocumentNumbersAndDates_View.sql" />
-    <EmbeddedResource Include="Scripts\04_Create_GetMaxDocumentNumber_Udf.sql" />
+    <Content Include="Scripts\07_Udf_ReportTransportation.sql" />
+    <EmbeddedResource Include="Scripts\05_Udf_ReportWarehouse.sql" />
+    <EmbeddedResource Include="Scripts\06_Udf_ReportNomenclature.sql" />
+    <EmbeddedResource Include="Scripts\03_Udf_GetDocuments.sql" />
+    <EmbeddedResource Include="Scripts\01_View_Documents.sql" />
+    <EmbeddedResource Include="Scripts\02_View_DocumentNumbersAndDates.sql" />
+    <EmbeddedResource Include="Scripts\04_Udf_GetMaxDocumentNumber.sql" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
