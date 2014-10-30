@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Dapper;
 using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
+using Zlatmet2.Core.Classes.Documents;
 using Zlatmet2.Core.Classes.References;
+using Zlatmet2.Core.Classes.Reports;
 using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
@@ -134,13 +134,12 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
-            //var selectedBases = Bases.Where(x => x.IsChecked).ToList();
-            //if (!selectedBases.Any())
-            //{
-            //    MessageBox.Show("Не выбрано ни одной базы", MainStorage.AppName,
-            //        MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return;
-            //}
+            if (!SelectedBases.Any())
+            {
+                MessageBox.Show("Не выбрано ни одной базы", MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             //var selectedNomenclatures = Nomenclatures.Where(x => x.IsChecked).ToList();
             //if (!selectedNomenclatures.Any())
@@ -152,7 +151,8 @@ namespace Zlatmet2.ViewModels.Reports
 
             //string bases = string.Join(", ", selectedBases.Select(x => x.Text));
 
-            List<Base> reportData = PrepareData();
+            List<ReportRemainsBase> reportData = MainStorage.Instance.ReportsRepository.ReportRemains(Date,
+                SelectedBases.ToArray(), SelectedNomenclatures.Select(x => x.Id).ToArray());
 
             Report = new StiReport();
             Report.Load(_template.Data);
@@ -163,43 +163,6 @@ namespace Zlatmet2.ViewModels.Reports
 
             Report.Compile();
             Report.Render(false);
-        }
-
-        /// <summary>
-        /// Подготовка данных для отчёта
-        /// </summary>
-        /// <returns></returns>
-        private List<Base> PrepareData()
-        {
-            List<Base> reportData = new List<Base>();
-
-            string nomenclatures = string.Join(",",
-                SelectedNomenclatures.Select(x => "'" + x.Id.ToString() + "'").ToList());
-
-            foreach (Organization organization in SelectedBases)
-            {
-                Base @base = new Base { Name = organization.Name };
-
-                using (IDbConnection connection = MainStorage.Instance.ConnectionFactory.Create())
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@Date", Date, DbType.Date);
-                    parameters.Add("@Base", organization.Id, DbType.Guid);
-                    parameters.Add("@Nomenclatures", nomenclatures, DbType.String);
-
-                    List<Dto> dtos =
-                        connection.Query<Dto>("ReportWarehouse", parameters, commandType: CommandType.StoredProcedure)
-                            .ToList();
-                    foreach (Dto dto in dtos)
-                    {
-                        @base.Remains.Add(new Remains { Name = dto.Nomenclature, Weight = dto.Weight });
-                    }
-                }
-
-                reportData.Add(@base);
-            }
-
-            return reportData;
         }
 
         private void SelectAllBases()
@@ -224,29 +187,5 @@ namespace Zlatmet2.ViewModels.Reports
             SelectedNomenclatures.Clear();
         }
 
-        private class Base
-        {
-            public Base()
-            {
-                Remains = new List<Remains>();
-            }
-
-            public string Name { get; set; }
-
-            public List<Remains> Remains { get; set; }
-        }
-
-        private class Remains
-        {
-            public int Number { get; set; }
-            public string Name { get; set; }
-            public double Weight { get; set; }
-        }
-
-        private class Dto
-        {
-            public string Nomenclature { get; set; }
-            public double Weight { get; set; }
-        }
     }
 }

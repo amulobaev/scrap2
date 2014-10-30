@@ -37,7 +37,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -63,9 +62,6 @@
                                 SelectedItemsOverride="{Binding SelectedNomenclatures}" />
             <Button Grid.Row="2" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3" Command="{Binding SelectAllNomenclaturesCommand}" />
             <Button Grid.Row="2" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3" Command="{Binding UnselectAllNomenclaturesCommand}" />
-
-            <CheckBox Grid.Row="3" Content="Подробный отчет" Margin="3" Grid.Column="1" VerticalAlignment="Center"
-                      HorizontalAlignment="Left" />
         </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"

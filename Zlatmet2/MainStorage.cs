@@ -209,7 +209,7 @@ namespace Zlatmet2
             RemainsRepository = new RemainsRepository(this);
 
             TemplatesRepository = new TemplatesRepository(this);
-            ReportsRepository = new ReportsRepository();
+            ReportsRepository = new ReportsRepository(this);
 
             // Загрузка данных справочников из репозитариев
             _nomenclatures.AddRange(NomenclaturesRepository.GetAll());

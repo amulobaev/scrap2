@@ -11,7 +11,7 @@
             <Category />
             <Columns isList="true" count="3">
               <value>Number,System.Int32</value>
-              <value>Name,System.String</value>
+              <value>Nomenclature,System.String</value>
               <value>Weight,System.Double</value>
             </Columns>
             <Dictionary isRef="1" />
@@ -182,7 +182,7 @@
               <Name>Text11</Name>
               <Page isRef="4" />
               <Parent isRef="13" />
-              <Text>{Bases.Remains.Name}</Text>
+              <Text>{Bases.Remains.Nomenclature}</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text11>
@@ -248,10 +248,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>9/8/2014 10:22:37 PM</ReportChanged>
+  <ReportChanged>10/30/2014 5:40:37 PM</ReportChanged>
   <ReportCreated>7/21/2014 10:54:37 PM</ReportCreated>
-  <ReportFile>Y:\Projects\Zlatmet\Материал\Шаблоны\Остатки на базе.mrt</ReportFile>
-  <ReportGuid>623f5a3c1ddd4eec81f39c2152601c89</ReportGuid>
+  <ReportFile>Y:\Projects\Zlatmet\Версия 2\Шаблоны\Остатки на базе.mrt</ReportFile>
+  <ReportGuid>4949aa6f68444677ad0b0ac735b994ef</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2014.1.1900</ReportVersion>
