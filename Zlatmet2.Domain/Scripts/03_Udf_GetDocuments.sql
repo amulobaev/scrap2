@@ -9,28 +9,14 @@ CREATE PROCEDURE [dbo].[GetDocuments]
 AS
 BEGIN
 
-DECLARE @CMD nvarchar(max)
+IF @DateFrom IS NULL
+	SET @DateFrom = '1900-01-01'
+IF @DateTo IS NULL
+	SET @DateTo = '9999-01-01'
 
-SET @CMD = 'SELECT * FROM [Documents]'
-
-IF @DateFrom IS NOT NULL AND @DateTo IS NOT NULL
-BEGIN
-	SET @CMD = @CMD + ' WHERE CONVERT(date, Date) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(55)) +
-	''' AND CONVERT(date, Date) <= ''' + CAST(Convert(date, @DateTo) as varchar(55)) + ''''
-END
-ELSE
-BEGIN
-	IF @DateFrom IS NOT NULL
-		SET @CMD = @CMD + ' WHERE CONVERT(date, Date) >= ''' + CAST(Convert(date, @DateFrom) as varchar(55)) + ''''
-
-	IF @DateTo IS NOT NULL
-		SET @CMD = @CMD + ' WHERE CONVERT(date, Date) <= ''' + CAST(Convert(date, @DateTo) as varchar(55)) + ''''
-END
-
-SET @CMD = @CMD + ' ORDER BY Date'
-
-print @CMD
-
-EXEC sp_executesql @CMD
+SELECT * FROM [Documents]
+	WHERE CONVERT(date, Date) >= CONVERT(date, @DateFrom)
+		  AND CONVERT(date, Date) <= CONVERT(date, @DateTo)
+	ORDER BY Date
 
 END

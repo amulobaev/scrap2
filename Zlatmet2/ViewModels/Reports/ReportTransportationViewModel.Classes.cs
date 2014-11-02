@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
@@ -8,11 +9,23 @@ namespace Zlatmet2.ViewModels.Reports
 {
     public partial class ReportTransportationViewModel
     {
-        public class BaseTreeItem : ObservableObject
+        public abstract class BaseTreeItem : ObservableObject
         {
+            private readonly Guid _id;
             private bool _isChecked;
 
             private string _name;
+
+            protected BaseTreeItem(Guid id, string name)
+            {
+                _id = id;
+                Name = name;
+            }
+
+            public Guid Id
+            {
+                get { return _id; }
+            }
 
             public bool IsChecked
             {
@@ -38,10 +51,9 @@ namespace Zlatmet2.ViewModels.Reports
                 new ObservableCollection<DivisionWrapper>();
 
             public ContractorWrapper(Organization contractor)
+                : base(contractor.Id, contractor.Name)
             {
                 _contractor = contractor;
-
-                Name = contractor.Name;
 
                 foreach (Division division in contractor.Divisions.OrderBy(x => x.Number))
                     Divisions.Add(new DivisionWrapper(this, division));
@@ -82,11 +94,10 @@ namespace Zlatmet2.ViewModels.Reports
             private readonly Division _division;
 
             public DivisionWrapper(ContractorWrapper contractorWrapper, Division division)
+                : base(division.Id, division.Name)
             {
                 _contractorWrapper = contractorWrapper;
                 _division = division;
-
-                Name = division.Name;
 
                 this.PropertyChanged += OnPropertyChanged;
             }

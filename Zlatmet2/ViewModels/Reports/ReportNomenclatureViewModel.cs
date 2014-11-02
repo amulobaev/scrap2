@@ -79,15 +79,16 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
-            List<ReportNomenclatureData> reportData = MainStorage.Instance.ReportsRepository.ReportNomenclature(
-                DateFrom, DateTo);
-
             Report = new StiReport();
             Report.Load(_template.Data);
 
+            // Переменные отчета
             Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
             Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
 
+            // Данные отчета
+            List<ReportNomenclatureData> reportData = MainStorage.Instance.ReportsRepository.ReportNomenclature(
+                DateFrom, DateTo);
             Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();

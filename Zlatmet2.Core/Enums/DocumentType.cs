@@ -11,15 +11,15 @@ namespace Zlatmet2.Core.Enums
         Transportation = 0,
 
         [Description("Переработка")]
-        Processing,
+        Processing = 1,
 
         [Description("Корректировка остатков")]
-        Remains,
+        Remains = 2,
 
         [Description("Перевозка (авто)")]
-        TransportationAuto,
+        TransportationAuto = 3,
 
         [Description("Перевозка (ж/д)")]
-        TransportationTrain
+        TransportationTrain = 4
     }
 }

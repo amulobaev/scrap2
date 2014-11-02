@@ -4,6 +4,11 @@ CREATE PROCEDURE [dbo].[ReportNomenclature]
 AS
 BEGIN
 
+IF @DateFrom IS NULL
+	SET @DateFrom = '1900-01-01'
+IF @DateTo IS NULL
+	SET @DateTo = '9999-01-01'
+
 SELECT Nomenclature, SUM(x.Purchased) AS Purchased, SUM(x.Sold) AS Sold FROM (
 -- Перевозка от поставщика на базу
 SELECT rn.Name AS Nomenclature, dti.LoadingWeight AS Purchased, 0 AS Sold

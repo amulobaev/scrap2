@@ -4,8 +4,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'ReportTran
 GO
 
 ALTER PROCEDURE [dbo].[ReportTransportation]
-@IsAuto BIT,
-@IsTrain BIT,
+@TransportType nvarchar(max),
 @DateFrom date = null,
 @DateTo date = null,
 @Suppliers nvarchar(max),
@@ -15,10 +14,27 @@ ALTER PROCEDURE [dbo].[ReportTransportation]
 @Nomenclatures nvarchar(max)
 AS
 BEGIN
+
+IF @DateFrom IS NULL
+	SET @DateFrom = '1900-01-01'
+IF @DateTo IS NULL
+	SET @DateTo = '9999-01-01'
+
 DECLARE @CMD nvarchar(max)
+
+SET @CMD = '
+SELECT *
+FROM [DocumentTransportationItems] dti
+JOIN [DocumentTransportation] dt ON dti.DocumentId = dt.Id
+WHERE
+	CONVERT(date, dt.DateOfLoading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+'
 
 print @CMD
 
 EXEC sp_executesql @CMD
-END
 
+END

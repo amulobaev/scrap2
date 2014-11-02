@@ -58,6 +58,7 @@
     <Compile Include="Classes\Reports\ReportNomenclatureData.cs" />
     <Compile Include="Classes\Reports\ReportRemainsBase.cs" />
     <Compile Include="Classes\Reports\ReportRemainsData.cs" />
+    <Compile Include="Classes\Reports\ReportTransportationData.cs" />
     <Compile Include="Classes\Service\Template.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Definitions.cs" />

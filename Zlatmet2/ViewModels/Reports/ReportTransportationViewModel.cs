@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -7,6 +8,7 @@ using GalaSoft.MvvmLight.Command;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
+using Zlatmet2.Core.Classes.Reports;
 using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
@@ -20,8 +22,8 @@ namespace Zlatmet2.ViewModels.Reports
     {
         private readonly Template _template;
 
-        private DateTime _dateFrom;
-        private DateTime _dateTo;
+        private DateTime? _dateFrom;
+        private DateTime? _dateTo;
         private readonly ObservableCollection<ContractorWrapper> _suppliers = new ObservableCollection<ContractorWrapper>();
         private readonly ObservableCollection<ContractorWrapper> _customers = new ObservableCollection<ContractorWrapper>();
         private readonly ObservableCollection<Nomenclature> _selectedNomenclatures =
@@ -91,13 +93,13 @@ namespace Zlatmet2.ViewModels.Reports
             set { Set(() => IsTrain, ref _isTrain, value); }
         }
 
-        public DateTime DateFrom
+        public DateTime? DateFrom
         {
             get { return _dateFrom; }
             set { Set(() => DateFrom, ref _dateFrom, value); }
         }
 
-        public DateTime DateTo
+        public DateTime? DateTo
         {
             get { return _dateTo; }
             set { Set(() => DateTo, ref _dateTo, value); }
@@ -257,17 +259,58 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
+            if (!IsAuto && !IsTrain)
+            {
+                MessageBox.Show("Не выбран тип перевозок", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            List<Guid> suppliers =
+                Suppliers.Where(x => x.IsChecked || x.Divisions.Any(y => y.IsChecked)).Select(x => x.Id).ToList();
+            List<Guid> supplierDivisions =
+                Suppliers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToList();
+            List<Guid> customers =
+                Customers.Where(x => x.IsChecked || x.Divisions.Any(y => y.IsChecked)).Select(x => x.Id).ToList();
+            List<Guid> customerDivisions =
+                Customers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToList();
+            List<Guid> nomenclatures = SelectedNomenclatures.Select(x => x.Id).ToList();
+
+            if (!suppliers.Any())
+            {
+                MessageBox.Show("Не выбраны поставщики", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            if (!customers.Any())
+            {
+                MessageBox.Show("Не выбраны заказчики", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            if (!nomenclatures.Any())
+            {
+                MessageBox.Show("Не выбрана номенклатура", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
             Report = new StiReport();
             Report.Load(_template.Data);
 
-            Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
-            Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
-            //Report.Dictionary.Variables["ТипПеревозок"].Value = TransportType == TransportType.Auto
-            //    ? "автомобильным"
-            //    : "ж/д";
-            //Report.Dictionary.Variables["НомерТранспорта"].Value = TransportType == TransportType.Auto
-            //    ? "Автомобиль и номер"
-            //    : "Номер вагона";
+            // Переменные отчёта
+            Report.Dictionary.Variables["DateFrom"].Value = DateFrom.HasValue
+                ? string.Format(" с {0}", DateFrom.Value.ToShortDateString())
+                : string.Empty;
+            Report.Dictionary.Variables["DateTo"].Value = DateTo.HasValue
+                ? string.Format(" по {0}", DateTo.Value.ToShortDateString())
+                : string.Empty;
+
+            // Данные для отчета
+            List<ReportTransportationData> reportData = MainStorage.Instance.ReportsRepository.ReportTransportation(IsAuto, IsTrain, DateFrom,
+                DateTo, suppliers, supplierDivisions, customers, customerDivisions, nomenclatures);
 
             Report.Compile();
             Report.Render(false);

@@ -6,6 +6,7 @@ using Dapper;
 using Zlatmet2.Core;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Reports;
+using Zlatmet2.Core.Enums;
 
 namespace Zlatmet2.Domain.Repositories
 {
@@ -56,7 +57,12 @@ namespace Zlatmet2.Domain.Repositories
             return reportData;
         }
 
-
+        /// <summary>
+        /// Формирование данных для отчета "Обороты за период"
+        /// </summary>
+        /// <param name="dateFrom"></param>
+        /// <param name="dateTo"></param>
+        /// <returns></returns>
         public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo)
         {
             using (IDbConnection connection = ConnectionFactory.Create())
@@ -70,6 +76,49 @@ namespace Zlatmet2.Domain.Repositories
                         .ToList();
                 for (int i = 0; i < data.Count; i++)
                     data[i].Number = i + 1;
+
+                return data;
+            }
+        }
+
+        /// <summary>
+        /// Формирование данных для отчете "Перевозки"
+        /// </summary>
+        /// <param name="isAuto"></param>
+        /// <param name="isTrain"></param>
+        /// <param name="dateFrom"></param>
+        /// <param name="dateTo"></param>
+        /// <param name="suppliers"></param>
+        /// <param name="supplierDivisions"></param>
+        /// <param name="customers"></param>
+        /// <param name="customerDivisions"></param>
+        /// <param name="nomenclatures"></param>
+        /// <returns></returns>
+        public List<ReportTransportationData> ReportTransportation(bool isAuto, bool isTrain, DateTime? dateFrom,
+            DateTime? dateTo, IEnumerable<Guid> suppliers, IEnumerable<Guid> supplierDivisions,
+            IEnumerable<Guid> customers, IEnumerable<Guid> customerDivisions, IEnumerable<Guid> nomenclatures)
+        {
+            using (IDbConnection connection = ConnectionFactory.Create())
+            {
+                // Тип транспорта
+                string transportType = isAuto && isTrain
+                    ? (int)DocumentType.TransportationAuto + "," + (int)DocumentType.TransportationTrain
+                    : isAuto
+                        ? ((int)DocumentType.TransportationAuto).ToString()
+                        : ((int)DocumentType.TransportationTrain).ToString();
+
+                string nomenclaturesString = string.Join(",", nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
+                string suppliersString = string.Join(",", suppliers.Select(x => "'" + x.ToString() + "'").ToList());
+                string supplierDivisionsString = string.Join(",", supplierDivisions.Select(x => "'" + x.ToString() + "'").ToList());
+                string customersString = string.Join(",", customers.Select(x => "'" + x.ToString() + "'").ToList());
+                string customerDivisionsString = string.Join(",", customerDivisions.Select(x => "'" + x.ToString() + "'").ToList());
+
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@DateFrom", dateFrom, DbType.Date);
+                parameters.Add("@DateTo", dateTo, DbType.Date);
+
+
+                List<ReportTransportationData> data = null;
 
                 return data;
             }
