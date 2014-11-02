@@ -6,13 +6,14 @@
         <Alias>Data</Alias>
         <BusinessObjects isList="true" count="0" />
         <Category />
-        <Columns isList="true" count="10">
+        <Columns isList="true" count="11">
           <value>Number,System.Int32</value>
+          <value>TransportType,System.String</value>
           <value>Date,System.String</value>
           <value>Nomenclature,System.String</value>
           <value>Supplier,System.String</value>
           <value>Customer,System.String</value>
-          <value>TransportNumber,System.String</value>
+          <value>Transport,System.String</value>
           <value>LoadingWeight,System.Double</value>
           <value>UnloadingWeight,System.Double</value>
           <value>Netto,System.Double</value>
@@ -27,11 +28,9 @@
     <DataSources isList="true" count="0" />
     <Relations isList="true" count="0" />
     <Report isRef="0" />
-    <Variables isList="true" count="4">
+    <Variables isList="true" count="2">
       <value>,DateFrom,DateFrom,System.String,,False,False</value>
       <value>,DateTo,DateTo,System.String,,False,False</value>
-      <value>,ТипПеревозок,ТипПеревозок,System.String,,False,False</value>
-      <value>,НомерТранспорта,НомерТранспорта,System.String,,False,False</value>
     </Variables>
   </Dictionary>
   <EngineVersion>EngineV2</EngineVersion>
@@ -154,7 +153,7 @@
               <Name>Text6</Name>
               <Page isRef="3" />
               <Parent isRef="8" />
-              <Text>{НомерТранспорта}</Text>
+              <Text>Транспорт</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>Expression</Type>
@@ -321,6 +320,7 @@
               <Name>Text14</Name>
               <Page isRef="3" />
               <Parent isRef="8" />
+              <Text>Тип</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
@@ -346,6 +346,7 @@
               <ClientRectangle>2.2,0,1.8,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>d7e2a7539d914d3993f052d77f4faf16</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -364,6 +365,7 @@
               <ClientRectangle>19.4,0,2.2,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>61c1128d9818455d80b3e73ae42ea358</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -390,8 +392,8 @@
               <ClientRectangle>0,0,1,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>9d9002eb83084d1393391c8965b229b9</Guid>
-              <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
               <Name>Text8</Name>
               <Page isRef="3" />
@@ -408,6 +410,7 @@
               <ClientRectangle>17.2,0,2.2,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>8f2884455d0f490391b7f92742767798</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -434,6 +437,7 @@
               <ClientRectangle>23.6,0,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>d50437004d704745805290a6cbd11287</Guid>
               <Margins>0,0,0,0</Margins>
               <Name>Text4</Name>
@@ -441,6 +445,7 @@
               <Parent isRef="20" />
               <Text>{Data.Comment}</Text>
               <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>Expression</Type>
             </Text4>
             <Text19 Ref="28" type="Text" isKey="true">
@@ -451,6 +456,7 @@
               <ClientRectangle>21.6,0,2,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>9ba17fb19fea40f7a8407abd3eefd263</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -469,13 +475,14 @@
               <ClientRectangle>14.2,0,3,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>3d58a36fb2f54770a053dc9197f1f6f0</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
               <Name>Text22</Name>
               <Page isRef="3" />
               <Parent isRef="20" />
-              <Text>{Data.TransportNumber}</Text>
+              <Text>{Data.Transport}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="30" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -485,6 +492,7 @@
                 <UseGroupSeparator>False</UseGroupSeparator>
                 <UseLocalSetting>False</UseLocalSetting>
               </TextFormat>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text22>
             <Text25 Ref="31" type="Text" isKey="true">
@@ -495,6 +503,7 @@
               <ClientRectangle>4,0,2.2,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>b3b827ac58fd4d55803e367958c0adae</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -503,6 +512,7 @@
               <Parent isRef="20" />
               <Text>{Data.Nomenclature}</Text>
               <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text25>
             <Text26 Ref="32" type="Text" isKey="true">
@@ -513,6 +523,7 @@
               <ClientRectangle>6.2,0,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>ce8b1b48f28c4ea6a86591e34767fc92</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -521,6 +532,7 @@
               <Parent isRef="20" />
               <Text>{Data.Supplier}</Text>
               <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text26>
             <Text27 Ref="33" type="Text" isKey="true">
@@ -531,6 +543,7 @@
               <ClientRectangle>10.2,0,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Arial,8</Font>
+              <GrowToHeight>True</GrowToHeight>
               <Guid>23ad11490b6c4378810f9593d6155e6b</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
@@ -539,6 +552,7 @@
               <Parent isRef="20" />
               <Text>{Data.Customer}</Text>
               <TextBrush>Black</TextBrush>
+              <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text27>
             <Text20 Ref="34" type="Text" isKey="true">
@@ -556,8 +570,9 @@
               <Name>Text20</Name>
               <Page isRef="3" />
               <Parent isRef="20" />
+              <Text>{Data.TransportType}</Text>
               <TextBrush>Black</TextBrush>
-              <Type>Expression</Type>
+              <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text20>
           </Components>
@@ -840,10 +855,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/29/2014 9:40:58 PM</ReportChanged>
+  <ReportChanged>11/2/2014 10:53:37 PM</ReportChanged>
   <ReportCreated>7/21/2014 10:54:37 PM</ReportCreated>
   <ReportFile>Y:\Projects\Zlatmet\Версия 2\Шаблоны\Отчет по перевозкам.mrt</ReportFile>
-  <ReportGuid>ad3ea082cd504801b2dc083a07d441ac</ReportGuid>
+  <ReportGuid>46bb04e758874fff819e34fb5a68541a</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2014.1.1900</ReportVersion>

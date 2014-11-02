@@ -311,6 +311,7 @@ namespace Zlatmet2.ViewModels.Reports
             // Данные для отчета
             List<ReportTransportationData> reportData = MainStorage.Instance.ReportsRepository.ReportTransportation(IsAuto, IsTrain, DateFrom,
                 DateTo, suppliers, supplierDivisions, customers, customerDivisions, nomenclatures);
+            Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();
             Report.Render(false);

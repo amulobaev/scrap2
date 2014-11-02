@@ -23,7 +23,6 @@ namespace Zlatmet2.ViewModels
 
         private ICommand _showReportRemainsCommand;
         private ICommand _showReportNomenclatureCommand;
-        private ICommand _showReportOrganizationCommand;
         private ICommand _showTemplatesCommand;
         private ICommand _importDataCommand;
 
@@ -119,15 +118,6 @@ namespace Zlatmet2.ViewModels
             {
                 return _showReportNomenclatureCommand ??
                        (_showReportNomenclatureCommand = new RelayCommand(ShowReportNomenclature));
-            }
-        }
-
-        public ICommand ShowReportOrganizationCommand
-        {
-            get
-            {
-                return _showReportOrganizationCommand ??
-                       (_showReportOrganizationCommand = new RelayCommand(ShowReportOrganization));
             }
         }
 
@@ -293,11 +283,6 @@ namespace Zlatmet2.ViewModels
         private void ShowReportNomenclature()
         {
             ShowLayoutDocument(typeof(ReportNomenclatureViewModel), Guid.Empty);
-        }
-
-        private void ShowReportOrganization()
-        {
-            ShowLayoutDocument(typeof(ReportOrganizationViewModel), Guid.Empty);
         }
 
         private void ShowReportTransport()

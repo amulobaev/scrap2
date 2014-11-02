@@ -203,8 +203,6 @@
     <Compile Include="ViewModels\References\ReferenceTransportsViewModel.cs" />
     <Compile Include="ViewModels\Reports\BaseReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
-    <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.Classes.cs" />
-    <Compile Include="ViewModels\Reports\ReportOrganizationViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportTransportationViewModel.Classes.cs" />
     <Compile Include="ViewModels\Reports\ReportTransportationViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportRemainsViewModel.cs" />
@@ -263,9 +261,6 @@
     </Compile>
     <Compile Include="Views\Reports\ReportNomenclatureView.xaml.cs">
       <DependentUpon>ReportNomenclatureView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Reports\ReportOrganizationView.xaml.cs">
-      <DependentUpon>ReportOrganizationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\ReportTransportationView.xaml.cs">
       <DependentUpon>ReportTransportationView.xaml</DependentUpon>
@@ -352,10 +347,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Reports\ReportNomenclatureView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Reports\ReportOrganizationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

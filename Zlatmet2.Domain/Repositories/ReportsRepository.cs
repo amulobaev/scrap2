@@ -106,19 +106,30 @@ namespace Zlatmet2.Domain.Repositories
                     : isAuto
                         ? ((int)DocumentType.TransportationAuto).ToString()
                         : ((int)DocumentType.TransportationTrain).ToString();
-
-                string nomenclaturesString = string.Join(",", nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
                 string suppliersString = string.Join(",", suppliers.Select(x => "'" + x.ToString() + "'").ToList());
                 string supplierDivisionsString = string.Join(",", supplierDivisions.Select(x => "'" + x.ToString() + "'").ToList());
+                supplierDivisionsString += (!string.IsNullOrEmpty(supplierDivisionsString) ? "," : string.Empty) + "NULL";
                 string customersString = string.Join(",", customers.Select(x => "'" + x.ToString() + "'").ToList());
                 string customerDivisionsString = string.Join(",", customerDivisions.Select(x => "'" + x.ToString() + "'").ToList());
+                customerDivisionsString += (!string.IsNullOrEmpty(customerDivisionsString) ? "," : string.Empty) + "NULL";
+                string nomenclaturesString = string.Join(",", nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
 
                 DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@TransportType", transportType);
                 parameters.Add("@DateFrom", dateFrom, DbType.Date);
                 parameters.Add("@DateTo", dateTo, DbType.Date);
+                parameters.Add("@Suppliers", suppliersString);
+                parameters.Add("@SupplierDivisions", supplierDivisionsString);
+                parameters.Add("@Customers", customersString);
+                parameters.Add("@CustomerDivisions", customerDivisionsString);
+                parameters.Add("@Nomenclatures", nomenclaturesString);
 
-
-                List<ReportTransportationData> data = null;
+                List<ReportTransportationData> data =
+                    connection.Query<ReportTransportationData>("ReportTransportation", parameters,
+                        commandType: CommandType.StoredProcedure)
+                        .ToList();
+                for (int i = 0; i < data.Count; i++)
+                    data[i].Number = i + 1;
 
                 return data;
             }
