@@ -10,6 +10,7 @@ using Xceed.Wpf.AvalonDock.Layout;
 using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Reports;
 using Zlatmet2.Core.Classes.Service;
+using Zlatmet2.Core.Enums;
 using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
 
@@ -61,11 +62,14 @@ namespace Zlatmet2.ViewModels.Reports
 
             Report = new StiReport();
 
+            Organization bases = new Organization(Guid.NewGuid(), OrganizationType.Base) { Name = "Базы" };
             foreach (Organization @base in MainStorage.Instance.Bases.OrderBy(x => x.Name))
             {
-                Suppliers.Add(new ContractorWrapper(@base));
-                Customers.Add(new ContractorWrapper(@base));
+                bases.Divisions.Add(new Division(@base.Id) { Name = @base.Name });
             }
+
+            Suppliers.Add(new ContractorWrapper(bases));
+            Customers.Add(new ContractorWrapper(bases));
 
             foreach (Organization contractor in MainStorage.Instance.Contractors.OrderBy(x => x.Name))
             {
@@ -266,29 +270,25 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
-            List<Guid> suppliers =
-                Suppliers.Where(x => x.IsChecked || x.Divisions.Any(y => y.IsChecked)).Select(x => x.Id).ToList();
-            List<Guid> supplierDivisions =
-                Suppliers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToList();
-            List<Guid> customers =
-                Customers.Where(x => x.IsChecked || x.Divisions.Any(y => y.IsChecked)).Select(x => x.Id).ToList();
-            List<Guid> customerDivisions =
-                Customers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToList();
-            List<Guid> nomenclatures = SelectedNomenclatures.Select(x => x.Id).ToList();
+            Guid[] supplierDivisions =
+                Suppliers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToArray();
+            Guid[] customerDivisions =
+                Customers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToArray();
+            Guid[] nomenclatures = SelectedNomenclatures.Select(x => x.Id).ToArray();
 
-            if (!suppliers.Any())
-            {
-                MessageBox.Show("Не выбраны поставщики", MainStorage.AppName, MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
+            //if (!suppliers.Any())
+            //{
+            //    MessageBox.Show("Не выбраны поставщики", MainStorage.AppName, MessageBoxButton.OK,
+            //        MessageBoxImage.Error);
+            //    return;
+            //}
 
-            if (!customers.Any())
-            {
-                MessageBox.Show("Не выбраны заказчики", MainStorage.AppName, MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
+            //if (!customers.Any())
+            //{
+            //    MessageBox.Show("Не выбраны заказчики", MainStorage.AppName, MessageBoxButton.OK,
+            //        MessageBoxImage.Error);
+            //    return;
+            //}
 
             if (!nomenclatures.Any())
             {
@@ -310,7 +310,7 @@ namespace Zlatmet2.ViewModels.Reports
 
             // Данные для отчета
             List<ReportTransportationData> reportData = MainStorage.Instance.ReportsRepository.ReportTransportation(IsAuto, IsTrain, DateFrom,
-                DateTo, suppliers, supplierDivisions, customers, customerDivisions, nomenclatures);
+                DateTo, supplierDivisions, customerDivisions, nomenclatures);
             Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();

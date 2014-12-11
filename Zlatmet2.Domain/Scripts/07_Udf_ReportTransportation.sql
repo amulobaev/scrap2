@@ -1,16 +1,14 @@
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'ReportTransportation')
-   exec('CREATE PROCEDURE [dbo].[ReportTransportation] AS BEGIN SET NOCOUNT ON; END')
+--IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'ReportTransportation')
+--   exec('CREATE PROCEDURE [dbo].[ReportTransportation] AS BEGIN SET NOCOUNT ON; END')
 
-GO
+--GO
 
 ALTER PROCEDURE [dbo].[ReportTransportation]
 @TransportType nvarchar(max),
-@DateFrom date = null,
-@DateTo date = null,
-@Suppliers nvarchar(max),
-@SupplierDivisions nvarchar(max),
-@Customers nvarchar(max),
-@CustomerDivisions nvarchar(max),
+@DateFrom date = NULL,
+@DateTo date = NULL,
+@SupplierDivisions nvarchar(max) = NULL,
+@CustomerDivisions nvarchar(max) = NULL,
 @Nomenclatures nvarchar(max)
 AS
 BEGIN
@@ -43,16 +41,18 @@ WHERE
 	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
 	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
-	-- Поставщики
-	AND dt.SupplierId IN (' + @Suppliers + ')
-	AND (dt.SupplierDivisionId IN (' + @SupplierDivisions + ') OR dt.SupplierDivisionId IS NULL)
-	-- Заказчики
-	AND dt.CustomerId IN (' + @Customers + ')
-	AND (dt.CustomerDivisionId IN (' + @CustomerDivisions + ') OR dt.CustomerDivisionId IS NULL)
 	-- Номенклатура
-	AND dti.[LoadingNomenclatureId] IN (' + @Nomenclatures + ')
-	ORDER BY dt.Date
-'
+	AND dti.[LoadingNomenclatureId] IN (' + @Nomenclatures + ')'
+
+-- Поставщики
+IF @SupplierDivisions IS NOT NULL
+	SET @CMD = @CMD + ' AND (dt.SupplierDivisionId IN (' + @SupplierDivisions + ') OR dt.SupplierId IN (' + @SupplierDivisions + '))'
+
+-- Заказчики
+IF @CustomerDivisions IS NOT NULL
+	SET @CMD = @CMD + ' AND (dt.CustomerDivisionId IN (' + @CustomerDivisions + ') OR dt.CustomerId IN (' + @CustomerDivisions + '))'
+
+SET @CMD = @CMD + ' ORDER BY dt.Date'
 
 print @CMD
 

@@ -88,15 +88,12 @@ namespace Zlatmet2.Domain.Repositories
         /// <param name="isTrain"></param>
         /// <param name="dateFrom"></param>
         /// <param name="dateTo"></param>
-        /// <param name="suppliers"></param>
         /// <param name="supplierDivisions"></param>
-        /// <param name="customers"></param>
         /// <param name="customerDivisions"></param>
         /// <param name="nomenclatures"></param>
         /// <returns></returns>
         public List<ReportTransportationData> ReportTransportation(bool isAuto, bool isTrain, DateTime? dateFrom,
-            DateTime? dateTo, IEnumerable<Guid> suppliers, IEnumerable<Guid> supplierDivisions,
-            IEnumerable<Guid> customers, IEnumerable<Guid> customerDivisions, IEnumerable<Guid> nomenclatures)
+            DateTime? dateTo, Guid[] supplierDivisions, Guid[] customerDivisions, Guid[] nomenclatures)
         {
             using (IDbConnection connection = ConnectionFactory.Create())
             {
@@ -106,22 +103,23 @@ namespace Zlatmet2.Domain.Repositories
                     : isAuto
                         ? ((int)DocumentType.TransportationAuto).ToString()
                         : ((int)DocumentType.TransportationTrain).ToString();
-                string suppliersString = string.Join(",", suppliers.Select(x => "'" + x.ToString() + "'").ToList());
-                string supplierDivisionsString = string.Join(",", supplierDivisions.Select(x => "'" + x.ToString() + "'").ToList());
-                supplierDivisionsString += (!string.IsNullOrEmpty(supplierDivisionsString) ? "," : string.Empty) + "NULL";
-                string customersString = string.Join(",", customers.Select(x => "'" + x.ToString() + "'").ToList());
-                string customerDivisionsString = string.Join(",", customerDivisions.Select(x => "'" + x.ToString() + "'").ToList());
-                customerDivisionsString += (!string.IsNullOrEmpty(customerDivisionsString) ? "," : string.Empty) + "NULL";
-                string nomenclaturesString = string.Join(",", nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
+                string supplierDivisionsString = supplierDivisions != null && supplierDivisions.Any()
+                    ? string.Join(",", supplierDivisions.Select(x => "'" + x.ToString() + "'").ToList())
+                    : null;
+                string customerDivisionsString = customerDivisions != null && customerDivisions.Any()
+                    ? string.Join(",", customerDivisions.Select(x => "'" + x.ToString() + "'").ToList())
+                    : null;
+                string nomenclaturesString = string.Join(",",
+                    nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
 
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@TransportType", transportType);
                 parameters.Add("@DateFrom", dateFrom, DbType.Date);
                 parameters.Add("@DateTo", dateTo, DbType.Date);
-                parameters.Add("@Suppliers", suppliersString);
-                parameters.Add("@SupplierDivisions", supplierDivisionsString);
-                parameters.Add("@Customers", customersString);
-                parameters.Add("@CustomerDivisions", customerDivisionsString);
+                if (!string.IsNullOrEmpty(supplierDivisionsString))
+                    parameters.Add("@SupplierDivisions", supplierDivisionsString);
+                if (!string.IsNullOrEmpty(customerDivisionsString))
+                    parameters.Add("@CustomerDivisions", customerDivisionsString);
                 parameters.Add("@Nomenclatures", nomenclaturesString);
 
                 List<ReportTransportationData> data =
