@@ -30,7 +30,9 @@ namespace Zlatmet2.ViewModels.Documents
 
         private DateTime? _date;
 
-        private ICommand _saveDocumentCommand;
+        private ICommand _saveAndCloseCommand;
+
+        private ICommand _saveCommand;
 
         private ICommand _addItemCommand;
 
@@ -115,9 +117,14 @@ namespace Zlatmet2.ViewModels.Documents
 
         #region Команды
 
-        public ICommand SaveDocumentCommand
+        public ICommand SaveAndCloseCommand
         {
-            get { return _saveDocumentCommand ?? (_saveDocumentCommand = new RelayCommand(SaveDocument)); }
+            get { return _saveAndCloseCommand ?? (_saveAndCloseCommand = new RelayCommand(SaveAndCloseDocument)); }
+        }
+
+        public ICommand SaveCommand
+        {
+            get { return _saveCommand ?? (_saveCommand = new RelayCommand(SaveDocument)); }
         }
 
         public ICommand AddItemCommand
@@ -151,6 +158,14 @@ namespace Zlatmet2.ViewModels.Documents
         }
 
         protected abstract void SaveDocument();
+
+        private void SaveAndCloseDocument()
+        {
+            SaveDocument();
+            
+            if (IsValid())
+                Close();
+        }
 
         protected abstract void AddItem();
 

@@ -29,7 +29,13 @@
         </Grid.RowDefinitions>
 
         <ToolBar Background="Transparent">
-            <Button Command="{Binding SaveDocumentCommand}">
+            <Button Command="{Binding SaveAndCloseCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/save.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Сохранить и закрыть" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding SaveCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../../Images/save.png" Stretch="None" Width="16" Height="16" />
                     <TextBlock Text="Сохранить" VerticalAlignment="Center" Margin="2,0,0,0" />

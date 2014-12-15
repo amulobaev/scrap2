@@ -11,6 +11,7 @@ using Zlatmet2.Core.Classes.References;
 using Zlatmet2.Core.Classes.Reports;
 using Zlatmet2.Core.Classes.Service;
 using Zlatmet2.Core.Enums;
+using Zlatmet2.Enums;
 using Zlatmet2.Tools;
 using Zlatmet2.Views.Reports;
 
@@ -41,6 +42,7 @@ namespace Zlatmet2.ViewModels.Reports
         private ICommand _selectAllCustomersCommand;
         private ICommand _unselectAllCustomersCommand;
         private ICommand _closeCustomersCommand;
+        private TransportationReportType _reportType;
 
         /// <summary>
         /// Конструктор
@@ -107,6 +109,12 @@ namespace Zlatmet2.ViewModels.Reports
         {
             get { return _dateTo; }
             set { Set(() => DateTo, ref _dateTo, value); }
+        }
+
+        public TransportationReportType ReportType
+        {
+            get { return _reportType; }
+            set { Set(() => ReportType, ref _reportType, value); }
         }
 
         public bool SuppliersIsOpen
@@ -309,8 +317,9 @@ namespace Zlatmet2.ViewModels.Reports
                 : string.Empty;
 
             // Данные для отчета
-            List<ReportTransportationData> reportData = MainStorage.Instance.ReportsRepository.ReportTransportation(IsAuto, IsTrain, DateFrom,
-                DateTo, supplierDivisions, customerDivisions, nomenclatures);
+            List<ReportTransportationData> reportData =
+                MainStorage.Instance.ReportsRepository.ReportTransportation(IsAuto, IsTrain, DateFrom, DateTo,
+                    (int)ReportType, supplierDivisions, customerDivisions, nomenclatures);
             Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();

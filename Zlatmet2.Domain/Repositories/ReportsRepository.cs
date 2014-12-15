@@ -88,12 +88,13 @@ namespace Zlatmet2.Domain.Repositories
         /// <param name="isTrain"></param>
         /// <param name="dateFrom"></param>
         /// <param name="dateTo"></param>
+        /// <param name="reportType"></param>
         /// <param name="supplierDivisions"></param>
         /// <param name="customerDivisions"></param>
         /// <param name="nomenclatures"></param>
         /// <returns></returns>
         public List<ReportTransportationData> ReportTransportation(bool isAuto, bool isTrain, DateTime? dateFrom,
-            DateTime? dateTo, Guid[] supplierDivisions, Guid[] customerDivisions, Guid[] nomenclatures)
+            DateTime? dateTo, int reportType, Guid[] supplierDivisions, Guid[] customerDivisions, Guid[] nomenclatures)
         {
             using (IDbConnection connection = ConnectionFactory.Create())
             {
@@ -116,6 +117,7 @@ namespace Zlatmet2.Domain.Repositories
                 parameters.Add("@TransportType", transportType);
                 parameters.Add("@DateFrom", dateFrom, DbType.Date);
                 parameters.Add("@DateTo", dateTo, DbType.Date);
+                parameters.Add("@ReportType", reportType);
                 if (!string.IsNullOrEmpty(supplierDivisionsString))
                     parameters.Add("@SupplierDivisions", supplierDivisionsString);
                 if (!string.IsNullOrEmpty(customerDivisionsString))

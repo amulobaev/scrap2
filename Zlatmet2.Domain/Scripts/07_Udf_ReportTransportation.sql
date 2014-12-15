@@ -1,12 +1,8 @@
---IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'ReportTransportation')
---   exec('CREATE PROCEDURE [dbo].[ReportTransportation] AS BEGIN SET NOCOUNT ON; END')
-
---GO
-
 ALTER PROCEDURE [dbo].[ReportTransportation]
 @TransportType nvarchar(max),
 @DateFrom date = NULL,
 @DateTo date = NULL,
+@ReportType int,
 @SupplierDivisions nvarchar(max) = NULL,
 @CustomerDivisions nvarchar(max) = NULL,
 @Nomenclatures nvarchar(max)
@@ -44,13 +40,20 @@ WHERE
 	-- Номенклатура
 	AND dti.[LoadingNomenclatureId] IN (' + @Nomenclatures + ')'
 
+IF @ReportType = 0
+BEGIN
+	IF @SupplierDivisions IS NOT NULL
+			SET @CMD = @CMD + ' AND (dt.SupplierDivisionId IN (' + @SupplierDivisions + ') OR dt.SupplierId IN (' + @SupplierDivisions + ') OR dt.CustomerDivisionId IN (' + @SupplierDivisions + ') OR dt.CustomerId IN (' + @SupplierDivisions + '))'
+END
+ELSE
+BEGIN
 -- Поставщики
 IF @SupplierDivisions IS NOT NULL
 	SET @CMD = @CMD + ' AND (dt.SupplierDivisionId IN (' + @SupplierDivisions + ') OR dt.SupplierId IN (' + @SupplierDivisions + '))'
-
 -- Заказчики
 IF @CustomerDivisions IS NOT NULL
 	SET @CMD = @CMD + ' AND (dt.CustomerDivisionId IN (' + @CustomerDivisions + ') OR dt.CustomerId IN (' + @CustomerDivisions + '))'
+END
 
 SET @CMD = @CMD + ' ORDER BY dt.Date'
 

@@ -92,5 +92,10 @@ namespace Zlatmet2.ViewModels.Base
             }
         }
 
+        protected void Close()
+        {
+            Layout.Close();
+        }
+
     }
 }

@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
-             xmlns:coreEnums="clr-namespace:Zlatmet2.Core.Enums;assembly=Zlatmet2.Core"
+             xmlns:enums="clr-namespace:Zlatmet2.Enums"
              xmlns:converters="clr-namespace:Zlatmet2.Converters"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600">
     <UserControl.Resources>
         <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+        <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
 
         <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}" x:Key="ComboBoxItemWithSeparatorStyle">
             <Style.Triggers>
@@ -66,6 +67,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -73,6 +75,15 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="{x:Type FrameworkElement}" x:Key="ReportTypeStyle">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ReportType}" Value="{x:Static enums:TransportationReportType.Contractors}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
 
             <!--Тип перевозок-->
             <TextBlock Margin="3" Text="Тип перевозок:" VerticalAlignment="Center" HorizontalAlignment="Right" />
@@ -91,10 +102,40 @@
                 <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
+            <!--Тип отчёта-->
+            <TextBlock Grid.Row="2" Text="Тип:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                <RadioButton GroupName="Group1" Margin="3" Content="Контрагенты"
+                             IsChecked="{Binding ReportType, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter={x:Static enums:TransportationReportType.Contractors}}" />
+                <RadioButton GroupName="Group1" Margin="3" Content="Поставщики и заказчики"
+                             IsChecked="{Binding ReportType, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter={x:Static enums:TransportationReportType.SuppliersAndCustomers}}" />
+            </StackPanel>
+
             <!--Поставщик-->
-            <TextBlock Grid.Row="2" Text="Поставщики:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
-            <xctk:DropDownButton Grid.Row="2" Grid.Column="1" Content="Выбрать поставщиков"
-                                 Margin="3" VerticalAlignment="Center" IsOpen="{Binding SuppliersIsOpen, Mode=TwoWay}" >
+            <TextBlock Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Text" Value="Контрагенты:" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ReportType}" Value="{x:Static enums:TransportationReportType.SuppliersAndCustomers}">
+                                <Setter Property="Text" Value="Поставщики:" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <xctk:DropDownButton Grid.Row="3" Grid.Column="1"
+                                 Margin="3" VerticalAlignment="Center" IsOpen="{Binding SuppliersIsOpen, Mode=TwoWay}">
+                <xctk:DropDownButton.Style>
+                    <Style TargetType="{x:Type xctk:DropDownButton}">
+                        <Setter Property="Content" Value="Выбрать контрагентов" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ReportType}" Value="{x:Static enums:TransportationReportType.SuppliersAndCustomers}">
+                                <Setter Property="Content" Value="Выбрать поставщиков" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </xctk:DropDownButton.Style>
                 <xctk:DropDownButton.DropDownContent>
                     <Grid Height="300" Width="250">
                         <Grid.RowDefinitions>
@@ -118,8 +159,9 @@
             </xctk:DropDownButton>
 
             <!--Заказчик-->
-            <TextBlock Grid.Row="3" Text="Заказчики:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <xctk:DropDownButton Grid.Row="3" Grid.Column="1" Margin="3" VerticalAlignment="Center"
+            <TextBlock Grid.Row="4" Text="Заказчики:" Margin="3" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Style="{StaticResource ReportTypeStyle}" />
+            <xctk:DropDownButton Grid.Row="4" Grid.Column="1" Margin="3" VerticalAlignment="Center" Style="{StaticResource ReportTypeStyle}"
                                  Content="Выбрать заказчиков" IsOpen="{Binding CustomersIsOpen, Mode=TwoWay}">
                 <xctk:DropDownButton.DropDownContent>
                     <Grid Height="300" Width="250">
@@ -144,17 +186,16 @@
             </xctk:DropDownButton>
 
             <!--Номенклатура-->
-            <TextBlock Grid.Row="4" Text="Номенклатура:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <xctk:CheckComboBox Grid.Row="4" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
+            <TextBlock Grid.Row="5" Text="Номенклатура:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <xctk:CheckComboBox Grid.Row="5" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
                                 ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}"
                                 SelectedItemsOverride="{Binding SelectedNomenclatures}"
                                 Style="{StaticResource NomenclatureIsEnabledStyle}" />
-            <Button Grid.Row="4" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3"
+            <Button Grid.Row="5" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3"
                     Command="{Binding SelectAllNomenclaturesCommand}" Style="{StaticResource NomenclatureIsEnabledStyle}" />
-            <Button Grid.Row="4" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3"
+            <Button Grid.Row="5" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3"
                     Command="{Binding UnselectAllNomenclaturesCommand}"
                      Style="{StaticResource NomenclatureIsEnabledStyle}" />
-
         </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"
