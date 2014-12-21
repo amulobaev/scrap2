@@ -187,6 +187,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Tools\CurrencyInfo.cs" />
     <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Tools\FocusAdvancement.cs" />
     <Compile Include="Tools\Helpers.cs" />
     <Compile Include="Tools\RusNumber.cs" />
     <Compile Include="Tools\ThreadContext.cs" />
