@@ -12,5 +12,7 @@ namespace Zlatmet2.Domain.Entities.References
 
         [Required]
         public string Name { get; set; }
+
+        public string Unit { get; set; }
     }
 }

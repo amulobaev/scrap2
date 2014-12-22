@@ -82,6 +82,7 @@
     <Compile Include="Entities\References\OrganizationEntity.cs" />
     <Compile Include="Entities\References\TransportEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Repositories\ReportsRepository.cs" />
     <Compile Include="Repositories\Service\UsersRepository.cs" />

@@ -17,5 +17,6 @@ namespace Zlatmet2.Core.Classes.References
         /// </summary>
         public string Name { get; set; }
 
+        public string Unit { get; set; }
     }
 }

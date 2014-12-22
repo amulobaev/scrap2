@@ -6,6 +6,7 @@ namespace Zlatmet2.Models.References
     public class NomenclatureWrapper : BaseReferenceWrapper<Nomenclature>
     {
         private string _name;
+        private string _unit;
 
         /// <summary>
         /// Конструктор
@@ -24,6 +25,7 @@ namespace Zlatmet2.Models.References
             {
                 Id = nomenclature.Id;
                 _name = nomenclature.Name;
+                _unit = nomenclature.Unit;
                 //IsChanged = false;
             }
         }
@@ -40,11 +42,18 @@ namespace Zlatmet2.Models.References
             }
         }
 
+        public string Unit
+        {
+            get { return _unit; }
+            set { Set(() => Unit, ref _unit, value); }
+        }
+
         public override void UpdateContainer()
         {
             if (Container == null)
                 Container = new Nomenclature(Id);
             Container.Name = Name;
+            Container.Unit = Unit;
         }
 
     }

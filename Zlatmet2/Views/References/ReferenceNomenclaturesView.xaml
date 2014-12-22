@@ -53,6 +53,7 @@
                 <telerik:SortDescriptor Member="Name"/>
             </telerik:RadGridView.SortDescriptors>
             <telerik:RadGridView.Columns>
+                <!--Наименование-->
                 <telerik:GridViewDataColumn Header="Наименование" Width="*" DataMemberBinding="{Binding Name}">
                     <telerik:GridViewDataColumn.CellTemplate>
                         <DataTemplate>
@@ -62,6 +63,19 @@
                     <telerik:GridViewDataColumn.CellEditTemplate>
                         <DataTemplate>
                             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+                <!--Единица измерения-->
+                <telerik:GridViewDataColumn Header="Единица измерения" DataMemberBinding="{Binding Unit}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Unit, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellEditTemplate>
                 </telerik:GridViewDataColumn>
