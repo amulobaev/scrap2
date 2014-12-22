@@ -1,6 +1,8 @@
-CREATE PROCEDURE [dbo].[ReportNomenclature]
+ALTER PROCEDURE [dbo].[ReportNomenclature]
 @DateFrom date = null,
-@DateTo date = null
+@DateTo date = null,
+@Bases int,
+@Transit int
 AS
 BEGIN
 
@@ -9,7 +11,13 @@ IF @DateFrom IS NULL
 IF @DateTo IS NULL
 	SET @DateTo = '9999-01-01'
 
-SELECT Nomenclature, SUM(x.Purchased) AS Purchased, SUM(x.Sold) AS Sold FROM (
+DECLARE @CMD nvarchar(max)
+DECLARE @BasesCmd nvarchar(max)
+DECLARE @TransitCmd nvarchar(max)
+
+SET @CMD = 'SELECT Nomenclature, SUM(x.Purchased) AS Purchased, SUM(x.Sold) AS Sold FROM ('
+
+SET @BasesCmd = '
 -- Перевозка от поставщика на базу
 SELECT rn.Name AS Nomenclature, dti.LoadingWeight AS Purchased, 0 AS Sold
 FROM [DocumentTransportationItems] dti
@@ -18,8 +26,10 @@ JOIN [ReferenceOrganizations] ro1 ON dt.SupplierId = ro1.Id
 JOIN [ReferenceOrganizations] ro2 ON dt.CustomerId = ro2.Id
 JOIN [ReferenceNomenclatures] rn ON dti.LoadingNomenclatureId = rn.Id
 WHERE
-	CONVERT(date, dt.DateOfLoading) >= @DateFrom AND CONVERT(date, dt.DateOfUnloading) >= @DateFrom
-	AND CONVERT(date, dt.DateOfLoading) <= @DateTo AND CONVERT(date, dt.DateOfUnloading) <= @DateTo
+	CONVERT(date, dt.DateOfLoading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND ro1.Type = 0 AND ro2.Type = 1
 
 UNION ALL
@@ -32,12 +42,13 @@ JOIN [ReferenceOrganizations] ro1 ON dt.SupplierId = ro1.Id
 JOIN [ReferenceOrganizations] ro2 ON dt.CustomerId = ro2.Id
 JOIN [ReferenceNomenclatures] rn ON dti.UnloadingNomenclatureId = rn.Id
 WHERE
-	CONVERT(date, dt.DateOfLoading) >= @DateFrom AND CONVERT(date, dt.DateOfUnloading) >= @DateFrom
-	AND CONVERT(date, dt.DateOfLoading) <= @DateTo AND CONVERT(date, dt.DateOfUnloading) <= @DateTo
-	AND ro1.Type = 1 AND ro2.Type = 0
+	CONVERT(date, dt.DateOfLoading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND ro1.Type = 1 AND ro2.Type = 0'
 
-UNION ALL
-
+SET @TransitCmd = '
 -- Перевозка от поставщика к заказчику (погрузка)
 SELECT rn.Name AS Nomenclature, dti.LoadingWeight AS Purchased, 0 AS Sold
 FROM [DocumentTransportationItems] dti
@@ -46,8 +57,10 @@ JOIN [ReferenceOrganizations] ro1 ON dt.SupplierId = ro1.Id
 JOIN [ReferenceOrganizations] ro2 ON dt.CustomerId = ro2.Id
 JOIN [ReferenceNomenclatures] rn ON dti.LoadingNomenclatureId = rn.Id
 WHERE
-	CONVERT(date, dt.DateOfLoading) >= @DateFrom AND CONVERT(date, dt.DateOfUnloading) >= @DateFrom
-	AND CONVERT(date, dt.DateOfLoading) <= @DateTo AND CONVERT(date, dt.DateOfUnloading) <= @DateTo
+	CONVERT(date, dt.DateOfLoading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND ro1.Type = 0 AND ro2.Type = 0
 
 UNION ALL
@@ -60,9 +73,29 @@ JOIN [ReferenceOrganizations] ro1 ON dt.SupplierId = ro1.Id
 JOIN [ReferenceOrganizations] ro2 ON dt.CustomerId = ro2.Id
 JOIN [ReferenceNomenclatures] rn ON dti.UnloadingNomenclatureId = rn.Id
 WHERE
-	CONVERT(date, dt.DateOfLoading) >= @DateFrom AND CONVERT(date, dt.DateOfUnloading) >= @DateFrom
-	AND CONVERT(date, dt.DateOfLoading) <= @DateTo AND CONVERT(date, dt.DateOfUnloading) <= @DateTo
-	AND ro1.Type = 0 AND ro2.Type = 0
-) x GROUP BY Nomenclature ORDER BY Nomenclature
+	CONVERT(date, dt.DateOfLoading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
+	AND ro1.Type = 0 AND ro2.Type = 0'
+
+IF @Bases = 1 AND @Transit = 1
+	SET @CMD = @CMD + @BasesCmd +'
+	UNION ALL
+	' + @TransitCmd
+ELSE
+BEGIN
+IF @Bases = 1
+	SET @CMD = @CMD + @BasesCmd
+IF @Transit = 1
+	SET @CMD = @CMD + @TransitCmd
+END
+
+SET @CMD = @CMD + '
+) x GROUP BY Nomenclature ORDER BY Nomenclature'
+
+print @CMD
+
+EXEC sp_executesql @CMD
 
 END

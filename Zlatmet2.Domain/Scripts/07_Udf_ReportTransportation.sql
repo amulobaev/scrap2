@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dbo].[ReportTransportation]
+CREATE PROCEDURE [dbo].[ReportTransportation]
 @TransportType nvarchar(max),
 @DateFrom date = NULL,
 @DateTo date = NULL,

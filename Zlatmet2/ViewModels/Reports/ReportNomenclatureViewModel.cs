@@ -20,6 +20,10 @@ namespace Zlatmet2.ViewModels.Reports
 
         private DateTime _dateTo;
 
+        private bool _bases = true;
+
+        private bool _transit;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -65,6 +69,18 @@ namespace Zlatmet2.ViewModels.Reports
             }
         }
 
+        public bool Bases
+        {
+            get { return _bases; }
+            set { Set(() => Bases, ref _bases, value); }
+        }
+
+        public bool Transit
+        {
+            get { return _transit; }
+            set { Set(() => Transit, ref _transit, value); }
+        }
+
         public override string ReportName
         {
             get { return "Обороты за период"; }
@@ -79,6 +95,12 @@ namespace Zlatmet2.ViewModels.Reports
                 return;
             }
 
+            if (!Bases && !Transit)
+            {
+                MessageBox.Show("Не выбраны \"Базы\" и/или \"Транзит\"");
+                return;
+            }
+
             Report = new StiReport();
             Report.Load(_template.Data);
 
@@ -88,7 +110,7 @@ namespace Zlatmet2.ViewModels.Reports
 
             // Данные отчета
             List<ReportNomenclatureData> reportData = MainStorage.Instance.ReportsRepository.ReportNomenclature(
-                DateFrom, DateTo);
+                DateFrom, DateTo, Bases, Transit);
             Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();

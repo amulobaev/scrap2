@@ -13,16 +13,33 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <!--ToolBar-->
         <ToolBar Background="Transparent">
             <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
         </ToolBar>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
             <TextBlock Text="На период с:" Margin="3" VerticalAlignment="Center" />
-            <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="по" Margin="3" VerticalAlignment="Center" />
-            <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="по" Margin="3" VerticalAlignment="Center" />
+                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <CheckBox Content="Базы" Margin="3" IsChecked="{Binding Bases}" />
+                <CheckBox Content="Транзит" Margin="3" IsChecked="{Binding Transit}" />
+            </StackPanel>
+        </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"
                                         ShowReportOpen="False" Report="{Binding Report}" />

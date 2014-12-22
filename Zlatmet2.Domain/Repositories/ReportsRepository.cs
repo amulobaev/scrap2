@@ -62,14 +62,18 @@ namespace Zlatmet2.Domain.Repositories
         /// </summary>
         /// <param name="dateFrom"></param>
         /// <param name="dateTo"></param>
+        /// <param name="bases"></param>
+        /// <param name="transit"></param>
         /// <returns></returns>
-        public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo)
+        public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo, bool bases, bool transit)
         {
             using (IDbConnection connection = ConnectionFactory.Create())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@DateFrom", dateFrom, DbType.Date);
                 parameters.Add("@DateTo", dateTo, DbType.Date);
+                parameters.Add("@Bases", bases);
+                parameters.Add("@Transit", transit);
 
                 List<ReportNomenclatureData> data =
                     connection.Query<ReportNomenclatureData>("ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
