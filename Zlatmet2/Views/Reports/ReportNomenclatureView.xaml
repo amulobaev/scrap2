@@ -18,7 +18,7 @@
             <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
         </ToolBar>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="GridBase">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -30,7 +30,7 @@
 
             <TextBlock Text="На период с:" Margin="3" VerticalAlignment="Center" />
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}" />
+                <DatePicker x:Name="DatePickerFrom" Margin="3" Width="110" SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Text="по" Margin="3" VerticalAlignment="Center" />
                 <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>

@@ -186,6 +186,7 @@
     <Compile Include="Models\Service\TemplateWrapper.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Tools\CurrencyInfo.cs" />
+    <Compile Include="Tools\EnterKeyTraversal.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\FocusAdvancement.cs" />
     <Compile Include="Tools\Helpers.cs" />

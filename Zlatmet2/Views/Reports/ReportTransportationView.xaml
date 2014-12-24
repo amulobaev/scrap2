@@ -60,7 +60,7 @@
             <Button Content="Сформировать" Command="{Binding PrepareReportCommand}" />
         </ToolBar>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="GridBase">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -88,7 +88,7 @@
             <!--Тип перевозок-->
             <TextBlock Margin="3" Text="Тип перевозок:" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                <CheckBox Content="Авто" Margin="3" VerticalAlignment="Center"
+                <CheckBox x:Name="CheckBoxIsAuto" Content="Авто" Margin="3" VerticalAlignment="Center"
                           IsChecked="{Binding IsAuto, UpdateSourceTrigger=PropertyChanged}" />
                 <CheckBox Content="Ж/Д" Margin="3" VerticalAlignment="Center"
                           IsChecked="{Binding IsTrain, UpdateSourceTrigger=PropertyChanged}" />

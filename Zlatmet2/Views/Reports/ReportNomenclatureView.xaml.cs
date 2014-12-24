@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 using Stimulsoft.Report;
 
 namespace Zlatmet2.Views.Reports
@@ -13,6 +14,8 @@ namespace Zlatmet2.Views.Reports
             InitializeComponent();
 
             StiViewer.Report = new StiReport();
+
+            FocusManager.SetFocusedElement(GridBase, DatePickerFrom);
         }
     }
 }

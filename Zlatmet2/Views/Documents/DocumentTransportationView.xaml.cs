@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Zlatmet2.Views.Documents
 {
@@ -10,6 +11,8 @@ namespace Zlatmet2.Views.Documents
         public DocumentTransportationView()
         {
             InitializeComponent();
+
+            FocusManager.SetFocusedElement(GroupBoxBase, UpDownNumber);
         }
     }
 }
