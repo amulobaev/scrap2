@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{028560E4-E943-4F15-879A-FE53F7A982DA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scrap</RootNamespace>
+    <AssemblyName>Scrap</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.38\lib\net40\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.0.2.32240, Culture=neutral, PublicKeyToken=0e453835af4ee6ce, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.5.0.2.0\lib\net40\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.0.2.32240, Culture=neutral, PublicKeyToken=f46ff315b1088208, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.5.0.2.0\lib\net40\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.2.0.0\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="Stimulsoft.Base, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stimulsoft.Report, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.Check, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.Helper, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.Wpf, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.WpfDesign, Version=2014.1.1900.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.0.2.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls, Version=2014.3.1202.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF Q3 2014\Binaries\WPF40\Telerik.Windows.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2014.3.1202.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF Q3 2014\Binaries\WPF40\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2014.3.1202.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF Q3 2014\Binaries\WPF40\Telerik.Windows.Controls.Input.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data, Version=2014.3.1202.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Telerik\UI for WPF Q3 2014\Binaries\WPF40\Telerik.Windows.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Behaviors\RadGridViewScrollIntoViewBehavior.cs" />
+    <Compile Include="Classes\BaseModel.cs" />
+    <Compile Include="Classes\BaseValidationModel.cs" />
+    <Compile Include="Behaviors\DataGridScrollIntoViewBehavior.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Converters\RadioButtonCheckedConverter.cs" />
+    <Compile Include="Enums\TransportationReportType.cs" />
+    <Compile Include="MainStorage.cs" />
+    <Compile Include="MainStorage.ModelContext.cs" />
+    <Compile Include="MainStorage.Settings.cs" />
+    <Compile Include="Models\BaseValidationWrapperT.cs" />
+    <Compile Include="Models\BaseValidationWrapper.cs" />
+    <Compile Include="Models\BaseWrapper.cs" />
+    <Compile Include="Models\BaseWrapperT.cs" />
+    <Compile Include="Models\Documents\BaseDocumentItemWrapper.cs" />
+    <Compile Include="Models\Documents\BaseDocumentItemWrapperT.cs" />
+    <Compile Include="Models\Documents\ProcessingItemWrapper.cs" />
+    <Compile Include="Models\Documents\RemainsItemWrapper.cs" />
+    <Compile Include="Models\Documents\TransportationItemWrapper.cs" />
+    <Compile Include="Models\IgnoreChangesAttribute.cs" />
+    <Compile Include="Models\BaseReferenceWrapper.cs" />
+    <Compile Include="Models\BaseReferenceWrapperT.cs" />
+    <Compile Include="Models\References\DivisionWrapper.cs" />
+    <Compile Include="Models\References\EmployeeWrapper.cs" />
+    <Compile Include="Models\References\NomenclatureWrapper.cs" />
+    <Compile Include="Models\References\OrganizationWrapper.cs" />
+    <Compile Include="Models\References\TransportWrapper.cs" />
+    <Compile Include="Models\Reports\CheckedWrapper.cs" />
+    <Compile Include="Models\Service\TemplateWrapper.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Tools\CurrencyInfo.cs" />
+    <Compile Include="Tools\EnterKeyTraversal.cs" />
+    <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Tools\FocusAdvancement.cs" />
+    <Compile Include="Tools\Helpers.cs" />
+    <Compile Include="Tools\RusNumber.cs" />
+    <Compile Include="Tools\ThreadContext.cs" />
+    <Compile Include="ViewModels\Base\CustomLayoutDocumentViewModel.cs" />
+    <Compile Include="ViewModels\Base\UniqueLayoutDocumentViewModel.cs" />
+    <Compile Include="ViewModels\Base\ValidationViewModelBase.cs" />
+    <Compile Include="ViewModels\Documents\BaseDocumentViewModelT.cs" />
+    <Compile Include="ViewModels\Documents\DocumentProcessingViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentRemainsViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentReportViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentTransportationViewModel.cs" />
+    <Compile Include="ViewModels\Documents\JournalViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseEditorViewModel.cs" />
+    <Compile Include="ViewModels\References\ConvertContractorToDivisionViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceBasesViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceDriversViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceNomenclaturesViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceContractorsViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceResponsiblePersonsViewModel.cs" />
+    <Compile Include="ViewModels\References\ReferenceTransportsViewModel.cs" />
+    <Compile Include="ViewModels\Reports\BaseReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportNomenclatureViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportTransportationViewModel.Classes.cs" />
+    <Compile Include="ViewModels\Reports\ReportTransportationViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportRemainsViewModel.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldDocumentDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldEmployeeDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldNomenclatureDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldOrganizationDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldTableItemDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldTransportDto.cs" />
+    <Compile Include="ViewModels\Service\Dto\OldUserDto.cs" />
+    <Compile Include="ViewModels\Service\ImportDataViewModel.cs" />
+    <Compile Include="ViewModels\Service\ParametersViewModel.cs" />
+    <Compile Include="ViewModels\Service\TemplatesViewModel.cs" />
+    <Compile Include="ViewModels\Service\UsersViewModel.cs" />
+    <Compile Include="Models\Service\UserWrapper.cs" />
+    <Compile Include="Views\Documents\DocumentProcessingView.xaml.cs">
+      <DependentUpon>DocumentProcessingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Documents\DocumentRemainsView.xaml.cs">
+      <DependentUpon>DocumentRemainsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Documents\DocumentReportView.xaml.cs">
+      <DependentUpon>DocumentReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Documents\DocumentTransportationView.xaml.cs">
+      <DependentUpon>DocumentTransportationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Documents\JournalView.xaml.cs">
+      <DependentUpon>JournalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Base\LayoutDocumentViewModel.cs" />
+    <Compile Include="ViewModels\Base\LayoutContentViewModel.cs" />
+    <Compile Include="ViewModels\Base\SingletonLayoutDocumentViewModel.cs" />
+    <Compile Include="ViewModels\Base\ViewModelBase.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ConvertContractorToDivisionWindow.xaml.cs">
+      <DependentUpon>ConvertContractorToDivisionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ReferenceBasesView.xaml.cs">
+      <DependentUpon>ReferenceBasesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ReferenceEmployeesView.xaml.cs">
+      <DependentUpon>ReferenceEmployeesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ReferenceNomenclaturesView.xaml.cs">
+      <DependentUpon>ReferenceNomenclaturesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ReferenceContractorsView.xaml.cs">
+      <DependentUpon>ReferenceContractorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\References\ReferenceTransportsView.xaml.cs">
+      <DependentUpon>ReferenceTransportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ReportNomenclatureView.xaml.cs">
+      <DependentUpon>ReportNomenclatureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ReportTransportationView.xaml.cs">
+      <DependentUpon>ReportTransportationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ReportRemainsView.xaml.cs">
+      <DependentUpon>ReportRemainsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\EditUserWindow.xaml.cs">
+      <DependentUpon>EditUserWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\ImportDataWindow.xaml.cs">
+      <DependentUpon>ImportDataWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\ParametersWindow.xaml.cs">
+      <DependentUpon>ParametersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\TemplateEditorWindow.xaml.cs">
+      <DependentUpon>TemplateEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\TemplatesView.xaml.cs">
+      <DependentUpon>TemplatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\Documents\DocumentProcessingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Documents\DocumentRemainsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Documents\DocumentReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Documents\DocumentTransportationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Documents\JournalView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\References\ConvertContractorToDivisionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\References\ReferenceBasesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\References\ReferenceEmployeesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\References\ReferenceNomenclaturesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\References\ReferenceContractorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\References\ReferenceTransportsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\ReportNomenclatureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\ReportTransportationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\ReportRemainsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\EditUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\ImportDataWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\ParametersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\TemplateEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\TemplatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Service\UsersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scrap.Core\Scrap.Core.csproj">
+      <Project>{3366c19f-7f60-47c6-a9da-8f4ea205fb85}</Project>
+      <Name>Scrap.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrap.Domain\Scrap.Domain.csproj">
+      <Project>{3c97e5e9-6182-44ed-8668-e3198edc2c55}</Project>
+      <Name>Scrap.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
+    <Resource Include="Images\cancel.png" />
+    <Resource Include="Images\configure.png" />
+    <Resource Include="Images\delete.png" />
+    <Resource Include="Images\down.png" />
+    <Resource Include="Images\edit.png" />
+    <Resource Include="Images\exit.png" />
+    <Resource Include="Images\ok.png" />
+    <Resource Include="Images\print.png" />
+    <Resource Include="Images\reload.png" />
+    <Resource Include="Images\reports.png" />
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ru.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

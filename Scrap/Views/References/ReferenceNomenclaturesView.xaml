@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="Scrap.Views.References.ReferenceNomenclaturesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:behaviors="clr-namespace:Scrap.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <ToolBar Background="Transparent">
+            <ToolBar.Resources>
+                <!--SelectedItemStyle-->
+                <Style TargetType="{x:Type Button}" x:Key="SelectedItemStyle">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToolBar.Resources>
+            <Button Command="{Binding AddItemCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/add.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Добавить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding RemoveItemCommand}" Style="{StaticResource SelectedItemStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/cancel.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Удалить" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+            <Separator />
+            <Button Command="{Binding SaveCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Images/save.png" Stretch="None" Width="16" Height="16" />
+                    <TextBlock Text="Сохранить изменения" VerticalAlignment="Center" Margin="2,0,0,0" />
+                </StackPanel>
+            </Button>
+        </ToolBar>
+
+        <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" ShowGroupPanel="False" CanUserReorderColumns="False"
+                             RowIndicatorVisibility="Collapsed" CanUserFreezeColumns="False" IsFilteringAllowed="False"
+                             ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+            <telerik:RadGridView.SortDescriptors>
+                <telerik:SortDescriptor Member="Name"/>
+            </telerik:RadGridView.SortDescriptors>
+            <telerik:RadGridView.Columns>
+                <!--Наименование-->
+                <telerik:GridViewDataColumn Header="Наименование" Width="*" DataMemberBinding="{Binding Name}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+                <!--Единица измерения-->
+                <telerik:GridViewDataColumn Header="Единица измерения" DataMemberBinding="{Binding Unit}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Unit, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+            <telerik:RadGridView.RowStyle>
+                <Style TargetType="{x:Type telerik:GridViewRow}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChanged}" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </telerik:RadGridView.RowStyle>
+            <i:Interaction.Behaviors>
+                <behaviors:RadGridViewScrollIntoViewBehavior />
+            </i:Interaction.Behaviors>
+        </telerik:RadGridView>
+    </Grid>
+</UserControl>
