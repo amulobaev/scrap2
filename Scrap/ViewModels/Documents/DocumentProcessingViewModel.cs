@@ -14,10 +14,17 @@ namespace Scrap.ViewModels.Documents
 {
     public class DocumentProcessingViewModel : BaseDocumentViewModel<Processing, ProcessingItemWrapper>
     {
+        #region Поля
+
+        private DateTime? _date;
+
         private Employee _responsiblePerson;
 
         private string _comment;
+
         private Organization _base;
+
+        #endregion Поля
 
         /// <summary>
         /// Конструктор
@@ -52,6 +59,18 @@ namespace Scrap.ViewModels.Documents
             UpdateTitle();
         }
 
+        #region Свойства
+
+        /// <summary>
+        /// Дата документа
+        /// </summary>
+        [Required]
+        public DateTime? Date
+        {
+            get { return _date; }
+            set { Set(() => Date, ref _date, value); }
+        }
+
         public ReadOnlyObservableCollection<Organization> Bases
         {
             get { return MainStorage.Instance.Bases; }
@@ -61,13 +80,7 @@ namespace Scrap.ViewModels.Documents
         public Organization Base
         {
             get { return _base; }
-            set
-            {
-                if (Equals(value, _base))
-                    return;
-                _base = value;
-                RaisePropertyChanged("Base");
-            }
+            set { Set(() => Base, ref _base, value); }
         }
 
         /// <summary>
@@ -85,31 +98,21 @@ namespace Scrap.ViewModels.Documents
         public Employee ResponsiblePerson
         {
             get { return _responsiblePerson; }
-            set
-            {
-                if (Equals(value, _responsiblePerson))
-                    return;
-                _responsiblePerson = value;
-                RaisePropertyChanged("ResponsiblePerson");
-            }
+            set { Set(() => ResponsiblePerson, ref _responsiblePerson, value); }
         }
 
         public string Comment
         {
             get { return _comment; }
-            set
-            {
-                if (value == _comment)
-                    return;
-                _comment = value;
-                RaisePropertyChanged("Comment");
-            }
+            set { Set(() => Comment, ref _comment, value); }
         }
 
         protected override string DocumentTitle
         {
             get { return "Переработка"; }
         }
+
+        #endregion Свойства
 
         #region Методы
 
@@ -155,6 +158,12 @@ namespace Scrap.ViewModels.Documents
         {
             var newItem = new ProcessingItemWrapper();
             Items.Add(newItem);
+        }
+
+        protected override void UpdateTitle()
+        {
+            Title = string.Format("{0} №{1} от {2}", DocumentTitle, Number,
+                Date.HasValue ? Date.Value.ToShortDateString() : string.Empty);
         }
 
         private void LoadDocument(Guid id)

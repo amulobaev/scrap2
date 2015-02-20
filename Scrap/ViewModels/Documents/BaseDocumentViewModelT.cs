@@ -28,8 +28,6 @@ namespace Scrap.ViewModels.Documents
 
         private int _number;
 
-        private DateTime? _date;
-
         private ICommand _saveAndCloseCommand;
 
         private ICommand _saveCommand;
@@ -65,29 +63,7 @@ namespace Scrap.ViewModels.Documents
         public int Number
         {
             get { return _number; }
-            set
-            {
-                if (value == _number)
-                    return;
-                _number = value;
-                RaisePropertyChanged("Number");
-            }
-        }
-
-        /// <summary>
-        /// Дата документа
-        /// </summary>
-        [Required]
-        public DateTime? Date
-        {
-            get { return _date; }
-            set
-            {
-                if (value.Equals(_date))
-                    return;
-                _date = value;
-                RaisePropertyChanged("Date");
-            }
+            set { Set(() => Number, ref _number, value); }
         }
 
         public ReadOnlyObservableCollection<Nomenclature> Nomenclatures
@@ -100,13 +76,7 @@ namespace Scrap.ViewModels.Documents
         public TItemWrapper SelectedItem
         {
             get { return _selectedItem; }
-            set
-            {
-                if (Equals(value, _selectedItem))
-                    return;
-                _selectedItem = value;
-                RaisePropertyChanged("SelectedItem");
-            }
+            set { Set(() => SelectedItem, ref _selectedItem, value); }
         }
 
         public TModel Container { get; protected set; }
@@ -226,11 +196,7 @@ namespace Scrap.ViewModels.Documents
                 Items[i].Number = i + 1;
         }
 
-        protected void UpdateTitle()
-        {
-            Title = string.Format("{0} №{1} от {2}", DocumentTitle, Number,
-                Date.HasValue ? Date.Value.ToShortDateString() : string.Empty);
-        }
+        protected abstract void UpdateTitle();
 
         #endregion
 

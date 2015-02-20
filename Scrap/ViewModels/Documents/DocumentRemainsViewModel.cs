@@ -14,7 +14,13 @@ namespace Scrap.ViewModels.Documents
 {
     public class DocumentRemainsViewModel : BaseDocumentViewModel<Remains, RemainsItemWrapper>
     {
+        #region Поля
+
         private Organization _base;
+
+        private DateTime? _date;
+
+        #endregion Поля
 
         /// <summary>
         /// Конструктор
@@ -49,6 +55,18 @@ namespace Scrap.ViewModels.Documents
             UpdateTitle();
         }
 
+        #region Свойства
+
+        /// <summary>
+        /// Дата документа
+        /// </summary>
+        [Required]
+        public DateTime? Date
+        {
+            get { return _date; }
+            set { Set(() => Date, ref _date, value); }
+        }
+
         protected override string DocumentTitle
         {
             get { return "Корректировка остатков"; }
@@ -63,14 +81,11 @@ namespace Scrap.ViewModels.Documents
         public Organization Base
         {
             get { return _base; }
-            set
-            {
-                if (Equals(value, _base))
-                    return;
-                _base = value;
-                RaisePropertyChanged("Base");
-            }
+            set { Set(() => Base, ref _base, value); }
         }
+
+        #endregion Свойства
+
         private void LoadDocument(Guid id)
         {
             Container = MainStorage.Instance.RemainsRepository.GetById(id);
@@ -124,5 +139,10 @@ namespace Scrap.ViewModels.Documents
             Items.Add(newItem);
         }
 
+        protected override void UpdateTitle()
+        {
+            Title = string.Format("{0} №{1} от {2}", DocumentTitle, Number,
+                Date.HasValue ? Date.Value.ToShortDateString() : string.Empty);
+        }
     }
 }

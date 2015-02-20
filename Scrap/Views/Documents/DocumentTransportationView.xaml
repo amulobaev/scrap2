@@ -136,11 +136,11 @@
 
                 <TextBlock Grid.Row="1" Text="Погрузка:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
                 <DatePicker Grid.Row="1" Grid.Column="1" Margin="3" Width="110" HorizontalAlignment="Left"
-                            SelectedDate="{Binding DateOfLoading, UpdateSourceTrigger=PropertyChanged}" />
+                            SelectedDate="{Binding DateOfLoading}" />
 
                 <TextBlock Grid.Row="2" Text="Разгрузка:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />
                 <DatePicker Grid.Row="2" Grid.Column="1" Margin="3" Width="110" HorizontalAlignment="Left"
-                            SelectedDate="{Binding DateOfUnloading, UpdateSourceTrigger=PropertyChanged}" />
+                            SelectedDate="{Binding DateOfUnloading}" />
 
                 <!--Поставщик-->
                 <TextBlock Grid.Row="3" Text="Поставщик:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3" />

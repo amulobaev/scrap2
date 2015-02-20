@@ -31,6 +31,8 @@ namespace Scrap.ViewModels.Documents
 
         private readonly ObservableCollection<Organization> _customers = new ObservableCollection<Organization>();
 
+        private DateTime? _date;
+
         private Organization _supplier;
         private Organization _customer;
         private Employee _responsiblePerson;
@@ -105,30 +107,43 @@ namespace Scrap.ViewModels.Documents
 
         #region Свойства
 
+        /// <summary>
+        /// Дата документа
+        /// </summary>
+        [Required]
+        public DateTime? Date
+        {
+            get { return _date; }
+            set
+            {
+                if (value == _date)
+                    return;
+
+                // Сохраним старое значение
+                DateTime? oldValue = _date.HasValue ? _date.Value.Date : _date;
+
+                _date = value;
+                RaisePropertyChanged(() => Date);
+
+                if (DateOfLoading == oldValue)
+                    DateOfLoading = value;
+                if (DateOfUnloading == oldValue)
+                    DateOfUnloading = value;
+            }
+        }
+
         [Required]
         public DateTime? DateOfLoading
         {
             get { return _dateOfLoading; }
-            set
-            {
-                if (value.Equals(_dateOfLoading))
-                    return;
-                _dateOfLoading = value;
-                RaisePropertyChanged("DateOfLoading");
-            }
+            set { Set(() => DateOfLoading, ref _dateOfLoading, value); }
         }
 
         [Required]
         public DateTime? DateOfUnloading
         {
             get { return _dateOfUnloading; }
-            set
-            {
-                if (value.Equals(_dateOfUnloading))
-                    return;
-                _dateOfUnloading = value;
-                RaisePropertyChanged("DateOfUnloading");
-            }
+            set { Set(() => DateOfUnloading, ref _dateOfUnloading, value); }
         }
 
         /// <summary>
@@ -143,13 +158,7 @@ namespace Scrap.ViewModels.Documents
         public Organization Supplier
         {
             get { return _supplier; }
-            set
-            {
-                if (Equals(value, _supplier))
-                    return;
-                _supplier = value;
-                RaisePropertyChanged("Supplier");
-            }
+            set { Set(() => Supplier, ref _supplier, value); }
         }
 
         /// <summary>
@@ -164,13 +173,7 @@ namespace Scrap.ViewModels.Documents
                     ? _supplierDivision
                     : Division.Empty;
             }
-            set
-            {
-                if (Equals(value, _supplierDivision))
-                    return;
-                _supplierDivision = value;
-                RaisePropertyChanged("SupplierDivision");
-            }
+            set { Set(() => SupplierDivision, ref _supplierDivision, value); }
         }
 
         /// <summary>
@@ -185,13 +188,7 @@ namespace Scrap.ViewModels.Documents
         public Organization Customer
         {
             get { return _customer; }
-            set
-            {
-                if (Equals(value, _customer))
-                    return;
-                _customer = value;
-                RaisePropertyChanged("Customer");
-            }
+            set { Set(() => Customer, ref _customer, value); }
         }
 
         /// <summary>
@@ -206,13 +203,7 @@ namespace Scrap.ViewModels.Documents
                     ? _customerDivision
                     : Division.Empty;
             }
-            set
-            {
-                if (Equals(value, _customerDivision))
-                    return;
-                _customerDivision = value;
-                RaisePropertyChanged("CustomerDivision");
-            }
+            set { Set(() => CustomerDivision, ref _customerDivision, value); }
         }
 
         /// <summary>
@@ -230,25 +221,13 @@ namespace Scrap.ViewModels.Documents
         public Employee ResponsiblePerson
         {
             get { return _responsiblePerson; }
-            set
-            {
-                if (Equals(value, _responsiblePerson))
-                    return;
-                _responsiblePerson = value;
-                RaisePropertyChanged("ResponsiblePerson");
-            }
+            set { Set(() => ResponsiblePerson, ref _responsiblePerson, value); }
         }
 
         public DocumentType TransportType
         {
             get { return _transportType; }
-            set
-            {
-                if (value == _transportType)
-                    return;
-                _transportType = value;
-                RaisePropertyChanged("TransportType");
-            }
+            set { Set(() => TransportType, ref _transportType, value); }
         }
 
         /// <summary>
@@ -263,13 +242,7 @@ namespace Scrap.ViewModels.Documents
         public Transport Transport
         {
             get { return TransportType == DocumentType.TransportationAuto ? _transport : Transport.Empty; }
-            set
-            {
-                if (Equals(value, _transport))
-                    return;
-                _transport = value;
-                RaisePropertyChanged("Transport");
-            }
+            set { Set(() => Transport, ref _transport, value); }
         }
 
         public ReadOnlyObservableCollection<Employee> Drivers
@@ -281,13 +254,7 @@ namespace Scrap.ViewModels.Documents
         public Employee Driver
         {
             get { return TransportType == DocumentType.TransportationAuto ? _driver : Employee.Empty; }
-            set
-            {
-                if (Equals(value, _driver))
-                    return;
-                _driver = value;
-                RaisePropertyChanged("Driver");
-            }
+            set { Set(() => Driver, ref _driver, value); }
         }
 
         /// <summary>
@@ -296,50 +263,26 @@ namespace Scrap.ViewModels.Documents
         public string WagonNumber
         {
             get { return _wagonNumber; }
-            set
-            {
-                if (value == _wagonNumber)
-                    return;
-                _wagonNumber = value;
-                RaisePropertyChanged("WagonNumber");
-            }
+            set { Set(() => WagonNumber, ref _wagonNumber, value); }
         }
 
         [Required(ErrorMessage = @"Не заполнено поле ""ПСА""")]
         public string Psa
         {
             get { return _psa; }
-            set
-            {
-                if (value == _psa)
-                    return;
-                _psa = value;
-                RaisePropertyChanged("Psa");
-            }
+            set { Set(() => Psa, ref _psa, value); }
         }
 
         public string Ttn
         {
             get { return _ttn; }
-            set
-            {
-                if (value == _ttn)
-                    return;
-                _ttn = value;
-                RaisePropertyChanged("Ttn");
-            }
+            set { Set(() => Ttn, ref _ttn, value); }
         }
 
         public string Comment
         {
             get { return _comment; }
-            set
-            {
-                if (value == _comment)
-                    return;
-                _comment = value;
-                RaisePropertyChanged("Comment");
-            }
+            set { Set(() => Comment, ref _comment, value); }
         }
 
         public ICommand PrintCommand
@@ -504,9 +447,10 @@ namespace Scrap.ViewModels.Documents
             Items.Add(newItem);
         }
 
-        public override bool IsValid()
+        protected override void UpdateTitle()
         {
-            return base.IsValid();
+            Title = string.Format("{0} №{1} от {2}", DocumentTitle, Number,
+                Date.HasValue ? Date.Value.ToShortDateString() : string.Empty);
         }
 
         private void PrintDocument()
