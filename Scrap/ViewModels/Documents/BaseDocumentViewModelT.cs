@@ -198,6 +198,14 @@ namespace Scrap.ViewModels.Documents
 
         protected abstract void UpdateTitle();
 
+        /// <summary>
+        /// Обновление журнала
+        /// </summary>
+        protected void UpdateJournal()
+        {
+            MainViewModel.Instance.UpdateJournal();
+        }
+
         #endregion
 
     }

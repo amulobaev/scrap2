@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
              xmlns:converters="clr-namespace:Scrap.Converters"
+             xmlns:behaviors="clr-namespace:Scrap.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <UserControl.Resources>
@@ -115,6 +116,9 @@
                         <command:EventToCommand Command="{Binding DocumentDoubleClickCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <behaviors:DataGridScrollIntoViewBehavior />
+                </i:Interaction.Behaviors>
             </DataGrid>
         </Grid>
     </Grid>

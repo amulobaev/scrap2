@@ -152,6 +152,8 @@ namespace Scrap.ViewModels.Documents
                 MainStorage.Instance.ProcessingRepository.Create(Container);
             else
                 MainStorage.Instance.ProcessingRepository.Update(Container);
+
+            UpdateJournal();
         }
 
         protected override void AddItem()

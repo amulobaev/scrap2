@@ -36,7 +36,7 @@ namespace Scrap.ViewModels
 
         private ICommand _showUsersCommand;
         private ICommand _showReferenceBasesCommand;
-        
+
         private ICommand _showJournalCommand;
         private ICommand _showDocumentTransportationCommand;
         private ICommand _showDocumentProcessingCommand;
@@ -380,6 +380,19 @@ namespace Scrap.ViewModels
                 viewModel.Dispose();
 
             base.Dispose();
+        }
+
+        internal void UpdateJournal()
+        {
+            LayoutContent journalLayout =
+                _documents.FirstOrDefault(
+                    x => x.Content is FrameworkElement && ((FrameworkElement)x.Content).DataContext is JournalViewModel);
+            if (journalLayout == null)
+                return;
+            JournalViewModel journalViewModel = ((FrameworkElement)journalLayout.Content).DataContext as JournalViewModel;
+            if (journalViewModel == null)
+                return;
+            journalViewModel.Update();
         }
 
         #endregion

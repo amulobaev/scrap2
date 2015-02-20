@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -168,14 +169,21 @@ namespace Scrap.ViewModels.Documents
             }
         }
 
-        private void Update()
+        internal void Update()
         {
+            // Сохраним идентификатор выбранного документа
+            Guid selectedDocumentId = SelectedItem != null ? SelectedItem.Id : Guid.Empty;
+
             Items.Clear();
             DateTime? dateFrom = DateFrom.HasValue && DateFrom.Value != DateTime.MinValue
                 ? DateFrom.Value
                 : (DateTime?)null;
             DateTime? dateTo = DateTo.HasValue && DateTo.Value != DateTime.MinValue ? DateTo.Value : (DateTime?)null;
             Items.AddRange(MainStorage.Instance.JournalRepository.GetAll(dateFrom, dateTo));
+
+            // Восстановим выбранный документ
+            if (selectedDocumentId != Guid.Empty)
+                SelectedItem = Items.FirstOrDefault(x => x.Id == selectedDocumentId);
         }
 
         private void CalcPeriod()
