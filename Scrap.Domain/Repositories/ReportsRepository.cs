@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using Dapper;
 using Scrap.Core;
 using Scrap.Core.Classes.References;
 using Scrap.Core.Classes.Reports;
@@ -13,14 +13,16 @@ namespace Scrap.Domain.Repositories
     /// <summary>
     /// Репозитарий для отчётов
     /// </summary>
-    public class ReportsRepository : BaseRepository
+    public class ReportsRepository
     {
         static ReportsRepository()
         {
         }
 
-        public ReportsRepository(IModelContext context)
-            : base(context)
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public ReportsRepository()
         {
         }
 
@@ -38,18 +40,36 @@ namespace Scrap.Domain.Repositories
 
             string nomenclature = string.Join(",", nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
 
-            using (IDbConnection connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
                 foreach (Organization organization in bases)
                 {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@Date", date, DbType.Date);
-                    parameters.Add("@Base", organization.Id, DbType.Guid);
-                    parameters.Add("@Nomenclatures", nomenclature, DbType.String);
+                    object[] parameters = 
+                    {
+                        new SqlParameter
+                        {
+                            ParameterName = "@Date",
+                            SqlDbType = SqlDbType.Date,
+                            Value = date
+                        },
+                        new SqlParameter
+                        {
+                            ParameterName = "@Base",
+                            //SqlDbType = SqlDbType.UniqueIdentifier,
+                            Value = organization.Id
+                        },
+                        new SqlParameter
+                        {
+                            ParameterName = "@Nomenclatures",
+                            //SqlDbType = SqlDbType.VarChar,
+                            Value = nomenclature
+                        }
+                    };
 
+                    string query = string.Format("ReportRemains {0}",
+                        string.Join(",", parameters.OfType<SqlParameter>().Select(x => x.ParameterName)));
                     List<ReportRemainsData> data =
-                        connection.Query<ReportRemainsData>("ReportRemains", parameters,
-                            commandType: CommandType.StoredProcedure).ToList();
+                        context.Database.SqlQuery<ReportRemainsData>(query, parameters).ToList();
                     reportData.Add(new ReportRemainsBase(organization.Name, data));
                 }
             }
@@ -67,17 +87,39 @@ namespace Scrap.Domain.Repositories
         /// <returns></returns>
         public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo, bool bases, bool transit)
         {
-            using (IDbConnection connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@DateFrom", dateFrom, DbType.Date);
-                parameters.Add("@DateTo", dateTo, DbType.Date);
-                parameters.Add("@Bases", bases);
-                parameters.Add("@Transit", transit);
+                object[] parameters =
+                {
+                    new SqlParameter
+                    {
+                        ParameterName = "@DateFrom",
+                        SqlDbType = SqlDbType.Date,
+                        Value = dateFrom
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@DateTo",
+                        SqlDbType = SqlDbType.Date,
+                        Value = dateTo
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@Bases",
+                        Value = bases
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@Transit",
+                        Value = transit
+                    }
+                };
+
+                string query = string.Format("ReportNomenclature {0}",
+                    string.Join(",", parameters.OfType<SqlParameter>().Select(x => x.ParameterName)));
 
                 List<ReportNomenclatureData> data =
-                    connection.Query<ReportNomenclatureData>("ReportNomenclature", parameters, commandType: CommandType.StoredProcedure)
-                        .ToList();
+                    context.Database.SqlQuery<ReportNomenclatureData>(query, parameters).ToList();
                 for (int i = 0; i < data.Count; i++)
                     data[i].Number = i + 1;
 
@@ -100,7 +142,7 @@ namespace Scrap.Domain.Repositories
         public List<ReportTransportationData> ReportTransportation(bool isAuto, bool isTrain, DateTime? dateFrom,
             DateTime? dateTo, int reportType, Guid[] supplierDivisions, Guid[] customerDivisions, Guid[] nomenclatures)
         {
-            using (IDbConnection connection = ConnectionFactory.Create())
+            using (ZlatmetContext context = new ZlatmetContext())
             {
                 // Тип транспорта
                 string transportType = isAuto && isTrain
@@ -117,21 +159,53 @@ namespace Scrap.Domain.Repositories
                 string nomenclaturesString = string.Join(",",
                     nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
 
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@TransportType", transportType);
-                parameters.Add("@DateFrom", dateFrom, DbType.Date);
-                parameters.Add("@DateTo", dateTo, DbType.Date);
-                parameters.Add("@ReportType", reportType);
+                List<object> parameters = new List<object>()
+                {
+                    new SqlParameter
+                    {
+                        ParameterName = "@TransportType",
+                        Value = transportType
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@DateFrom",
+                        SqlDbType = SqlDbType.Date,
+                        Value = dateFrom
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@DateTo",
+                        SqlDbType = SqlDbType.Date,
+                        Value = dateTo
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@ReportType",
+                        Value = reportType
+                    }
+                };
                 if (!string.IsNullOrEmpty(supplierDivisionsString))
-                    parameters.Add("@SupplierDivisions", supplierDivisionsString);
+                    parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@SupplierDivisions",
+                        Value = supplierDivisionsString
+                    });
                 if (!string.IsNullOrEmpty(customerDivisionsString))
-                    parameters.Add("@CustomerDivisions", customerDivisionsString);
-                parameters.Add("@Nomenclatures", nomenclaturesString);
+                    parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@CustomerDivisions",
+                        Value = customerDivisionsString
+                    });
+                parameters.Add(new SqlParameter
+                {
+                    ParameterName = "@Nomenclatures",
+                    Value = nomenclaturesString
+                });
 
+                string query = string.Format("ReportTransportation {0}",
+                    string.Join(",", parameters.OfType<SqlParameter>().Select(x => x.ParameterName)));
                 List<ReportTransportationData> data =
-                    connection.Query<ReportTransportationData>("ReportTransportation", parameters,
-                        commandType: CommandType.StoredProcedure)
-                        .ToList();
+                    context.Database.SqlQuery<ReportTransportationData>(query, parameters.ToArray()).ToList();
                 for (int i = 0; i < data.Count; i++)
                     data[i].Number = i + 1;
 

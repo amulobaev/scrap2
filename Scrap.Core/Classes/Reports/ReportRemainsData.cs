@@ -4,6 +4,6 @@
     {
         public int Number { get; set; }
         public string Nomenclature { get; set; }
-        public double Weight { get; set; }
+        public double? Weight { get; set; }
     }
 }

@@ -56,7 +56,10 @@
             </xcad:LayoutRoot>
         </xcad:DockingManager>
 
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="2" Background="Transparent">
+            <StatusBarItem>
+                <TextBlock />
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>

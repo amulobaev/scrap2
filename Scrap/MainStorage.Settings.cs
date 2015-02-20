@@ -33,12 +33,12 @@ namespace Scrap
         /// <summary>
         /// От
         /// </summary>
-        public DateTime JournalPeriodFrom { get; set; }
+        public DateTime? JournalPeriodFrom { get; set; }
 
         /// <summary>
         /// До
         /// </summary>
-        public DateTime JournalPeriodTo { get; set; }
+        public DateTime? JournalPeriodTo { get; set; }
 
         private void LoadSettings()
         {
@@ -55,8 +55,13 @@ namespace Scrap
 
             ShowJournal = Settings.Default.ShowJournal;
             JournalPeriodType = Settings.Default.JournalPeriodType;
-            JournalPeriodFrom = Settings.Default.JournalPeriodFrom;
-            JournalPeriodTo = Settings.Default.JournalPeriodTo;
+            DateTime journalPeriod;
+            JournalPeriodFrom = DateTime.TryParse(Settings.Default.JournalPeriodFrom, out journalPeriod)
+                ? journalPeriod
+                : (DateTime?)null;
+            JournalPeriodTo = DateTime.TryParse(Settings.Default.JournalPeriodTo, out journalPeriod)
+                ? journalPeriod
+                : (DateTime?)null;
         }
 
         public void SaveSettings()
@@ -67,8 +72,10 @@ namespace Scrap
 
             Settings.Default.ShowJournal = ShowJournal;
             Settings.Default.JournalPeriodType = JournalPeriodType;
-            Settings.Default.JournalPeriodFrom = JournalPeriodFrom;
-            Settings.Default.JournalPeriodTo = JournalPeriodTo;
+            Settings.Default.JournalPeriodFrom = JournalPeriodFrom.HasValue
+                ? JournalPeriodFrom.Value.Date.ToString()
+                : null;
+            Settings.Default.JournalPeriodTo = JournalPeriodTo.HasValue ? JournalPeriodTo.Value.Date.ToString() : null;
 
             Settings.Default.Save();
         }

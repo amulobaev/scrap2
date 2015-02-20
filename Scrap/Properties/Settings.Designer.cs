@@ -61,9 +61,10 @@ namespace Scrap.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime JournalPeriodFrom {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string JournalPeriodFrom {
             get {
-                return ((global::System.DateTime)(this["JournalPeriodFrom"]));
+                return ((string)(this["JournalPeriodFrom"]));
             }
             set {
                 this["JournalPeriodFrom"] = value;
@@ -72,9 +73,10 @@ namespace Scrap.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.DateTime JournalPeriodTo {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string JournalPeriodTo {
             get {
-                return ((global::System.DateTime)(this["JournalPeriodTo"]));
+                return ((string)(this["JournalPeriodTo"]));
             }
             set {
                 this["JournalPeriodTo"] = value;

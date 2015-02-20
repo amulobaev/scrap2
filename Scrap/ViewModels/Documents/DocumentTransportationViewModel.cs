@@ -20,6 +20,9 @@ using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Scrap.ViewModels.Documents
 {
+    /// <summary>
+    /// Модель представления документа "Перевозка"
+    /// </summary>
     public class DocumentTransportationViewModel : BaseDocumentViewModel<Transportation, TransportationItemWrapper>
     {
         #region Поля
@@ -44,9 +47,13 @@ namespace Scrap.ViewModels.Documents
         private string _comment;
 
         private ICommand _printCommand;
-        private Template _template;
 
-        #endregion
+        /// <summary>
+        /// Шаблон отчёта "ПСА"
+        /// </summary>
+        private Template _psaTemplate;
+
+        #endregion Поля
 
         /// <summary>
         /// Конструктор
@@ -335,17 +342,12 @@ namespace Scrap.ViewModels.Documents
             }
         }
 
-        public Template PsaTemplate
-        {
-            get { return _template ?? (_template = MainStorage.Instance.TemplatesRepository.GetByName("Пса")); }
-        }
-
         public ICommand PrintCommand
         {
             get { return _printCommand ?? (_printCommand = new RelayCommand(PrintDocument)); }
         }
 
-        #endregion
+        #endregion Свойства
 
         #region Методы
 
@@ -519,7 +521,17 @@ namespace Scrap.ViewModels.Documents
             StiReport report = new StiReport();
             try
             {
-                report.Load(PsaTemplate.Data);
+                // Загрузка формы отчета
+                const string templateName = "ПСА";
+                if (_psaTemplate == null)
+                    _psaTemplate = MainStorage.Instance.TemplatesRepository.GetByName(templateName);
+                if (_psaTemplate == null)
+                {
+                    MessageBox.Show(string.Format("Ошибка загрузки шаблона \"{0}\"", templateName), MainStorage.AppName,
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                report.Load(_psaTemplate.Data);
 
                 // Тара
                 double tara = Transport != null ? Transport.Tara : 0;

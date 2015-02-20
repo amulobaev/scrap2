@@ -24,8 +24,6 @@ namespace Scrap
 
         #region Поля
 
-        private string _connectionString;
-
         private IConnectionFactory _connectionFactory;
 
         private readonly ObservableCollection<Nomenclature> _nomenclatures = new ObservableCollection<Nomenclature>();
@@ -135,16 +133,6 @@ namespace Scrap
 
         public ReportsRepository ReportsRepository { get; private set; }
 
-        public string ConnectionString
-        {
-            get { return _connectionString; }
-        }
-
-        public IConnectionFactory ConnectionFactory
-        {
-            get { return _connectionFactory; }
-        }
-
         public Guid UserId { get; set; }
 
         public string UserName { get; set; }
@@ -160,35 +148,6 @@ namespace Scrap
         {
             // Загрузка настроек из профиля пользователя
             LoadSettings();
-
-            // Получение строки подключения к БД
-            try
-            {
-                _connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Ошибка загрузки строки подключения к БД{0}{1}", Environment.NewLine,
-                    ex.Message));
-                Application.Current.Shutdown();
-            }
-
-            _connectionFactory = new MsSqlConnectionFactory(_connectionString);
-
-            // Проверка подключения к БД
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(string.Format("Ошибка подключения к БД{0}{1}", Environment.NewLine,
-                        ex.Message));
-                    Application.Current.Shutdown();
-                }
-            }
 
             // Обновление структуры базы данных в случае необходимости
             //MigrationManager.Start(_connectionString);
@@ -209,7 +168,7 @@ namespace Scrap
             RemainsRepository = new RemainsRepository(this);
 
             TemplatesRepository = new TemplatesRepository(this);
-            ReportsRepository = new ReportsRepository(this);
+            ReportsRepository = new ReportsRepository();
 
             // Загрузка данных справочников из репозитариев
             _nomenclatures.AddRange(NomenclaturesRepository.GetAll());

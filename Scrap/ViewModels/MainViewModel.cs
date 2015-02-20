@@ -21,18 +21,29 @@ namespace Scrap.ViewModels
 
         private readonly ObservableCollection<LayoutContent> _documents;
 
+        private ICommand _showReferenceNomenclatureCommand;
+        private ICommand _showReferenceContractorsCommand;
+        private ICommand _showReferenceResponsiblePersonsCommand;
+        private ICommand _showReferenceTransportsCommand;
+        private ICommand _showReferenceDriversCommand;
+
         private ICommand _showReportRemainsCommand;
         private ICommand _showReportNomenclatureCommand;
+        private ICommand _showReportTransportCommand;
+
         private ICommand _showTemplatesCommand;
         private ICommand _importDataCommand;
 
-        private ICommand _showReferenceContractorsCommand;
-
         private ICommand _showUsersCommand;
+        private ICommand _showReferenceBasesCommand;
+        
+        private ICommand _showJournalCommand;
+        private ICommand _showDocumentTransportationCommand;
+        private ICommand _showDocumentProcessingCommand;
+        private ICommand _showDocumentRestsCommand;
+        private ICommand _showParametersCommand;
 
-        private ICommand _showReportTransportCommand;
-
-        #endregion
+        #endregion Поля
 
         /// <summary>
         /// Конструктор
@@ -44,22 +55,6 @@ namespace Scrap.ViewModels
             _documents = MainWindow.Instance.MainDocumentPane.Children;
             Documents = new ReadOnlyObservableCollection<LayoutContent>(_documents);
 
-            // Инициализация команд
-            ShowReferenceNomenclatureCommand = new RelayCommand(ShowReferenceNomenclature);
-
-            ShowReferenceBasesCommand = new RelayCommand(ShowReferenceBases);
-            ShowReferenceResponsiblePersonsCommand = new RelayCommand(ShowReferenceResponsiblePersons);
-            ShowReferenceTransportsCommand = new RelayCommand(ShowReferenceTransports);
-            ShowReferenceDriversCommand = new RelayCommand(ShowReferenceDrivers);
-
-            ShowJournalCommand = new RelayCommand(ShowJournal);
-            ShowDocumentTransportationCommand = new RelayCommand(ShowDocumentTransportation);
-            ShowDocumentProcessingCommand = new RelayCommand(ShowDocumentProcessing);
-            ShowDocumentRestsCommand = new RelayCommand(ShowDocumentRests);
-
-            ShowParametersCommand = new RelayCommand(ShowParameters);
-
-            //
             if (MainStorage.Instance.ShowJournal)
                 ShowJournal();
         }
@@ -74,7 +69,14 @@ namespace Scrap.ViewModels
 
         #region Команды
 
-        public ICommand ShowReferenceNomenclatureCommand { get; private set; }
+        public ICommand ShowReferenceNomenclatureCommand
+        {
+            get
+            {
+                return _showReferenceNomenclatureCommand ??
+                       (_showReferenceNomenclatureCommand = new RelayCommand(ShowReferenceNomenclature));
+            }
+        }
 
         public ICommand ShowReferenceContractorsCommand
         {
@@ -85,23 +87,76 @@ namespace Scrap.ViewModels
             }
         }
 
-        public ICommand ShowReferenceBasesCommand { get; private set; }
+        public ICommand ShowReferenceBasesCommand
+        {
+            get
+            {
+                return _showReferenceBasesCommand ?? (_showReferenceBasesCommand = new RelayCommand(ShowReferenceBases));
+            }
+        }
 
-        public ICommand ShowReferenceResponsiblePersonsCommand { get; private set; }
+        public ICommand ShowReferenceResponsiblePersonsCommand
+        {
+            get
+            {
+                return _showReferenceResponsiblePersonsCommand ??
+                       (_showReferenceResponsiblePersonsCommand = new RelayCommand(ShowReferenceResponsiblePersons));
+            }
+        }
 
-        public ICommand ShowReferenceTransportsCommand { get; private set; }
+        public ICommand ShowReferenceTransportsCommand
+        {
+            get
+            {
+                return _showReferenceTransportsCommand ??
+                       (_showReferenceTransportsCommand = new RelayCommand(ShowReferenceTransports));
+            }
+        }
 
-        public ICommand ShowReferenceDriversCommand { get; private set; }
+        public ICommand ShowReferenceDriversCommand
+        {
+            get
+            {
+                return _showReferenceDriversCommand ??
+                       (_showReferenceDriversCommand = new RelayCommand(ShowReferenceDrivers));
+            }
+        }
 
-        public ICommand ShowJournalCommand { get; private set; }
+        public ICommand ShowJournalCommand
+        {
+            get { return _showJournalCommand ?? (_showJournalCommand = new RelayCommand(ShowJournal)); }
+        }
 
-        public ICommand ShowDocumentTransportationCommand { get; private set; }
+        public ICommand ShowDocumentTransportationCommand
+        {
+            get
+            {
+                return _showDocumentTransportationCommand ??
+                       (_showDocumentTransportationCommand = new RelayCommand(ShowDocumentTransportation));
+            }
+        }
 
-        public ICommand ShowDocumentProcessingCommand { get; private set; }
+        public ICommand ShowDocumentProcessingCommand
+        {
+            get
+            {
+                return _showDocumentProcessingCommand ??
+                       (_showDocumentProcessingCommand = new RelayCommand(ShowDocumentProcessing));
+            }
+        }
 
-        public ICommand ShowDocumentRestsCommand { get; private set; }
+        public ICommand ShowDocumentRestsCommand
+        {
+            get
+            {
+                return _showDocumentRestsCommand ?? (_showDocumentRestsCommand = new RelayCommand(ShowDocumentRests));
+            }
+        }
 
-        public ICommand ShowParametersCommand { get; private set; }
+        public ICommand ShowParametersCommand
+        {
+            get { return _showParametersCommand ?? (_showParametersCommand = new RelayCommand(ShowParameters)); }
+        }
 
         public ICommand ShowReportRemainsCommand
         {

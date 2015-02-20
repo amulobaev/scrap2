@@ -9,7 +9,6 @@ namespace Scrap.Domain.Repositories
     public abstract class BaseRepository
     {
         protected readonly IModelContext Context;
-        protected readonly IConnectionFactory ConnectionFactory;
 
         /// <summary>
         /// Конструктор
@@ -20,7 +19,6 @@ namespace Scrap.Domain.Repositories
             if (context == null)
                 throw new ArgumentNullException("context");
             Context = context;
-            ConnectionFactory = context.ConnectionFactory;
         }
 
     }
