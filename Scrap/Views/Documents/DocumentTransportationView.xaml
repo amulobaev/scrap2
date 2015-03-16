@@ -263,6 +263,7 @@
                     </Button>
                 </ToolBar>
 
+                <!--Основная таблица-->
                 <telerik:RadGridView Grid.Row="1" AutoGenerateColumns="False" CanUserReorderColumns="False"
                                      ShowGroupPanel="False" CanUserFreezeColumns="False" IsFilteringAllowed="False"
                                      CanUserSortColumns="False" ShowColumnFooters="True"
@@ -287,20 +288,20 @@
                             </telerik:GridViewDataColumn.CellEditTemplate>
                         </telerik:GridViewDataColumn>
                         <!-- Погрузка - Масса, т -->
-                        <telerik:GridViewDataColumn Header="Масса, т" Width="*" ColumnGroupName="Loading">
+                        <telerik:GridViewDataColumn Header="Масса, кг" Width="*" ColumnGroupName="Loading">
                             <telerik:GridViewDataColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding LoadingWeight, StringFormat=\{0:f3\}}" VerticalAlignment="Center" Margin="1,0" />
+                                    <TextBlock Text="{Binding LoadingWeight}" VerticalAlignment="Center" Margin="1,0" />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellTemplate>
                             <telerik:GridViewDataColumn.CellEditTemplate>
                                 <DataTemplate>
-                                    <telerik:RadNumericUpDown Value="{Binding LoadingWeight, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
-                                    <!--<xctk:DoubleUpDown Value="{Binding LoadingWeight, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />-->
+                                    <telerik:RadNumericUpDown Value="{Binding LoadingWeight, UpdateSourceTrigger=PropertyChanged}" Minimum="0"
+                                                              NumberDecimalDigits="0" NumberDecimalSeparator="." />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                             <telerik:GridViewDataColumn.AggregateFunctions>
-                                <telerik:SumFunction SourceField="LoadingWeight" ResultFormatString=" {0:f3}" />
+                                <telerik:SumFunction SourceField="LoadingWeight" />
                             </telerik:GridViewDataColumn.AggregateFunctions>
                         </telerik:GridViewDataColumn>
                         <telerik:GridViewDataColumn Header="Номенклатура" Width="*" ColumnGroupName="Unloading">
@@ -316,36 +317,36 @@
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                         </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn Header="Масса, т" Width="*" ColumnGroupName="Unloading">
+                        <telerik:GridViewDataColumn Header="Масса, кг" Width="*" ColumnGroupName="Unloading">
                             <telerik:GridViewDataColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding UnloadingWeight, StringFormat=\{0:f3\}}" VerticalAlignment="Center" Margin="1,0" />
+                                    <TextBlock Text="{Binding UnloadingWeight}" VerticalAlignment="Center" Margin="1,0" />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellTemplate>
                             <telerik:GridViewDataColumn.CellEditTemplate>
                                 <DataTemplate>
-                                    <telerik:RadNumericUpDown Value="{Binding UnloadingWeight, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
-                                    <!--<xctk:DoubleUpDown Minimum="0" Value="{Binding UnloadingWeight, UpdateSourceTrigger=PropertyChanged}" />-->
+                                    <telerik:RadNumericUpDown Value="{Binding UnloadingWeight, UpdateSourceTrigger=PropertyChanged}" Minimum="0"
+                                                              NumberDecimalDigits="0" NumberDecimalSeparator="." />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                             <telerik:GridViewDataColumn.AggregateFunctions>
-                                <telerik:SumFunction SourceField="UnloadingWeight" ResultFormatString=" {0:f3}" />
+                                <telerik:SumFunction SourceField="UnloadingWeight" />
                             </telerik:GridViewDataColumn.AggregateFunctions>
                         </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn Header="Нетто, т" Width="*" ColumnGroupName="Unloading">
+                        <telerik:GridViewDataColumn Header="Нетто, кг" Width="*" ColumnGroupName="Unloading">
                             <telerik:GridViewDataColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Netto, StringFormat=\{0:f3\}}" VerticalAlignment="Center" Margin="1,0" />
+                                    <TextBlock Text="{Binding Netto}" VerticalAlignment="Center" Margin="1,0" />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellTemplate>
                             <telerik:GridViewDataColumn.CellEditTemplate>
                                 <DataTemplate>
-                                    <telerik:RadNumericUpDown Value="{Binding Netto, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
-                                    <!--<xctk:DoubleUpDown Minimum="0" Value="{Binding Netto, UpdateSourceTrigger=PropertyChanged}" />-->
+                                    <telerik:RadNumericUpDown Value="{Binding Netto, UpdateSourceTrigger=PropertyChanged}" Minimum="0"
+                                                              NumberDecimalDigits="0" NumberDecimalSeparator="." />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                             <telerik:GridViewDataColumn.AggregateFunctions>
-                                <telerik:SumFunction SourceField="Netto" ResultFormatString=" {0:f3}" />
+                                <telerik:SumFunction SourceField="Netto" />
                             </telerik:GridViewDataColumn.AggregateFunctions>
                         </telerik:GridViewDataColumn>
                         <telerik:GridViewDataColumn Header="Засоренность, %" Width="*" ColumnGroupName="Unloading">
@@ -356,8 +357,8 @@
                             </telerik:GridViewDataColumn.CellTemplate>
                             <telerik:GridViewDataColumn.CellEditTemplate>
                                 <DataTemplate>
-                                    <telerik:RadNumericUpDown Value="{Binding Garbage, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
-                                    <!--<xctk:DoubleUpDown Minimum="0" Value="{Binding Garbage, UpdateSourceTrigger=PropertyChanged}" />-->
+                                    <telerik:RadNumericUpDown Value="{Binding Garbage, UpdateSourceTrigger=PropertyChanged}" Minimum="0"
+                                                               NumberDecimalSeparator="." />
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                         </telerik:GridViewDataColumn>
@@ -370,7 +371,6 @@
                             <telerik:GridViewDataColumn.CellEditTemplate>
                                 <DataTemplate>
                                     <telerik:RadNumericUpDown Value="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Minimum="0" />
-                                    <!--<xctk:DecimalUpDown Minimum="0" Value="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />-->
                                 </DataTemplate>
                             </telerik:GridViewDataColumn.CellEditTemplate>
                             <telerik:GridViewDataColumn.AggregateFunctions>

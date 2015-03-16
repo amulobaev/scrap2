@@ -108,7 +108,7 @@
                     <DataGridTextColumn Header="Отв. лицо" Binding="{Binding ResponsiblePerson}" />
                     <DataGridTextColumn Header="ПСА" Binding="{Binding Psa}" />
                     <DataGridTextColumn Header="Вид лома" Binding="{Binding Nomenclature}" />
-                    <DataGridTextColumn Header="Нетто, т" Binding="{Binding Netto}" />
+                    <DataGridTextColumn Header="Нетто, кг" Binding="{Binding Netto}" />
                     <DataGridTextColumn Header="Примечание" Binding="{Binding Comment}" Width="*" />
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
