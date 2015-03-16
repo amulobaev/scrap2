@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel.DataAnnotations;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -40,7 +39,7 @@ namespace Scrap.ViewModels.Documents
 
         private ICommand _moveItemDownCommand;
 
-        #endregion
+        #endregion Поля
 
         /// <summary>
         /// Конструктор
@@ -139,6 +138,9 @@ namespace Scrap.ViewModels.Documents
 
         protected abstract void AddItem();
 
+        /// <summary>
+        /// Удаление элемента табличной части
+        /// </summary>
         private void RemoveItem()
         {
             if (SelectedItem == null)
@@ -152,6 +154,9 @@ namespace Scrap.ViewModels.Documents
             }
         }
 
+        /// <summary>
+        /// Перемещение элемента табличной части вверх
+        /// </summary>
         private void MoveItemUp()
         {
             if (Items.Count < 2)
@@ -171,6 +176,9 @@ namespace Scrap.ViewModels.Documents
             UpdateNumbers();
         }
 
+        /// <summary>
+        /// Перемещение элемента табличной части вниз
+        /// </summary>
         private void MoveItemDown()
         {
             if (Items.Count < 2)
@@ -206,7 +214,7 @@ namespace Scrap.ViewModels.Documents
             MainViewModel.Instance.UpdateJournal();
         }
 
-        #endregion
+        #endregion Методы
 
     }
 }

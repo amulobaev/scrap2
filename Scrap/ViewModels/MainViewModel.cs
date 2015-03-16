@@ -280,82 +280,130 @@ namespace Scrap.ViewModels
             layout.IsSelected = true;
         }
 
+        /// <summary>
+        /// Открыть справочник "Номенклатура"
+        /// </summary>
         private void ShowReferenceNomenclature()
         {
             ShowLayoutDocument(typeof(ReferenceNomenclaturesViewModel));
         }
 
+        /// <summary>
+        /// Открыть справочник "Базы"
+        /// </summary>
         private void ShowReferenceBases()
         {
             ShowLayoutDocument(typeof(ReferenceBasesViewModel));
         }
 
+        /// <summary>
+        /// Открыть справочник "Контрагенты"
+        /// </summary>
         private void ShowReferenceContractors()
         {
             ShowLayoutDocument(typeof(ReferenceContractorsViewModel));
         }
 
+        /// <summary>
+        /// Открыть справочник "Ответственные лица"
+        /// </summary>
         private void ShowReferenceResponsiblePersons()
         {
             ShowLayoutDocument(typeof(ReferenceResponsiblePersonsViewModel));
         }
 
+        /// <summary>
+        /// Открыть справочник "Транспорт"
+        /// </summary>
         private void ShowReferenceTransports()
         {
             ShowLayoutDocument(typeof(ReferenceTransportsViewModel));
         }
 
+        /// <summary>
+        /// Открыть справочник "Водители"
+        /// </summary>
         private void ShowReferenceDrivers()
         {
             ShowLayoutDocument(typeof(ReferenceDriversViewModel));
         }
 
+        /// <summary>
+        /// Открыть журнал документов
+        /// </summary>
         private void ShowJournal()
         {
             ShowLayoutDocument(typeof(JournalViewModel));
         }
 
+        /// <summary>
+        /// Открыть документ "Перевозка"
+        /// </summary>
         private void ShowDocumentTransportation()
         {
             ShowLayoutDocument(typeof(DocumentTransportationViewModel), Guid.Empty);
         }
 
+        /// <summary>
+        /// Открыть документ "Переработка"
+        /// </summary>
         private void ShowDocumentProcessing()
         {
             ShowLayoutDocument(typeof(DocumentProcessingViewModel), Guid.Empty);
         }
 
+        /// <summary>
+        /// Открыть документ "Корректировка остатков"
+        /// </summary>
         private void ShowDocumentRests()
         {
             ShowLayoutDocument(typeof(DocumentRemainsViewModel), Guid.Empty);
         }
 
+        /// <summary>
+        /// Открыть отчёт "Остатки на базе"
+        /// </summary>
         private void ShowReportRemains()
         {
             ShowLayoutDocument(typeof(ReportRemainsViewModel), Guid.Empty);
         }
 
+        /// <summary>
+        /// Открыть отчёт "Обороты за период"
+        /// </summary>
         private void ShowReportNomenclature()
         {
             ShowLayoutDocument(typeof(ReportNomenclatureViewModel), Guid.Empty);
         }
 
+        /// <summary>
+        /// Открыть отчёт "Перевозки"
+        /// </summary>
         private void ShowReportTransport()
         {
             ShowLayoutDocument(typeof(ReportTransportationViewModel), Guid.Empty);
         }
 
+        /// <summary>
+        /// Открыть диалог параметров
+        /// </summary>
         private void ShowParameters()
         {
             ParametersWindow parametersWindow = new ParametersWindow { Owner = MainWindow.Instance };
             parametersWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// Открыть диалог "Шаблоны"
+        /// </summary>
         private void ShowTemplates()
         {
             ShowLayoutDocument(typeof(TemplatesViewModel));
         }
 
+        /// <summary>
+        /// Открыть диалог импорта данных
+        /// </summary>
         private void ImportData()
         {
             if (_documents.Any())
@@ -368,6 +416,9 @@ namespace Scrap.ViewModels
             importDataWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// Очистка перед закрытием
+        /// </summary>
         public override void Dispose()
         {
             List<IDisposable> viewModelsToDispose =
@@ -382,6 +433,9 @@ namespace Scrap.ViewModels
             base.Dispose();
         }
 
+        /// <summary>
+        /// Обновление журнала
+        /// </summary>
         internal void UpdateJournal()
         {
             LayoutContent journalLayout =

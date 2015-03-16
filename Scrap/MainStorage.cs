@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Windows;
 using Scrap.Core;
 using Scrap.Core.Classes;
 using Scrap.Core.Classes.References;
 using Scrap.Core.Classes.Service;
 using Scrap.Core.Enums;
-using Scrap.Domain;
 using Scrap.Domain.Repositories;
 using Scrap.Domain.Repositories.Documents;
 using Scrap.Domain.Repositories.References;
@@ -23,8 +19,6 @@ namespace Scrap
         public const string AppName = "Учёт лома";
 
         #region Поля
-
-        private IConnectionFactory _connectionFactory;
 
         private readonly ObservableCollection<Nomenclature> _nomenclatures = new ObservableCollection<Nomenclature>();
 
@@ -149,24 +143,18 @@ namespace Scrap
             // Загрузка настроек из профиля пользователя
             LoadSettings();
 
-            // Обновление структуры базы данных в случае необходимости
-            //MigrationManager.Start(_connectionString);
-
             // Создание репозитариев
             UsersRepository = new UsersRepository(this);
-
             NomenclaturesRepository = new NomenclatureRepository(this);
             BasesRepository = new BasesRepository(this);
             ContractorsRepository = new ContractorsRepository(this);
             ResponsiblePersonsRepository = new ResponsiblePersonsRepository(this);
             TransportsRepository = new TransportsRepository(this);
             DriversRepository = new DriversRepository(this);
-
             JournalRepository = new JournalRepository();
             TransportationRepository = new TransportationRepository(this);
             ProcessingRepository = new ProcessingRepository(this);
             RemainsRepository = new RemainsRepository(this);
-
             TemplatesRepository = new TemplatesRepository(this);
             ReportsRepository = new ReportsRepository();
 
@@ -181,11 +169,18 @@ namespace Scrap
             _templates.AddRange(TemplatesRepository.GetAll());
         }
 
+        /// <summary>
+        /// Очистка перед закрытием приложения
+        /// </summary>
         public void Dispose()
         {
             SaveSettings();
         }
 
+        /// <summary>
+        /// Создание или обновление объекта в базе
+        /// </summary>
+        /// <param name="o"></param>
         public void CreateOrUpdateObject(object o)
         {
             if (o == null)
@@ -324,6 +319,10 @@ namespace Scrap
             }
         }
 
+        /// <summary>
+        /// Удаление объекта в базе
+        /// </summary>
+        /// <param name="o"></param>
         public void DeleteObject(object o)
         {
             // Номенклатура
