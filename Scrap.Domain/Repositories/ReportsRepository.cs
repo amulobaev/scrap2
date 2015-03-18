@@ -161,49 +161,31 @@ namespace Scrap.Domain.Repositories
 
                 List<object> parameters = new List<object>()
                 {
+                    // TransportType
+                    new SqlParameter("TransportType", transportType),
+                    // DateFrom
                     new SqlParameter
                     {
-                        ParameterName = "@TransportType",
-                        Value = transportType
-                    },
-                    new SqlParameter
-                    {
-                        ParameterName = "@DateFrom",
+                        ParameterName = "DateFrom",
                         SqlDbType = SqlDbType.Date,
-                        Value = dateFrom
+                        Value = dateFrom.HasValue ? (object) dateFrom.Value : DBNull.Value
                     },
                     new SqlParameter
                     {
-                        ParameterName = "@DateTo",
+                        ParameterName = "DateTo",
                         SqlDbType = SqlDbType.Date,
-                        Value = dateTo
+                        Value = dateTo.HasValue ? (object) dateTo.Value : DBNull.Value
                     },
-                    new SqlParameter
-                    {
-                        ParameterName = "@ReportType",
-                        Value = reportType
-                    }
+                    new SqlParameter("ReportType", reportType),
+                    new SqlParameter("SupplierDivisions",
+                        !string.IsNullOrEmpty(supplierDivisionsString) ? (object) supplierDivisionsString : DBNull.Value),
+                    new SqlParameter("CustomerDivisions",
+                        !string.IsNullOrEmpty(customerDivisionsString) ? (object) customerDivisionsString : DBNull.Value),
+                    new SqlParameter("Nomenclatures", nomenclaturesString)
                 };
-                if (!string.IsNullOrEmpty(supplierDivisionsString))
-                    parameters.Add(new SqlParameter
-                    {
-                        ParameterName = "@SupplierDivisions",
-                        Value = supplierDivisionsString
-                    });
-                if (!string.IsNullOrEmpty(customerDivisionsString))
-                    parameters.Add(new SqlParameter
-                    {
-                        ParameterName = "@CustomerDivisions",
-                        Value = customerDivisionsString
-                    });
-                parameters.Add(new SqlParameter
-                {
-                    ParameterName = "@Nomenclatures",
-                    Value = nomenclaturesString
-                });
 
-                string query = string.Format("ReportTransportation {0}",
-                    string.Join(",", parameters.OfType<SqlParameter>().Select(x => x.ParameterName)));
+                string query = string.Format("exec ReportTransportation {0}",
+                    string.Join(",", parameters.OfType<SqlParameter>().Select(x => "@" + x.ParameterName)));
                 List<ReportTransportationData> data =
                     context.Database.SqlQuery<ReportTransportationData>(query, parameters.ToArray()).ToList();
                 for (int i = 0; i < data.Count; i++)
