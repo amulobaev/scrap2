@@ -238,7 +238,7 @@
               <Name>Text15</Name>
               <Page isRef="3" />
               <Parent isRef="8" />
-              <Text>Вес при отправлении, т</Text>
+              <Text>Вес при отправлении, кг</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>Expression</Type>
@@ -259,7 +259,7 @@
               <Name>Text16</Name>
               <Page isRef="3" />
               <Parent isRef="8" />
-              <Text>Вес фактический, т</Text>
+              <Text>Вес фактический, кг</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>Expression</Type>
@@ -280,7 +280,7 @@
               <Name>Text17</Name>
               <Page isRef="3" />
               <Parent isRef="8" />
-              <Text>Вес нетто, т</Text>
+              <Text>Вес нетто, кг</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
@@ -374,17 +374,9 @@
               <Parent isRef="20" />
               <Text>{Data.UnloadingWeight}</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="23" type="NumberFormat" isKey="true">
-                <DecimalDigits>3</DecimalDigits>
-                <DecimalSeparator>,</DecimalSeparator>
-                <GroupSeparator> </GroupSeparator>
-                <NegativePattern>1</NegativePattern>
-                <UseGroupSeparator>False</UseGroupSeparator>
-                <UseLocalSetting>False</UseLocalSetting>
-              </TextFormat>
               <Type>DataColumn</Type>
             </Text7>
-            <Text8 Ref="24" type="Text" isKey="true">
+            <Text8 Ref="23" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -402,7 +394,7 @@
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text8>
-            <Text10 Ref="25" type="Text" isKey="true">
+            <Text10 Ref="24" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -419,17 +411,9 @@
               <Parent isRef="20" />
               <Text>{Data.LoadingWeight}</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="26" type="NumberFormat" isKey="true">
-                <DecimalDigits>3</DecimalDigits>
-                <DecimalSeparator>,</DecimalSeparator>
-                <GroupSeparator> </GroupSeparator>
-                <NegativePattern>1</NegativePattern>
-                <UseGroupSeparator>False</UseGroupSeparator>
-                <UseLocalSetting>False</UseLocalSetting>
-              </TextFormat>
               <Type>DataColumn</Type>
             </Text10>
-            <Text4 Ref="27" type="Text" isKey="true">
+            <Text4 Ref="25" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -448,7 +432,7 @@
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>Expression</Type>
             </Text4>
-            <Text19 Ref="28" type="Text" isKey="true">
+            <Text19 Ref="26" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -467,7 +451,7 @@
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text19>
-            <Text22 Ref="29" type="Text" isKey="true">
+            <Text22 Ref="27" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -484,7 +468,7 @@
               <Parent isRef="20" />
               <Text>{Data.Transport}</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="30" type="NumberFormat" isKey="true">
+              <TextFormat Ref="28" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
                 <DecimalSeparator>,</DecimalSeparator>
                 <GroupSeparator> </GroupSeparator>
@@ -495,7 +479,7 @@
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text22>
-            <Text25 Ref="31" type="Text" isKey="true">
+            <Text25 Ref="29" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -515,7 +499,7 @@
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text25>
-            <Text26 Ref="32" type="Text" isKey="true">
+            <Text26 Ref="30" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -535,7 +519,7 @@
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text26>
-            <Text27 Ref="33" type="Text" isKey="true">
+            <Text27 Ref="31" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -555,7 +539,7 @@
               <TextOptions>HotkeyPrefix=None, LineLimit=False, RightToLeft=False, Trimming=None, WordWrap=True, Angle=0, FirstTabOffset=40, DistanceBetweenTabs=20,</TextOptions>
               <Type>DataColumn</Type>
             </Text27>
-            <Text20 Ref="34" type="Text" isKey="true">
+            <Text20 Ref="32" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -586,12 +570,12 @@
           <PrintIfDetailEmpty>True</PrintIfDetailEmpty>
           <Sort isList="true" count="0" />
         </DataBand1>
-        <FooterBand1 Ref="35" type="FooterBand" isKey="true">
+        <FooterBand1 Ref="33" type="FooterBand" isKey="true">
           <Brush>Transparent</Brush>
           <CanShrink>True</CanShrink>
           <ClientRectangle>0,5,27.7,0.6</ClientRectangle>
           <Components isList="true" count="11">
-            <Text28 Ref="36" type="Text" isKey="true">
+            <Text28 Ref="34" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -604,20 +588,12 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text28</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <Text>{Sum(DataBand1,Data.UnloadingWeight)}</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="37" type="NumberFormat" isKey="true">
-                <DecimalDigits>3</DecimalDigits>
-                <DecimalSeparator>,</DecimalSeparator>
-                <GroupSeparator> </GroupSeparator>
-                <NegativePattern>1</NegativePattern>
-                <UseGroupSeparator>False</UseGroupSeparator>
-                <UseLocalSetting>False</UseLocalSetting>
-              </TextFormat>
               <Type>Totals</Type>
             </Text28>
-            <Text29 Ref="38" type="Text" isKey="true">
+            <Text29 Ref="35" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -630,20 +606,12 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text29</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <Text>{Sum(DataBand1,Data.LoadingWeight)}</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="39" type="NumberFormat" isKey="true">
-                <DecimalDigits>3</DecimalDigits>
-                <DecimalSeparator>,</DecimalSeparator>
-                <GroupSeparator> </GroupSeparator>
-                <NegativePattern>1</NegativePattern>
-                <UseGroupSeparator>False</UseGroupSeparator>
-                <UseLocalSetting>False</UseLocalSetting>
-              </TextFormat>
               <Type>Totals</Type>
             </Text29>
-            <Text30 Ref="40" type="Text" isKey="true">
+            <Text30 Ref="36" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -656,11 +624,11 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text30</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text30>
-            <Text31 Ref="41" type="Text" isKey="true">
+            <Text31 Ref="37" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -673,20 +641,12 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text31</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <Text>{Sum(DataBand1,Data.Netto)}</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="42" type="NumberFormat" isKey="true">
-                <DecimalDigits>3</DecimalDigits>
-                <DecimalSeparator>,</DecimalSeparator>
-                <GroupSeparator> </GroupSeparator>
-                <NegativePattern>1</NegativePattern>
-                <UseGroupSeparator>False</UseGroupSeparator>
-                <UseLocalSetting>False</UseLocalSetting>
-              </TextFormat>
               <Type>Totals</Type>
             </Text31>
-            <Text32 Ref="43" type="Text" isKey="true">
+            <Text32 Ref="38" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -699,10 +659,10 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text32</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <Text>Итого:</Text>
               <TextBrush>Black</TextBrush>
-              <TextFormat Ref="44" type="NumberFormat" isKey="true">
+              <TextFormat Ref="39" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
                 <DecimalSeparator>,</DecimalSeparator>
                 <GroupSeparator> </GroupSeparator>
@@ -713,7 +673,7 @@
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text32>
-            <Text33 Ref="45" type="Text" isKey="true">
+            <Text33 Ref="40" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -727,11 +687,11 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text33</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text33>
-            <Text34 Ref="46" type="Text" isKey="true">
+            <Text34 Ref="41" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -745,11 +705,11 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text34</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text34>
-            <Text35 Ref="47" type="Text" isKey="true">
+            <Text35 Ref="42" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -763,11 +723,11 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text35</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text35>
-            <Text36 Ref="48" type="Text" isKey="true">
+            <Text36 Ref="43" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -781,11 +741,11 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text36</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text36>
-            <Text37 Ref="49" type="Text" isKey="true">
+            <Text37 Ref="44" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -799,11 +759,11 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text37</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text37>
-            <Text21 Ref="50" type="Text" isKey="true">
+            <Text21 Ref="45" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -817,7 +777,7 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text21</Name>
               <Page isRef="3" />
-              <Parent isRef="35" />
+              <Parent isRef="33" />
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text21>
@@ -837,13 +797,13 @@
       <PageHeight>21</PageHeight>
       <PageWidth>29.7</PageWidth>
       <Report isRef="0" />
-      <Watermark Ref="51" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+      <Watermark Ref="46" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
         <Font>Arial,100</Font>
         <TextBrush>[50:0:0:0]</TextBrush>
       </Watermark>
     </Page1>
   </Pages>
-  <PrinterSettings Ref="52" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <PrinterSettings Ref="47" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
   <ReferencedAssemblies isList="true" count="8">
     <value>System.Dll</value>
     <value>System.Drawing.Dll</value>
@@ -855,13 +815,13 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>11/2/2014 10:53:37 PM</ReportChanged>
+  <ReportChanged>3/19/2015 11:21:12 AM</ReportChanged>
   <ReportCreated>7/21/2014 10:54:37 PM</ReportCreated>
-  <ReportFile>Y:\Projects\Zlatmet\Версия 2\Шаблоны\Отчет по перевозкам.mrt</ReportFile>
-  <ReportGuid>46bb04e758874fff819e34fb5a68541a</ReportGuid>
+  <ReportFile>Y:\Projects\Учёт лома\Версия 2\Шаблоны\Отчет по перевозкам.mrt</ReportFile>
+  <ReportGuid>f4ec69efa90c456cb36c900a1be3e50c</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
-  <ReportVersion>2014.1.1900</ReportVersion>
+  <ReportVersion>2014.2.2000</ReportVersion>
   <Script>using System;
 using System.Drawing;
 using System.Windows.Forms;
