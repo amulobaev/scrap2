@@ -14,8 +14,6 @@ namespace Scrap.Views.Reports
             InitializeComponent();
 
             FocusManager.SetFocusedElement(GridBase, DatePicker);
-
-            StiViewer.Report = new StiReport();
         }
     }
 }

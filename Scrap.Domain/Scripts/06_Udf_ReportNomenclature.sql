@@ -1,8 +1,9 @@
-CREATE PROCEDURE [dbo].[ReportNomenclature]
+ALTER PROCEDURE [dbo].[ReportNomenclature]
 @DateFrom date = null,
 @DateTo date = null,
-@Bases int,
-@Transit int
+@IsBases int,
+@Bases nvarchar(max),
+@IsTransit int
 AS
 BEGIN
 
@@ -31,7 +32,7 @@ WHERE
 	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND ro1.Type = 0 AND ro2.Type = 1
-
+	AND dt.[CustomerId] IN (' + @Bases + ')
 UNION ALL
 
 -- Перевозка с базы к заказчику
@@ -46,7 +47,8 @@ WHERE
 	AND CONVERT(date, dt.DateOfUnloading) >= ''' + CAST(CONVERT(date, @DateFrom) as varchar(255)) + '''
 	AND CONVERT(date, dt.DateOfLoading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
-	AND ro1.Type = 1 AND ro2.Type = 0'
+	AND ro1.Type = 1 AND ro2.Type = 0
+	AND dt.[SupplierId] IN (' + @Bases + ')'
 
 SET @TransitCmd = '
 -- Перевозка от поставщика к заказчику (погрузка)
@@ -79,15 +81,15 @@ WHERE
 	AND CONVERT(date, dt.DateOfUnloading) <= ''' + CAST(CONVERT(date, @DateTo) as varchar(255)) + '''
 	AND ro1.Type = 0 AND ro2.Type = 0'
 
-IF @Bases = 1 AND @Transit = 1
+IF @IsBases = 1 AND @IsTransit = 1
 	SET @CMD = @CMD + @BasesCmd +'
 	UNION ALL
 	' + @TransitCmd
 ELSE
 BEGIN
-IF @Bases = 1
+IF @IsBases = 1
 	SET @CMD = @CMD + @BasesCmd
-IF @Transit = 1
+IF @IsTransit = 1
 	SET @CMD = @CMD + @TransitCmd
 END
 

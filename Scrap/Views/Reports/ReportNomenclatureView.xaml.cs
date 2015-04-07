@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
-using Stimulsoft.Report;
 
 namespace Scrap.Views.Reports
 {
@@ -12,8 +11,6 @@ namespace Scrap.Views.Reports
         public ReportNomenclatureView()
         {
             InitializeComponent();
-
-            StiViewer.Report = new StiReport();
 
             FocusManager.SetFocusedElement(GridBase, DatePickerFrom);
         }

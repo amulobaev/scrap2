@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using Scrap.Core;
 using Scrap.Core.Classes.References;
 using Scrap.Core.Classes.Reports;
 using Scrap.Core.Enums;
@@ -55,13 +54,11 @@ namespace Scrap.Domain.Repositories
                         new SqlParameter
                         {
                             ParameterName = "@Base",
-                            //SqlDbType = SqlDbType.UniqueIdentifier,
                             Value = organization.Id
                         },
                         new SqlParameter
                         {
                             ParameterName = "@Nomenclatures",
-                            //SqlDbType = SqlDbType.VarChar,
                             Value = nomenclature
                         }
                     };
@@ -82,11 +79,15 @@ namespace Scrap.Domain.Repositories
         /// </summary>
         /// <param name="dateFrom"></param>
         /// <param name="dateTo"></param>
-        /// <param name="bases"></param>
-        /// <param name="transit"></param>
+        /// <param name="isBases"></param>
+        /// <param name="bases">Идентификаторы выбранных баз</param>
+        /// <param name="isTransit"></param>
         /// <returns></returns>
-        public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo, bool bases, bool transit)
+        public List<ReportNomenclatureData> ReportNomenclature(DateTime dateFrom, DateTime dateTo, bool isBases,
+            IEnumerable<Guid> bases, bool isTransit)
         {
+            string baseIds = string.Join(",", bases.Select(x => "'" + x.ToString() + "'").ToList());
+
             using (ZlatmetContext context = new ZlatmetContext())
             {
                 object[] parameters =
@@ -105,13 +106,18 @@ namespace Scrap.Domain.Repositories
                     },
                     new SqlParameter
                     {
-                        ParameterName = "@Bases",
-                        Value = bases
+                        ParameterName = "@IsBases",
+                        Value = isBases
                     },
                     new SqlParameter
                     {
-                        ParameterName = "@Transit",
-                        Value = transit
+                        ParameterName = "@Bases",
+                        Value = baseIds
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@IsTransit",
+                        Value = isTransit
                     }
                 };
 

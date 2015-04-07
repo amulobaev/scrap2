@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using Scrap.Core.Classes.References;
 using Scrap.Core.Classes.Reports;
 using Scrap.Core.Classes.Service;
+using Scrap.Tools;
 using Scrap.Views.Reports;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -20,9 +26,15 @@ namespace Scrap.ViewModels.Reports
 
         private DateTime _dateTo;
 
-        private bool _bases = true;
+        private bool _isBases = true;
 
-        private bool _transit;
+        private bool _isTransit;
+
+        private readonly ObservableCollection<Organization> _selectedBases = new ObservableCollection<Organization>();
+
+        private ICommand _selectAllBasesCommand;
+
+        private ICommand _unselectAllBasesCommand;
 
         /// <summary>
         /// Конструктор
@@ -43,47 +55,74 @@ namespace Scrap.ViewModels.Reports
             _template = MainStorage.Instance.TemplatesRepository.GetByName(ReportName);
 
             Report = new StiReport();
+
+            SelectedBases.AddRange(Bases);
         }
 
         public DateTime DateFrom
         {
             get { return _dateFrom; }
-            set
-            {
-                if (value.Equals(_dateFrom))
-                    return;
-                _dateFrom = value;
-                RaisePropertyChanged("DateFrom");
-            }
+            set { Set(() => DateFrom, ref _dateFrom, value); }
         }
 
         public DateTime DateTo
         {
             get { return _dateTo; }
-            set
-            {
-                if (value.Equals(_dateTo))
-                    return;
-                _dateTo = value;
-                RaisePropertyChanged("DateTo");
-            }
+            set { Set(() => DateTo, ref _dateTo, value); }
         }
 
-        public bool Bases
+        public ReadOnlyObservableCollection<Organization> Bases
         {
-            get { return _bases; }
-            set { Set(() => Bases, ref _bases, value); }
+            get { return MainStorage.Instance.Bases; }
         }
 
-        public bool Transit
+        public ObservableCollection<Organization> SelectedBases
         {
-            get { return _transit; }
-            set { Set(() => Transit, ref _transit, value); }
+            get { return _selectedBases; }
+        }
+
+        public bool IsBases
+        {
+            get { return _isBases; }
+            set { Set(() => IsBases, ref _isBases, value); }
+        }
+
+        public bool IsTransit
+        {
+            get { return _isTransit; }
+            set { Set(() => IsTransit, ref _isTransit, value); }
         }
 
         public override string ReportName
         {
             get { return "Обороты за период"; }
+        }
+
+        public ICommand SelectAllBasesCommand
+        {
+            get { return _selectAllBasesCommand ?? (_selectAllBasesCommand = new RelayCommand(SelectAllBases)); }
+        }
+
+        public ICommand UnselectAllBasesCommand
+        {
+            get { return _unselectAllBasesCommand ?? (_unselectAllBasesCommand = new RelayCommand(UnselectAllBases)); }
+        }
+
+        public override bool IsValid()
+        {
+            if (!IsBases && !IsTransit)
+            {
+                MessageBox.Show("Не выбраны \"Базы\" и/или \"Транзит\"");
+                return false;
+            }
+
+            if (IsBases && !SelectedBases.Any())
+            {
+                MessageBox.Show("Не выбрана ни одна база");
+                return false;
+            }
+
+            return base.IsValid();
         }
 
         protected override void PrepareReport()
@@ -95,11 +134,8 @@ namespace Scrap.ViewModels.Reports
                 return;
             }
 
-            if (!Bases && !Transit)
-            {
-                MessageBox.Show("Не выбраны \"Базы\" и/или \"Транзит\"");
+            if (!IsValid())
                 return;
-            }
 
             Report = new StiReport();
             Report.Load(_template.Data);
@@ -110,11 +146,22 @@ namespace Scrap.ViewModels.Reports
 
             // Данные отчета
             List<ReportNomenclatureData> reportData = MainStorage.Instance.ReportsRepository.ReportNomenclature(
-                DateFrom, DateTo, Bases, Transit);
+                DateFrom, DateTo, IsBases, SelectedBases.Select(x => x.Id), IsTransit);
             Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();
             Report.Render(false);
+        }
+
+        private void SelectAllBases()
+        {
+            SelectedBases.Clear();
+            SelectedBases.AddRange(Bases);
+        }
+
+        private void UnselectAllBases()
+        {
+            SelectedBases.Clear();
         }
 
     }

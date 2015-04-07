@@ -12,7 +12,7 @@ namespace Scrap.ViewModels.Reports
     /// </summary>
     public abstract class BaseReportViewModel : UniqueLayoutDocumentViewModel
     {
-        private StiReport _report;
+        private StiReport _report = new StiReport();
         private ICommand _prepareReportCommand;
 
         protected BaseReportViewModel(LayoutDocument layout, Type viewType, Guid id)
@@ -23,13 +23,7 @@ namespace Scrap.ViewModels.Reports
         public StiReport Report
         {
             get { return _report; }
-            set
-            {
-                if (Equals(value, _report))
-                    return;
-                _report = value;
-                RaisePropertyChanged("Report");
-            }
+            set { Set(() => Report, ref _report, value); }
         }
 
         public abstract string ReportName { get; }
@@ -40,6 +34,5 @@ namespace Scrap.ViewModels.Reports
         }
 
         protected abstract void PrepareReport();
-
     }
 }

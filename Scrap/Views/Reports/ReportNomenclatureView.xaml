@@ -2,10 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:stimulsoft="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600">
+    <UserControl.Resources>
+        <CollectionViewSource Source="{Binding Bases}" x:Key="BasesCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -22,26 +31,38 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="На период с:" Margin="3" VerticalAlignment="Center" />
+            <TextBlock Text="На период с:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <DatePicker x:Name="DatePickerFrom" Margin="3" Width="110" SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Text="по" Margin="3" VerticalAlignment="Center" />
                 <DatePicker Margin="3" Width="110" SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <CheckBox Content="Базы" Margin="3" IsChecked="{Binding Bases}" />
-                <CheckBox Content="Транзит" Margin="3" IsChecked="{Binding Transit}" />
+            <TextBlock Grid.Row="1" Text="Базы:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                <CheckBox Margin="3" IsChecked="{Binding IsBases}" VerticalAlignment="Center" />
+                <xctk:CheckComboBox Margin="3" DisplayMemberPath="Name" ItemsSource="{Binding Source={StaticResource BasesCvs}}"
+                                SelectedItemsOverride="{Binding SelectedBases}" Width="200" VerticalAlignment="Center"
+                                    IsEnabled="{Binding IsBases}" />
+                <Button Content="Выбрать все" Width="75" Margin="3" Command="{Binding SelectAllBasesCommand}" VerticalAlignment="Center"
+                        IsEnabled="{Binding IsBases}" />
+                <Button Content="Снять выбор" Width="75" Margin="3" Command="{Binding UnselectAllBasesCommand}" VerticalAlignment="Center"
+                        IsEnabled="{Binding IsBases}" />
             </StackPanel>
+
+            <TextBlock Grid.Row="2" Text="Транзит:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <CheckBox Grid.Row="2" Grid.Column="1" Margin="3" IsChecked="{Binding IsTransit}" HorizontalAlignment="Left"
+                      VerticalAlignment="Center" />
         </Grid>
 
-        <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"
+        <stimulsoft:StiWpfViewerControl Grid.Row="2" Margin="3" ShowClose="False"
                                         ShowReportOpen="False" Report="{Binding Report}" />
     </Grid>
 </UserControl>
