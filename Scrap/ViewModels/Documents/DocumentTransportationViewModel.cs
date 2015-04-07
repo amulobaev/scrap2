@@ -266,7 +266,6 @@ namespace Scrap.ViewModels.Documents
             set { Set(() => WagonNumber, ref _wagonNumber, value); }
         }
 
-        [Required(ErrorMessage = @"Не заполнено поле ""ПСА""")]
         public string Psa
         {
             get { return _psa; }
