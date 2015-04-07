@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dbo].[ReportNomenclature]
+CREATE PROCEDURE [dbo].[ReportNomenclature]
 @DateFrom date = null,
 @DateTo date = null,
 @IsBases int,
