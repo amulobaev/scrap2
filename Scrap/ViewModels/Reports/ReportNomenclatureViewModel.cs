@@ -141,6 +141,10 @@ namespace Scrap.ViewModels.Reports
             Report.Load(_template.Data);
 
             // Переменные отчета
+            Report.Dictionary.Variables["Bases"].Value = IsBases && SelectedBases.Any()
+                ? (String.Format(SelectedBases.Count > 1 ? "складам {0}" : "складу {0}",
+                    string.Join(",", SelectedBases.Select(x => x.Name))))
+                : "складу";
             Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
             Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
 

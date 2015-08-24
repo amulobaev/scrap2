@@ -1,3 +1,7 @@
+--
+-- Отчёт "Перевозки"
+--
+
 CREATE PROCEDURE [dbo].[ReportTransportation]
 @TransportType nvarchar(max),
 @DateFrom date = NULL,

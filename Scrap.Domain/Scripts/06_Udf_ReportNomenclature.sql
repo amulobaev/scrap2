@@ -1,3 +1,7 @@
+--
+-- Îעק¸ע "Îבמנמעû חא ןונטמה"
+--
+
 CREATE PROCEDURE [dbo].[ReportNomenclature]
 @DateFrom date = null,
 @DateTo date = null,

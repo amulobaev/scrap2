@@ -21,9 +21,10 @@
     <DataSources isList="true" count="0" />
     <Relations isList="true" count="0" />
     <Report isRef="0" />
-    <Variables isList="true" count="2">
+    <Variables isList="true" count="3">
       <value>,DateFrom,DateFrom,System.String,,False,False</value>
       <value>,DateTo,DateTo,System.String,,False,False</value>
+      <value>,Bases,Bases,System.String,,False,False</value>
     </Variables>
   </Dictionary>
   <EngineVersion>EngineV2</EngineVersion>
@@ -75,7 +76,7 @@
               <Name>Text1</Name>
               <Page isRef="3" />
               <Parent isRef="6" />
-              <Text>Отчёт по складу с {DateFrom} по {DateTo}</Text>
+              <Text>Отчёт по {Bases} с {DateFrom} по {DateTo}</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text1>
@@ -396,13 +397,13 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/30/2014 9:45:53 PM</ReportChanged>
+  <ReportChanged>8/24/2015 8:48:50 AM</ReportChanged>
   <ReportCreated>7/21/2014 10:54:37 PM</ReportCreated>
-  <ReportFile>Y:\Projects\Zlatmet\Версия 2\Шаблоны\Обороты за период.mrt</ReportFile>
-  <ReportGuid>7be3086ffad540869a0b10a44a2e43fb</ReportGuid>
+  <ReportFile>Y:\Projects\Учёт лома\Версия 2\Шаблоны\Обороты за период.mrt</ReportFile>
+  <ReportGuid>d7353bdb002c41798e1981023e3b5225</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
-  <ReportVersion>2014.1.1900</ReportVersion>
+  <ReportVersion>2014.2.2000</ReportVersion>
   <Script>using System;
 using System.Drawing;
 using System.Windows.Forms;
