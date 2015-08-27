@@ -117,7 +117,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <i:Interaction.Behaviors>
-                    <behaviors:DataGridScrollIntoViewBehavior />
+                    <!--<behaviors:DataGridScrollIntoViewBehavior />-->
                 </i:Interaction.Behaviors>
             </DataGrid>
         </Grid>
