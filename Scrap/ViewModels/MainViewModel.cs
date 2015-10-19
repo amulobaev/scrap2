@@ -42,6 +42,7 @@ namespace Scrap.ViewModels
         private ICommand _showDocumentProcessingCommand;
         private ICommand _showDocumentRestsCommand;
         private ICommand _showParametersCommand;
+        private ICommand _showAutoTransportReportCommand;
 
         #endregion Поля
 
@@ -182,6 +183,15 @@ namespace Scrap.ViewModels
             {
                 return _showReportTransportCommand ??
                        (_showReportTransportCommand = new RelayCommand(ShowReportTransport));
+            }
+        }
+
+        public ICommand ShowAutoTransportReportCommand
+        {
+            get
+            {
+                return _showAutoTransportReportCommand ??
+                       (_showAutoTransportReportCommand = new RelayCommand(ShowAutoTransportReport));
             }
         }
 
@@ -382,6 +392,11 @@ namespace Scrap.ViewModels
         private void ShowReportTransport()
         {
             ShowLayoutDocument(typeof(ReportTransportationViewModel), Guid.Empty);
+        }
+
+        private void ShowAutoTransportReport()
+        {
+            ShowLayoutDocument(typeof(AutoTransportReportViewModel), Guid.Empty);
         }
 
         /// <summary>

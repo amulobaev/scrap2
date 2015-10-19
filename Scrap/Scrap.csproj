@@ -231,6 +231,7 @@
     <Compile Include="Tools\Helpers.cs" />
     <Compile Include="Tools\RusNumber.cs" />
     <Compile Include="Tools\ThreadContext.cs" />
+    <Compile Include="ViewModels\Reports\AutoTrasportReportViewModel.cs" />
     <Compile Include="ViewModels\Base\CustomLayoutDocumentViewModel.cs" />
     <Compile Include="ViewModels\Base\UniqueLayoutDocumentViewModel.cs" />
     <Compile Include="ViewModels\Base\ValidationViewModelBase.cs" />
@@ -306,6 +307,9 @@
     </Compile>
     <Compile Include="Views\References\ReferenceTransportsView.xaml.cs">
       <DependentUpon>ReferenceTransportsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\AutoTransportReportView.xaml.cs">
+      <DependentUpon>AutoTransportReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\ReportNomenclatureView.xaml.cs">
       <DependentUpon>ReportNomenclatureView.xaml</DependentUpon>
@@ -393,6 +397,10 @@
     <Page Include="Views\References\ReferenceTransportsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\AutoTransportReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Reports\ReportNomenclatureView.xaml">
       <SubType>Designer</SubType>
