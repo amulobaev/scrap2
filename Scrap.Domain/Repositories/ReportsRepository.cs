@@ -201,5 +201,22 @@ namespace Scrap.Domain.Repositories
             }
         }
 
+        /// <summary>
+        /// ФОрмирование данных для отчёта по транспорту
+        /// </summary>
+        /// <param name="dateFrom"></param>
+        /// <param name="dateTo"></param>
+        /// <param name="transports"></param>
+        /// <returns></returns>
+        public List<ReportAutoTransportData> ReportAutoTransport(DateTime? dateFrom, DateTime? dateTo,
+            IEnumerable<Guid> transports)
+        {
+            List<ReportAutoTransportData> data = new List<ReportAutoTransportData>();
+
+            data.Add(new ReportAutoTransportData { Name = "Renault", LoadingWeight = 1, UnloadingWeight = 2, Netto = 3 });
+
+            return data;
+        }
+
     }
 }

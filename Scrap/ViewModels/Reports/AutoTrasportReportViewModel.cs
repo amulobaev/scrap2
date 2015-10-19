@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
@@ -8,6 +9,9 @@ using Scrap.Tools;
 using Scrap.Views.Reports;
 using Stimulsoft.Report;
 using Xceed.Wpf.AvalonDock.Layout;
+using System.Windows;
+using System.Collections.Generic;
+using Scrap.Core.Classes.Reports;
 
 namespace Scrap.ViewModels.Reports
 {
@@ -77,7 +81,29 @@ namespace Scrap.ViewModels.Reports
 
         protected override void PrepareReport()
         {
-            throw new NotImplementedException();
+            if (_template == null)
+            {
+                MessageBox.Show(string.Format("Отсутствует шаблон \"{0}\"", ReportName), MainStorage.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!IsValid())
+                return;
+
+            Report = new StiReport();
+            Report.Load(_template.Data);
+
+            Report.Dictionary.Variables["DateFrom"].Value = DateFrom.ToShortDateString();
+            Report.Dictionary.Variables["DateTo"].Value = DateTo.ToShortDateString();
+
+            // Данные отчета
+            List<ReportAutoTransportData> reportData = MainStorage.Instance.ReportsRepository.ReportAutoTransport(
+                DateFrom, DateTo, SelectedTransport.Select(x => x.Id));
+            Report.RegBusinessObject("Data", reportData);
+
+            Report.Compile();
+            Report.Render(false);
         }
 
         private void SelectAll()

@@ -55,6 +55,7 @@
     <Compile Include="Classes\References\Nomenclature.cs" />
     <Compile Include="Classes\References\Organization.cs" />
     <Compile Include="Classes\References\Transport.cs" />
+    <Compile Include="Classes\Reports\ReportAutoTransportData.cs" />
     <Compile Include="Classes\Reports\ReportNomenclatureData.cs" />
     <Compile Include="Classes\Reports\ReportRemainsBase.cs" />
     <Compile Include="Classes\Reports\ReportRemainsData.cs" />

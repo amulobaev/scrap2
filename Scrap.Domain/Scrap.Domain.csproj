@@ -139,9 +139,7 @@
     <EmbeddedResource Include="Scripts\02_View_DocumentNumbersAndDates.sql" />
     <EmbeddedResource Include="Scripts\04_Udf_GetMaxDocumentNumber.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dto\Reports\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.25.0\build\Fody.targets" Condition="Exists('..\packages\Fody.1.25.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
