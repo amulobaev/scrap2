@@ -211,11 +211,37 @@ namespace Scrap.Domain.Repositories
         public List<ReportAutoTransportData> ReportAutoTransport(DateTime? dateFrom, DateTime? dateTo,
             IEnumerable<Guid> transports)
         {
-            List<ReportAutoTransportData> data = new List<ReportAutoTransportData>();
+            using (ZlatmetContext context = new ZlatmetContext())
+            {
+                object[] parameters =
+                {
+                    new SqlParameter
+                    {
+                        ParameterName = "@DateFrom",
+                        SqlDbType = SqlDbType.Date,
+                        Value = dateFrom
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@DateTo",
+                        SqlDbType = SqlDbType.Date,
+                        Value = dateTo
+                    },
+                    new SqlParameter
+                    {
+                        ParameterName = "@Transports",
+                        Value = string.Join(",", transports.Select(x => "'" + x.ToString() + "'").ToList())
+                    }
+                };
 
-            data.Add(new ReportAutoTransportData { Name = "Renault", LoadingWeight = 1, UnloadingWeight = 2, Netto = 3 });
+                string query = string.Format("ReportAutoTransport {0}",
+                    string.Join(",", parameters.OfType<SqlParameter>().Select(x => x.ParameterName)));
 
-            return data;
+                List<ReportAutoTransportData> data =
+                    context.Database.SqlQuery<ReportAutoTransportData>(query, parameters).ToList();
+
+                return data;
+            }
         }
 
     }

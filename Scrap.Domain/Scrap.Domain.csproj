@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <Content Include="Scripts\08_Udf_ReportAutoTransportation.sql" />
     <EmbeddedResource Include="Scripts\07_Udf_ReportTransportation.sql" />
     <EmbeddedResource Include="Scripts\05_Udf_ReportRemains.sql" />
     <EmbeddedResource Include="Scripts\06_Udf_ReportNomenclature.sql" />

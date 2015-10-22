@@ -79,6 +79,17 @@ namespace Scrap.ViewModels.Reports
             get { return _unselectAllCommand ?? (_unselectAllCommand = new RelayCommand(UnselectAll)); }
         }
 
+        public override bool IsValid()
+        {
+            if (!SelectedTransport.Any())
+            {
+                MessageBox.Show("Не выбран транспорт");
+                return false;
+            }
+
+            return base.IsValid();
+        }
+
         protected override void PrepareReport()
         {
             if (_template == null)

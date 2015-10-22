@@ -206,7 +206,7 @@
               <Name>Text7</Name>
               <Page isRef="3" />
               <Parent isRef="13" />
-              <Text>{Data.Netto}</Text>
+              <Text>{Data.Netto / 1000}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="16" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -232,7 +232,7 @@
               <Name>Text10</Name>
               <Page isRef="3" />
               <Parent isRef="13" />
-              <Text>{Data.UnloadingWeight}</Text>
+              <Text>{Data.UnloadingWeight / 1000}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="18" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -258,7 +258,7 @@
               <Name>Text16</Name>
               <Page isRef="3" />
               <Parent isRef="13" />
-              <Text>{Data.LoadingWeight}</Text>
+              <Text>{Data.LoadingWeight / 1000}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="20" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -317,7 +317,7 @@
               <Name>Text12</Name>
               <Page isRef="3" />
               <Parent isRef="21" />
-              <Text>{colSum(DataBand1,Data.Netto)}</Text>
+              <Text>{colSum(DataBand1,Data.Netto) / 1000}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="24" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -327,7 +327,7 @@
                 <UseGroupSeparator>False</UseGroupSeparator>
                 <UseLocalSetting>False</UseLocalSetting>
               </TextFormat>
-              <Type>Totals</Type>
+              <Type>Expression</Type>
             </Text12>
             <Text14 Ref="25" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
@@ -343,7 +343,7 @@
               <Name>Text14</Name>
               <Page isRef="3" />
               <Parent isRef="21" />
-              <Text>{colSum(DataBand1,Data.UnloadingWeight)}</Text>
+              <Text>{colSum(DataBand1,Data.UnloadingWeight) / 1000}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="26" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -353,7 +353,7 @@
                 <UseGroupSeparator>False</UseGroupSeparator>
                 <UseLocalSetting>False</UseLocalSetting>
               </TextFormat>
-              <Type>Totals</Type>
+              <Type>Expression</Type>
             </Text14>
             <Text17 Ref="27" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
@@ -369,7 +369,7 @@
               <Name>Text17</Name>
               <Page isRef="3" />
               <Parent isRef="21" />
-              <Text>{colSum(DataBand1,Data.LoadingWeight)}</Text>
+              <Text>{colSum(DataBand1,Data.LoadingWeight) / 1000}</Text>
               <TextBrush>Black</TextBrush>
               <TextFormat Ref="28" type="NumberFormat" isKey="true">
                 <DecimalDigits>3</DecimalDigits>
@@ -379,7 +379,7 @@
                 <UseGroupSeparator>False</UseGroupSeparator>
                 <UseLocalSetting>False</UseLocalSetting>
               </TextFormat>
-              <Type>Totals</Type>
+              <Type>Expression</Type>
             </Text17>
           </Components>
           <Conditions isList="true" count="0" />
@@ -413,10 +413,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/19/2015 11:39:44 PM</ReportChanged>
+  <ReportChanged>10/22/2015 12:18:19 PM</ReportChanged>
   <ReportCreated>7/21/2014 10:54:37 PM</ReportCreated>
   <ReportFile>Y:\Projects\Учёт лома\Версия 2\Шаблоны\Отчет по транспорту.mrt</ReportFile>
-  <ReportGuid>ba6f3144b44e4b008fff727917408f81</ReportGuid>
+  <ReportGuid>3b6958c471d143a0b2019665c4acf854</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2014.2.2000</ReportVersion>
