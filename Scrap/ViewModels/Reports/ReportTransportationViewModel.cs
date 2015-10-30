@@ -43,6 +43,9 @@ namespace Scrap.ViewModels.Reports
         private ICommand _unselectAllCustomersCommand;
         private ICommand _closeCustomersCommand;
         private TransportationReportType _reportType;
+        private ICommand _selectAllTransportCommand;
+        private ICommand _unselectAllTransportCommand;
+        private readonly ObservableCollection<Transport> _selectedTransport = new ObservableCollection<Transport>();
 
         /// <summary>
         /// Конструктор
@@ -80,6 +83,7 @@ namespace Scrap.ViewModels.Reports
             }
 
             SelectAllNomenclatures();
+            SelectAllTransport();
         }
 
         public override string ReportName
@@ -153,6 +157,16 @@ namespace Scrap.ViewModels.Reports
         public ObservableCollection<Nomenclature> SelectedNomenclatures
         {
             get { return _selectedNomenclatures; }
+        }
+
+        public ReadOnlyObservableCollection<Transport> Transports
+        {
+            get { return MainStorage.Instance.Transports; }
+        }
+
+        public ObservableCollection<Transport> SelectedTransport
+        {
+            get { return _selectedTransport; }
         }
 
         public ICommand SelectAllSuppliersCommand
@@ -262,6 +276,16 @@ namespace Scrap.ViewModels.Reports
             SelectedNomenclatures.Clear();
         }
 
+        public ICommand SelectAllTransportCommand
+        {
+            get { return _selectAllTransportCommand ?? (_selectAllTransportCommand = new RelayCommand(SelectAllTransport)); }
+        }
+
+        public ICommand UnselectAllTransportCommand
+        {
+            get { return _unselectAllTransportCommand ?? (_unselectAllTransportCommand = new RelayCommand(UnselectAllTransport)); }
+        }
+
         protected override void PrepareReport()
         {
             if (_template == null)
@@ -278,12 +302,19 @@ namespace Scrap.ViewModels.Reports
                 return;
             }
 
+            if (IsAuto && !SelectedTransport.Any())
+            {
+                MessageBox.Show("Не выбран транспорт", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
             Guid[] supplierDivisions =
                 Suppliers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToArray();
             Guid[] customerDivisions =
                 Customers.SelectMany(x => x.Divisions).Where(x => x.IsChecked).Select(x => x.Id).ToArray();
             Guid[] nomenclatures = SelectedNomenclatures.Select(x => x.Id).ToArray();
-
+            Guid[] transports = SelectedTransport.Select(x => x.Id).ToArray();
             //if (!suppliers.Any())
             //{
             //    MessageBox.Show("Не выбраны поставщики", MainStorage.AppName, MessageBoxButton.OK,
@@ -305,6 +336,13 @@ namespace Scrap.ViewModels.Reports
                 return;
             }
 
+            if (IsAuto && !transports.Any())
+            {
+                MessageBox.Show("Не выбран транспорт", MainStorage.AppName, MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
             Report = new StiReport();
             Report.Load(_template.Data);
 
@@ -319,11 +357,22 @@ namespace Scrap.ViewModels.Reports
             // Данные для отчета
             List<ReportTransportationData> reportData =
                 MainStorage.Instance.ReportsRepository.ReportTransportation(IsAuto, IsTrain, DateFrom, DateTo,
-                    (int)ReportType, supplierDivisions, customerDivisions, nomenclatures);
+                    (int)ReportType, supplierDivisions, customerDivisions, nomenclatures, transports);
             Report.RegBusinessObject("Data", reportData);
 
             Report.Compile();
             Report.Render(false);
+        }
+
+        private void SelectAllTransport()
+        {
+            SelectedTransport.Clear();
+            SelectedTransport.AddRange(Transports);
+        }
+
+        private void UnselectAllTransport()
+        {
+            SelectedTransport.Clear();
         }
 
     }

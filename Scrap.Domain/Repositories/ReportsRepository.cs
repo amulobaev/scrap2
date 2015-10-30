@@ -144,31 +144,33 @@ namespace Scrap.Domain.Repositories
         /// <param name="supplierDivisions"></param>
         /// <param name="customerDivisions"></param>
         /// <param name="nomenclatures"></param>
+        /// <param name="transports"></param>
         /// <returns></returns>
         public List<ReportTransportationData> ReportTransportation(bool isAuto, bool isTrain, DateTime? dateFrom,
-            DateTime? dateTo, int reportType, Guid[] supplierDivisions, Guid[] customerDivisions, Guid[] nomenclatures)
+            DateTime? dateTo, int reportType, Guid[] supplierDivisions, Guid[] customerDivisions, Guid[] nomenclatures,
+            Guid[] transports)
         {
             using (ZlatmetContext context = new ZlatmetContext())
             {
                 // Тип транспорта
                 string transportType = isAuto && isTrain
-                    ? (int)DocumentType.TransportationAuto + "," + (int)DocumentType.TransportationTrain
+                    ? (int) DocumentType.TransportationAuto + "," + (int) DocumentType.TransportationTrain
                     : isAuto
-                        ? ((int)DocumentType.TransportationAuto).ToString()
-                        : ((int)DocumentType.TransportationTrain).ToString();
+                        ? ((int) DocumentType.TransportationAuto).ToString()
+                        : ((int) DocumentType.TransportationTrain).ToString();
                 string supplierDivisionsString = supplierDivisions != null && supplierDivisions.Any()
                     ? string.Join(",", supplierDivisions.Select(x => "'" + x.ToString() + "'").ToList())
                     : null;
                 string customerDivisionsString = customerDivisions != null && customerDivisions.Any()
                     ? string.Join(",", customerDivisions.Select(x => "'" + x.ToString() + "'").ToList())
                     : null;
-                string nomenclaturesString = string.Join(",",
-                    nomenclatures.Select(x => "'" + x.ToString() + "'").ToList());
 
                 List<object> parameters = new List<object>()
                 {
                     // TransportType
-                    new SqlParameter("TransportType", transportType),
+                    new SqlParameter("IsAuto", isAuto ? 1 : 0),
+                    // TransportType
+                    new SqlParameter("IsTrain", isTrain ? 1 : 0),
                     // DateFrom
                     new SqlParameter
                     {
@@ -187,7 +189,11 @@ namespace Scrap.Domain.Repositories
                         !string.IsNullOrEmpty(supplierDivisionsString) ? (object) supplierDivisionsString : DBNull.Value),
                     new SqlParameter("CustomerDivisions",
                         !string.IsNullOrEmpty(customerDivisionsString) ? (object) customerDivisionsString : DBNull.Value),
-                    new SqlParameter("Nomenclatures", nomenclaturesString)
+                    // Номенклатура
+                    new SqlParameter("Nomenclatures",
+                        string.Join(",", nomenclatures.Select(x => "'" + x.ToString() + "'").ToList())),
+                    new SqlParameter("Transports", string.Join(",", transports.Select(x => "'" + x.ToString() + "'").ToList()))
+                    
                 };
 
                 string query = string.Format("exec ReportTransportation {0}",

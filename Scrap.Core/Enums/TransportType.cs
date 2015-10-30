@@ -2,6 +2,7 @@
 
 namespace Scrap.Core.Enums
 {
+/*
     /// <summary>
     /// Тип перевозок
     /// </summary>
@@ -12,4 +13,5 @@ namespace Scrap.Core.Enums
         [Description("Ж/Д")]
         Train
     }
+*/
 }

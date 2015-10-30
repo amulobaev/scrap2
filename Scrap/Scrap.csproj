@@ -200,6 +200,7 @@
     <Compile Include="Behaviors\DataGridScrollIntoViewBehavior.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\RadioButtonCheckedConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Enums\TransportationReportType.cs" />
     <Compile Include="MainStorage.cs" />
     <Compile Include="MainStorage.ModelContext.cs" />

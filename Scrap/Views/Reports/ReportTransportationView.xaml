@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <converters:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
         <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
 
         <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}" x:Key="ComboBoxItemWithSeparatorStyle">
             <Style.Triggers>
@@ -48,6 +49,12 @@
                 <TextBlock Text="{Binding Name}" />
             </StackPanel>
         </HierarchicalDataTemplate>
+
+        <CollectionViewSource Source="{Binding Transports}" x:Key="TransportCvs">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -62,6 +69,7 @@
 
         <Grid Grid.Row="1" x:Name="GridBase">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -191,11 +199,23 @@
                                 ItemsSource="{Binding Source={StaticResource NomenclaturesCvs}}"
                                 SelectedItemsOverride="{Binding SelectedNomenclatures}"
                                 Style="{StaticResource NomenclatureIsEnabledStyle}" />
-            <Button Grid.Row="5" Grid.Column="2" Content="Выбрать все" Width="75" Margin="3"
+            <Button Grid.Row="5" Grid.Column="2" Content="Выбрать все" Margin="3"
                     Command="{Binding SelectAllNomenclaturesCommand}" Style="{StaticResource NomenclatureIsEnabledStyle}" />
-            <Button Grid.Row="5" Grid.Column="3" Content="Снять выбор" Width="75" Margin="3"
+            <Button Grid.Row="5" Grid.Column="3" Content="Отменить все" Margin="3"
                     Command="{Binding UnselectAllNomenclaturesCommand}"
                      Style="{StaticResource NomenclatureIsEnabledStyle}" />
+
+            <!--Автотраспорт-->
+            <TextBlock Grid.Row="6" Text="Автотраспорт:" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Visibility="{Binding IsAuto, Converter={StaticResource VisibilityConverter}}" />
+            <xctk:CheckComboBox Grid.Row="6" Grid.Column="1" Margin="3" DisplayMemberPath="Name"
+                                ItemsSource="{Binding Source={StaticResource TransportCvs}}"
+                                SelectedItemsOverride="{Binding SelectedTransport}"
+                                Visibility="{Binding IsAuto, Converter={StaticResource VisibilityConverter}}" />
+            <Button Grid.Row="6" Grid.Column="2" Content="Выбрать все" Margin="3" Command="{Binding SelectAllTransportCommand}" 
+                    Visibility="{Binding IsAuto, Converter={StaticResource VisibilityConverter}}" />
+            <Button Grid.Row="6" Grid.Column="3" Content="Отменить все" Margin="3" Command="{Binding UnselectAllTransportCommand}"
+                     Visibility="{Binding IsAuto, Converter={StaticResource VisibilityConverter}}" />
         </Grid>
 
         <stimulsoft:StiWpfViewerControl x:Name="StiViewer" Grid.Row="2" Margin="3" ShowClose="False"
